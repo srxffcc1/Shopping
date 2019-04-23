@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorTransport"
+              android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_pop_window_expect"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_solid_stroke_gray_corner_5"
+            android:gravity="center"
+            android:paddingTop="@dimen/dp_15"
+            android:paddingBottom="@dimen/dp_15"
+            android:textColor="@color/colorTopBar"
+            android:text="@string/please_expect"
+            android:textSize="@dimen/sp_15"
+            />
+    </LinearLayout>
+</LinearLayout>

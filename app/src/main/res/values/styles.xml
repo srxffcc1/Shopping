@@ -1,0 +1,78 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- My application theme. -->
+    <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+       <!-- <item name="android:windowBackground">@color/colorWhite</item>
+        <item name="android:windowIsTranslucent">true</item>-->
+        <item name="android:windowTranslucentStatus">true</item>
+
+    </style>
+
+    <style name="HorizontalLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_0.5</item>
+        <item name="android:background">@color/colorLine</item>
+    </style>
+    <style name="HorizontalLineGold">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_0.5</item>
+        <item name="android:background">@color/colorYellowText</item>
+    </style>
+    <style name="HorizontalLineRed">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_0.5</item>
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <!-- 水平线 -->
+    <style name="HorizontalLine10">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_10</item>
+        <item name="android:background">@color/colorGray5</item>
+    </style>
+    <style name="HorizontalLine_dark_5">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_5</item>
+        <item name="android:background">@color/colorGray8</item>
+    </style>
+
+
+    <!-- 选项样式 -->
+    <style name="ItemStyle">
+        <item name="android:background">@drawable/selector_item</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">@dimen/dp_10</item>
+        <item name="android:paddingRight">@dimen/dp_10</item>
+        <item name="android:paddingTop">@dimen/dp_15</item>
+        <item name="android:paddingBottom">@dimen/dp_15</item>
+    </style>
+
+    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/TabTextAppearanceStyle</item>
+        <item name="tabSelectedTextColor">@color/colorAccent</item>
+        <item name="tabIndicatorColor">@color/colorAccent</item>
+        <item name="tabMode">scrollable</item>
+    </style>
+
+    <style name="TabTextAppearanceStyle" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textColor">@color/tabGrayText</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+</resources>

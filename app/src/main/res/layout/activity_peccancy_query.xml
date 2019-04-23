@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_top_back_bar_pic"/>
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/tfl_activity_peccancy_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorItemBgGray">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_activity_peccancy_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            />
+        <LinearLayout
+            android:id="@+id/ll_activity_peccancy_null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_80"
+                android:src="@drawable/bg_user_car_empty"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dp_30"
+                android:paddingTop="@dimen/dp_15"
+                android:text="最多可添加3个车牌"
+                android:textColor="@color/tabGrayText"
+                android:textSize="@dimen/sp_13"/>
+
+            <TextView
+                android:id="@+id/tv_activity_user_car_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/log_btn_red"
+                android:gravity="center"
+                android:text="+ 添加车辆"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/sp_14"/>
+
+            <TextView
+                android:id="@+id/tv_activity_user_car_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/sign_question"
+                android:drawablePadding="@dimen/dp_5"
+                android:gravity="right"
+                android:paddingBottom="@dimen/dp_30"
+                android:paddingLeft="215dp"
+                android:paddingTop="@dimen/dp_15"
+                android:text="常见问题"
+                android:textColor="@color/tabGrayText"
+                android:textSize="@dimen/sp_13"/>
+        </LinearLayout>
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+</LinearLayout>

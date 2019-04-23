@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBgGray"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_top_back_bar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--<com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout-->
+            <!--android:id="@+id/tfl_activity_park_lot"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:background="@color/colorAccent"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <EditText
+                        android:layout_gravity="center"
+                        android:id="@+id/et_activity_search_search"
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/colorWhite"
+                        android:paddingBottom="@dimen/dp_7"
+                        android:paddingTop="@dimen/dp_7"
+                        android:paddingLeft="@dimen/dp_15"
+                        android:hint="@string/please_input_search"
+                        android:textColorHint="@color/edit_hint"
+                        android:textSize="@dimen/sp_13"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:drawableRight="@drawable/clear_search"
+                        android:paddingRight="@dimen/dp_5"
+                        />
+                    <ImageView
+                        android:id="@+id/iv_activity_search_search"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/search"
+                        />
+                </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+
+        <!--</com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>-->
+    </LinearLayout>
+</LinearLayout>

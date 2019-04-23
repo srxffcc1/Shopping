@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorGray5"
+              android:orientation="vertical">
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/tfl_fragment_arrange"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_fragment_arrange"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <include
+            android:id="@+id/layout_fragment_documentary_list_record_empty"
+            layout="@layout/layout_item_have_no_record"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_fragment_documentary_list_loading"
+            layout="@layout/layout_item_loading"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_fragment_documentary_list_loading_fail"
+            layout="@layout/layout_item_loading_fail"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_fragment_documentary_list_have_no_net"
+            layout="@layout/layout_item_have_no_net"
+            android:visibility="gone"
+            />
+
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+</LinearLayout>

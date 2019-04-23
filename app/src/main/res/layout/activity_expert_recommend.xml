@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    >
+    <include
+        android:id="@+id/include_activity_expert_recommend_title"
+        layout="@layout/layout_top_back_bar"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_activity_expert_recommend_search"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="@dimen/dp_72"
+        android:paddingTop="@dimen/dp_30"
+        >
+        <LinearLayout
+            android:id="@+id/ll_layout_top_back_bar_back"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp_10"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back"
+                />
+        </LinearLayout>
+        <EditText
+            android:layout_gravity="center"
+            android:id="@+id/et_activity_search_search"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorWhite"
+            android:paddingBottom="@dimen/dp_7"
+            android:paddingTop="@dimen/dp_7"
+            android:paddingLeft="@dimen/dp_15"
+            android:hint="@string/alipay"
+            android:textColorHint="@color/edit_hint"
+            android:textSize="@dimen/sp_13"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:drawableRight="@drawable/clear_search"
+            android:paddingRight="@dimen/dp_5"
+            />
+        <ImageView
+            android:id="@+id/iv_activity_search_search"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/search"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_activity_expert_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorWhite"
+        >
+
+        <LinearLayout
+            android:id="@+id/ll_activity_expert_recommend_compete"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/tv_layout_tab_expert_recommend_compete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGrayTitleExpert"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textSize="@dimen/sp_14"
+                android:text="@string/app_name"
+                />
+
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:id="@+id/iv_layout_expert_tab_compete_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:src="@drawable/expert_recommend_yellow"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_activity_expert_recommend_basketball"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/tv_layout_tab_expert_recommend_basketball"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGrayTitleExpert"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textSize="@dimen/sp_14"
+                android:text="@string/alipay"
+                />
+
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:id="@+id/iv_layout_expert_tab_basketball_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:src="@drawable/expert_recommend_yellow"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_activity_expert_recommend_two_on_one"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/tv_layout_tab_expert_recommend_two_on_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGrayTitleExpert"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textSize="@dimen/sp_14"
+                android:text="@string/app_name"
+                />
+
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:id="@+id/iv_layout_expert_tab__two_on_one_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:src="@drawable/expert_recommend_yellow"
+                />
+        </LinearLayout>
+        </LinearLayout>
+    <View
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/colorYellowText"
+        />
+
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:background="@color/colorBgGray"-->
+        <!--android:id="@+id/vp_activity_expert_recommend"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dp_0"-->
+        <!--android:layout_weight="1"-->
+        <!--/>-->
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:background="@color/colorWhite"
+        android:id="@+id/mi_activity_expert_recommend"
+        android:layout_width="match_parent"
+
+        android:layout_height="@dimen/dp_40"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_3"
+        android:background="@color/colorGray5"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_activity_expert_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
+</LinearLayout>

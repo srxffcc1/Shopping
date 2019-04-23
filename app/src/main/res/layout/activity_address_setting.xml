@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:gravity="center_horizontal"
+
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_top_back_bar" />
+
+    <View style="@style/HorizontalLine" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_shouhuoren"
+        style="@style/ItemStyle"
+        android:background="@drawable/selector_item"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收货人"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <EditText
+            android:background="@null"
+            android:id="@+id/edshouhuoren"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="请输入姓名"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15" />
+
+
+    </LinearLayout>
+
+    <View style="@style/HorizontalLine" />
+
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_phone"
+        style="@style/ItemStyle"
+        android:background="@drawable/selector_item"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机号码"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <EditText
+            android:background="@null"
+            android:id="@+id/edphone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="请输入手机号码"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15" />
+    </LinearLayout>
+
+    <View style="@style/HorizontalLine" />
+
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_cityd"
+        style="@style/ItemStyle"
+        android:background="@drawable/selector_item"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="所在地区"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:background="@null"
+            android:id="@+id/textcity"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint=""
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right" />
+    </LinearLayout>
+
+    <View style="@style/HorizontalLine" />
+
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_address_detail"
+        style="@style/ItemStyle"
+        android:background="@drawable/selector_item"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/edaddressdetail"
+            android:hint="请输入详细的地址如道路，门牌号"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:gravity="left"
+            android:layout_height="100dp"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15" />
+
+
+    </LinearLayout>
+
+    <View style="@style/HorizontalLine" />
+
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_dizhi"
+        style="@style/ItemStyle"
+        android:background="@drawable/selector_item"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设为默认收货地址"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Switch
+            android:id="@+id/switchdefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10" />
+    </LinearLayout>
+
+
+</LinearLayout>

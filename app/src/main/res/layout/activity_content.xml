@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGray5"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_top_back_bar"/>
+
+
+
+    <EditText
+        android:id="@+id/et_activity_true_place_detail"
+        android:gravity="top"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp_150"
+        android:background="@color/colorWhite"
+        android:padding="@dimen/dp_15"
+        android:hint="请输入标题"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/tabGrayText"
+        />
+</LinearLayout>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorTopBar"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_top_back_bar"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0.3"
+        android:background="@color/colorGray"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+
+
+
+
+
+        <View
+            style="@style/HorizontalLine"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:paddingLeft="@dimen/dp_15"
+                android:id="@+id/et_activity_feedback_context"
+                android:layout_width="match_parent"
+                android:layout_height="158dp"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="@string/feedback_context"
+                android:minLines="5"
+                android:paddingTop="@dimen/dp_15"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10"
+                android:textColorHint="@color/colorGray7"
+                android:textSize="@dimen/dp_14"
+                />
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalLine"
+            />
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0.3"
+            android:background="@color/colorGray"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_activity_feedback_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/log_btn_red"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/feedback_ok"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+
+    <android.support.v4.widget.Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:layout_weight="1"
+        />
+
+
+</LinearLayout>

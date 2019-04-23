@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <include
+        layout="@layout/layout_top_back_bar"
+        />
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/trl_activity_exciting_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/dp_13"
+        android:background="@color/colorWhite"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_activity_exciting_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <include
+            android:id="@+id/layout_activity_exciting_list_record_empty"
+            layout="@layout/layout_item_have_no_record"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_activity_exciting_list_loading"
+            layout="@layout/layout_item_loading"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_activity_exciting_list_loading_fail"
+            layout="@layout/layout_item_loading_fail"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_activity_exciting_list_have_no_net"
+            layout="@layout/layout_item_have_no_net"
+            android:visibility="gone"
+            />
+
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+</LinearLayout>

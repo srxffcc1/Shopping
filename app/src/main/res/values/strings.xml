@@ -1,0 +1,263 @@
+<resources>
+    <string name="app_name">九弟停车</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--PurchasingFragment-->
+    <string name="exciting_action">精彩活动</string>
+    <string name="exciting_action_detail">活动详情</string>
+    <string name="recommend_new">最新推荐</string>
+    <string name="please_input_search">请输入搜索内容</string>
+    <string name="search_history">历史搜索</string>
+    <string name="have_no_data">暂无数据</string>
+    <string name="message_loading">加载中...</string>
+    <string name="message_loading_fail">加载失败</string>
+    <string name="have_no_net">请查看您的网络设置</string>
+    <!--PackFragment-->
+    <string name="pop_last_time_no_pay">您还有上次停车未支付的费用，请在离开之前支付</string>
+    <string name="pop_pay_hint">支付完成请在15分钟内离开停车场，超时需补交费用</string>
+    <string name="please_login">请先登录</string>
+
+    <!--PeccancyActivity -->
+    <string name="hint">提示</string>
+    <string name="warn_message">请完善您的车辆信息</string>
+    <string name="warn_error">您填写的信息与车牌号不符，请重新填写</string>
+    <!--MineFragment-->
+    <string name="mine">我的</string>
+    <string name="mine_login_regist">登录/注册</string>
+    <string name="mine_car">我的爱车</string>
+    <string name="mine_parking_record">停车纪录</string>
+    <string name="mine_search">违章查询</string>
+    <string name="mine_insurance">我的车险</string>
+    <string name="mine_fix">维修保养</string>
+    <string name="mine_socre_mall">我的推单</string>
+    <string name="mine_set">设置</string>
+    <string name="mine_no_info">（未填写）</string>
+    <string name="mine_pay_hint">支付成功！欢迎您再次光临</string>
+    <string name="mine_leave_time">离场剩余时间</string>
+    <string name="mine_car_num">车牌号</string>
+    <string name="mine_car_address">车辆位置</string>
+    <string name="mine_car_pay">停车费用</string>
+    <string name="mine_car_pay_time">支付时间</string>
+    <string name="mine_out_time_leave">超时未驶出停车场，需补交超时费用</string>
+    <string name="please_input_phone_num">请输入手机号码</string>
+    <string name="please_input_right_phone_nun">你输入的号码有误，请输入正确的号码</string>
+    <string name="please_input_verify_code">请输入验证码</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="please_input_confirm_password">请输入确认密码</string>
+    <string name="password_input_not_same">你两次输入的密码不一致，请重新输入</string>
+    <string name="not_net">网络未连接</string>
+    <string name="net_error">网络错误</string>
+    <!--UserInfo-->
+    <string name="avatar">头像</string>
+    <string name="exchange_avatar">修改头像</string>
+    <string name="nickname">昵称</string>
+    <string name="name">姓名</string>
+    <string name="shipping_address">收货地址</string>
+    <string name="please_input_nickname">请输入昵称</string>
+    <string name="select_from_album">从相册选择</string>
+    <string name="take_photo">拍照</string>
+    <string name="sex">性別</string>
+    <string name="birthday">生日</string>
+    <string name="whether_save_picture_to_album">是否保存图片到相册?</string>
+    <string name="cancel">取消</string>
+
+    <!--ForgetPwd-->
+    <string name="confirm_pwd">确认密码</string>
+    <string name="password_rule">密码由6-20位数字、字母、符号组成</string>
+    <string name="confirm">确认</string>
+
+    <!--UserSetting-->
+    <string name="user_setting">设置</string>
+    <string name="update_password">修改密码</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="we_chart">微信绑定</string>
+    <string name="feed_back">意见反馈</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="exit_login">退出登录</string>
+    <string name="change_detail">修改资料</string>
+    <string name="receive_address">收货地址</string>
+
+    <!--ExitLogin-->
+    <string name="exit_login_choose">确定要退出登录么？</string>
+    <string name="exit_login_sure">退出</string>
+    <string name="exit_login_cancel">取消</string>
+
+    <!--FeedBack-->
+    <string name="feedback_context">请留下您的意见或建议</string>
+    <string name="feedback_ok">提交</string>
+    <string name="feedback_explain_input">请输入反馈说明：</string>
+    <string name="signRMB">¥</string>
+    <string name="network_error">网络错误</string>
+    <string name="json_error">来自服务器Json解析失败！</string>
+
+    <!--QuickLogin-->
+    <string name="input_verify_code">输入验证码</string>
+    <string name="get_verify_code">获取验证码</string>
+
+    <!--Recharge-->
+    <string name="input_recharge_money">请输入充值金额</string>
+    <string name="input_recharge_account">请输入充值账号</string>
+
+    <string name="alipay">支付宝</string>
+    <string name="back_card">银行卡</string>
+
+    <!--UpdatePassword-->
+    <string name="input_phone">请输入手机号</string>
+    <string name="input_code">请输入验证码</string>
+    <string name="save">确定</string>
+
+
+    <string name="select_red_package">选择红包</string>
+    <string name="no_red_package">暂无红包</string>
+    <string name="money_limit">您的余额不足，请前往充值</string>
+    <string name="save_lottery">保存</string>
+
+    <string name="come_in_save">发现您有上次保存记录，是否直接进入？</string>
+    <string name="come_in">进入</string>
+
+    <!--GreatGodPush-->
+    <string name="recommend_search">搜索你感兴趣的文章、专家</string>
+    <string name="recommend_great">精选推荐</string>
+    <string name="watch_people">浏览数：%1$s</string>
+    <string name="watch_all_great_god">查看完整榜单</string>
+    <string name="good_at">擅长领域：</string>
+    <string name="personal_info">个人简介：</string>
+    <string name="personal_page">个人主页</string>
+    <string name="show_user_buy">赛后公开文章不显示用户购买信息</string>
+    <string name="push_detail">推单详情</string>
+    <string name="push_high_win">最高战绩：%1$d连红</string>
+    <string name="complete_list">完整榜单</string>
+    <string name="edit_user_info">查看或编辑个人主页</string>
+    <string name="great_god_no_apply">（未认证）</string>
+    <string name="please_input_your_name">请输入您的姓名</string>
+    <string name="mine_good_at">擅长领域</string>
+    <string name="not_choose">未选择</string>
+    <string name="personal_introduce">个人简介</string>
+    <string name="not_input">未填写</string>
+    <string name="please_input_personal_introduce">请输入个人简介</string>
+    <string name="already_input">已填写</string>
+    <string name="already_choose">已选择</string>
+    <string name="mine_page">我的主页</string>
+    <string name="edit">编辑</string>
+    <string name="please_to_apply">请前往进行</string>
+    <string name="my_push">我的推单</string>
+    <string name="publish_push">发布推单</string>
+    <string name="please_input_label">请输入标签</string>
+    <string name="please_choose">请选择</string>
+    <string name="pay_money">￥%1$s</string>
+    <string name="pay_money_zero">￥0.00</string>
+    <string name="please_input_describe">请输入隐藏描述</string>
+    <string name="publish">发布</string>
+    <string name="free">免费</string>
+    <string name="charge">收费</string>
+    <string name="already_publish">已发布</string>
+    <string name="update">修改</string>
+    <string name="please_input_true_name">请输入真实姓名</string>
+    <string name="please_input_id">请输入身份证号</string>
+    <string name="please_input_phone">请输入联系方式</string>
+    <string name="not_add">未添加</string>
+    <string name="commit_apply">提交认证</string>
+    <string name="detail_place">详细地址</string>
+    <string name="please_input_detail_place">请输入详细地址</string>
+    <string name="add_picture">照片上传</string>
+    <string name="upload">上传</string>
+    <string name="prompt_open_camera_permission">请到设置-应用管理中开启此应用的相机权限</string>
+    <string name="prompt_open_read_write_permission">请到设置-应用管理中开启此应用的读写权限</string>
+
+    <string name="prompt_app_update">应用有新的版本，是否更新？</string>
+    <string name="prompt_no_link_url">没有外部链接</string>
+    <string name="questions">常见问题</string>
+
+    <!--UserCar-->
+    <string name="my_car">我的爱车</string>
+    <string name="stop_car_pay">立即支付</string>
+    <string name="stop_car_park">停车场：</string>
+    <string name="stop_car_price">%1$s</string>
+    <string name="stop_car_place">停车场：%1$s</string>
+    <string name="stop_car_time">停车时长：%1$s</string>
+    <string name="stop_car_money">已消费：¥%1$s</string>
+    <string name="delete_success">删除成功</string>
+    <string name="car_plate_input_null">车牌号错误,请重新输入!!!</string>
+    <string name="content_null">内容为空</string>
+    <string name="content_info">获得内容信息</string>
+    <string name="data_success">操作成功</string>
+    <string name="add_error">只能新增3辆车</string>
+    <string name="car_my_add_hint">最多可添加3辆</string>
+    <string name="confirm_continuation">确认是否继续</string>
+    <string name="prompt_open_modify_head">正在修改头像</string>
+    <string name="data_error">数据异常</string>
+    <string name="location_place">当前城市-%1$s</string>
+    <string name="please_expect">敬请期待</string>
+    <string name="tv_engine_number">发动机号</string>
+    <string name="tv_car_number">车  架  号</string>
+    <string name="please_engine_number_hint">输入后6位发动机号</string>
+    <string name="please_vin_number_hint">输入后7位车架号</string>
+    <string name="again_query">重新查询</string>
+    <string name="now_pay">立即支付</string>
+    <string name="tv_parking_pay_price">¥ %1$s</string>
+    <string name="login_status_null">用户未登录，请登录！</string>
+    <string name="tv_item_parking_pay">确认支付%1$s元</string>
+    <string name="tv_item_parking_paid">已支付</string>
+    <string name="tv_item_parking_consume">已消费</string>
+    <string name="tv_item_parking_time">停车时间</string>
+    <string name="tv_item_parking_park">当前停车场</string>
+    <string name="tv_element">元</string>
+    <string name="tv_park_msg_null_user">暂无停车信息</string>
+    <string name="tv_park_order_null_car">暂无停车纪录</string>
+    <string name="tv_activity_peccancy_car">暂违章纪录</string>
+    <string name="jum_other_loading">跳转其他界面，请稍后...</string>
+    <string name="location_setting">正在进行定位</string>
+    <string name="exit_app">再按一次退出程序</string>
+    <string name="test_data">测试数据...</string>
+    <string name="update_password_success">密码修改成功</string>
+    <string name="send_code_success">验证码发送成功</string>
+    <string name="changing_pass_word">正在修改密码</string>
+    <string name="again_pass_word">正在重置密码</string>
+    <string name="select_from_place">请选择所在地！</string>
+    <string name="selected">已选择</string>
+    <string name="no_select">未选择</string>
+    <string name="car_add">添加车辆</string>
+    <string name="park_order">停车纪录</string>
+    <string name="app_download">去下载</string>
+    <string name="updating">正在更新</string>
+    <string name="car_park_default">苏州停车场</string>
+    <string name="have_no_info">没有车辆信息</string>
+    <string name="contact_service">联系客服</string>
+    <string name="completed">已完成</string>
+    <string name="wait_pay">入场待付</string>
+    <string name="pay_leave">预付待出</string>
+    <string name="not_pay_leave">赊账出场</string>
+    <string name="no_pay">未支付</string>
+    <string name="not_pay_no_leave">赊账待出场</string>
+    <string name="test_distance">1.0KM—测试</string>
+    <string name="last_park">上次停车</string>
+    <string name="again_pay">重新支付</string>
+    <string name="pay_fail_again">支付失败 , 请重新尝试</string>
+    <string name="pay_supplementary">前往补交</string>
+    <string name="edit_text_input_null">请输入手机号</string>
+    <string name="complete">完成</string>
+    <string name="confirm_update">确认修改</string>
+    <string name="login_success">登录成功</string>
+    <string name="adding_car_exit">您的资料还没有保存，为保证服务，请继续填写</string>
+    <string name="continue_write">继续填写</string>
+    <string name="location_city_fail">请重新定位</string>
+    <string name="not_fund_city">未查询到目标城市</string>
+    <string name="not_fund_province">未查询到目标省市</string>
+    <string name="location_city">当前城市：%1$s</string>
+    <string name="location_fail">当前定位失败!</string>
+    <string name="data_null">没有找到数据</string>
+    <string name="query_all">查看全部</string>
+    <string name="peccancy_history">历史违章</string>
+    <string name="peccancy_time">违章时间 : </string>
+    <string name="peccancy_place">违章地点 : </string>
+    <string name="peccancy_action">违章行为 : </string>
+    <string name="peccancy_fine_points">扣分 : </string>
+    <string name="peccancy_fine_money">罚款 : </string>
+    <string name="search_null">该车辆没有历史查询结果，可点击重新查询</string>
+    <string name="car_improve_null">您车辆的发动机号或架构不能为空号</string>
+    <string name="contact_service_phone">联系我们：</string>
+    <string name="contact_service_phone_number">0512—66158078</string>
+    <string name="please_write_right_plate">请填写正确的车牌号</string>
+    <string name="write_new_plate">已更改为新能源汽车牌号</string>
+</resources>

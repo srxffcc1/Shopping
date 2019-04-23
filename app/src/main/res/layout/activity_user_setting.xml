@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:gravity="center_horizontal"
+              android:layout_height="match_parent"
+              android:background="@color/colorWhite"
+
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_top_back_bar"
+        />
+
+    <View
+        style="@style/HorizontalLine10"
+        />
+    <View
+        style="@style/HorizontalLine"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_nicheng"
+        style="@style/ItemStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/selector_item"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="昵称"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:id="@+id/textnicheng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10000000000"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        />
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_phone"
+        style="@style/ItemStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/selector_item"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机号"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:id="@+id/textphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10000000000"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        />
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_update_pwd"
+        style="@style/ItemStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/selector_item"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_password"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_obd"
+        style="@style/ItemStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/selector_item"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的设备"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right"
+            />
+    </LinearLayout>
+
+
+    <View
+        style="@style/HorizontalLine"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_dizhi"
+        style="@style/ItemStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/selector_item"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收货地址"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        />
+    <View
+        style="@style/HorizontalLine10"
+        />
+    <View
+        style="@style/HorizontalLine"
+        />
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_activity_user_set_about_us"
+        style="@style/ItemStyle"
+        android:background="@drawable/selector_item"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于我们"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/tv_activity_user_about_us"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textColor="@color/colorGray6"
+            android:textSize="@dimen/sp_14"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right"
+            />
+    </LinearLayout>
+
+
+    <View
+        android:visibility="gone"
+        style="@style/HorizontalLine"
+        />
+    <View
+        android:visibility="gone"
+        style="@style/HorizontalLine10"
+        />
+
+    <View
+        android:visibility="gone"
+        style="@style/HorizontalLine"
+        />
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_feed_back"
+        style="@style/ItemStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/selector_item"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feed_back"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right"
+            />
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        />
+    <View
+        style="@style/HorizontalLine10"
+        />
+    <View
+        style="@style/HorizontalLine"
+        />
+    <LinearLayout
+
+        style="@style/ItemStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/selector_item"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="版本号"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/sp_15"
+            />
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:id="@+id/tv_activity_user_setting_version_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="V"
+            android:textColor="@color/colorFontDark"
+            android:textSize="@dimen/sp_15"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/right"
+            />
+    </LinearLayout>
+    <View
+        style="@style/HorizontalLine"
+        />
+    <View
+        style="@style/HorizontalLine10"
+        />
+    <LinearLayout
+        android:id="@+id/ll_activity_user_set_exit_login"
+        android:background="@color/colorGray5"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:gravity="center"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/colorWhite"
+            android:text="退出"
+            android:id="@+id/tv_activity_user_setting_exit"
+            android:layout_marginTop="@dimen/dp_40"
+            android:background="@drawable/log_btn_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

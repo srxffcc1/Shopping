@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.nado.parking.ui.user.WinningRecordActivity">
+    <include layout="@layout/layout_top_back_bar"></include>
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/tfl_fragment_arrange"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_fragment_arrange"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <include
+            android:id="@+id/layout_fragment_winning_record_empty"
+            layout="@layout/layout_item_have_no_record"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_fragment_winning_loading"
+            layout="@layout/layout_item_loading"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_fragment_winning_loading_fail"
+            layout="@layout/layout_item_loading_fail"
+            android:visibility="gone"
+            />
+        <include
+            android:id="@+id/layout_fragment_winning_have_no_net"
+            layout="@layout/layout_item_have_no_net"
+            android:visibility="gone"
+            />
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+</LinearLayout>

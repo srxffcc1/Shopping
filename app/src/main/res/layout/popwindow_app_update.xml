@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorTransparentBg"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:paddingBottom="10dp"
+              android:paddingLeft="40dp"
+              android:paddingRight="40dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/updateback"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_popwindow_pay_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="140dp"
+            android:textColor="@color/colorBlue"
+            android:textSize="17sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_popwindow_pay_complete_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="20dp"
+            android:paddingTop="18dp"
+            android:text="@string/prompt_app_update"
+            android:textColor="@color/colorBlack"
+            android:textSize="17sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_popwindow_pay_now_pay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/shape_blue"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/app_download"
+            android:textColor="@color/colorWhite"
+            android:textSize="17sp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

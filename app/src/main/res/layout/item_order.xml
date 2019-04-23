@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/dp_10"
+              android:background="@color/colorWhite"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawablePadding="@dimen/dp_5"
+            android:text="订单号:2019416797979"
+            android:textColor="@color/colorTitle"/>
+
+        <TextView
+            android:id="@+id/order_status"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="待付款"
+            android:textColor="@color/tabGrayText"/>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/order_img"
+            android:src="@drawable/order_tmp"
+            android:scaleType="fitCenter"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="120dp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/order_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="九弟停车OBD"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/order_count"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="X1"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/order_money"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="589.00"
+                android:layout_weight="1"/>
+            <TextView
+
+                android:id="@+id/order_date"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="2019-04-16 13:42:37"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <View
+        style="@style/HorizontalLine"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingBottom="@dimen/dp_5"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_5">
+
+
+
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/order_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/record_btn_pay"
+            android:gravity="center"
+            android:text="取消订单"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_14"/>
+
+        <TextView
+            android:id="@+id/order_submit"
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/record_btn_pay"
+            android:gravity="center"
+            android:text="立即支付"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_14"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.nado.parking">
+    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!-- 高德地图 -->
+    <!-- 允许程序打开网络套接字 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 允许程序设置内置sd卡的写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- 允许程序获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- 允许程序访问WiFi网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- 允许程序读写手机状态和身份 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- 允许程序打电话 -->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+    <!-- GPS -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
+
+    <application
+        android:name=".global.LocalApplication"
+
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/logo"
+        android:supportsRtl="true"
+        android:theme="@style/MyTheme">
+
+        <activity android:name=".ui.main.SplashActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!-- tools:replace="android:value" -->
+        <activity android:name=".ui.main.MainActivity" android:launchMode="singleTask">
+
+        </activity>
+        <activity android:name=".ui.user.account.LoginActivity">
+        </activity>
+        <activity android:name=".ui.user.account.RegisterActivity"/>
+        <activity android:name=".ui.user.account.ForgetPwdActivity"/>
+        <activity android:name=".ui.user.account.UserInfoActivity"/>
+        <activity android:name=".ui.user.account.UserSettingActivity"/>
+        <activity android:name=".ui.user.account.UpdatePwdActivity"/>
+        <activity android:name=".ui.user.account.FeedBackActivity"/>
+        <activity android:name=".ui.user.account.AboutUsActivity"/>
+
+        <activity android:name="com.amap.api.navi.AmapRouteActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
+        <service android:name=".util.AppUpdateService"/>
+
+        <!--高德地图-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="625e2898eb772ee1b2e9611a46887e5f"/>
+        <service android:name="com.amap.api.location.APSService"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.nado.parking.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+        <activity android:name=".widget.ZoomActivity"/>
+
+        <!-- 微信支付回调界面 -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+
+        <!-- 微信登录、绑定、分享的回调界面 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent"/>
+
+        <!-- 支付宝支付H5页面 -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+
+        <activity android:name=".ui.user.UserCarActivity">
+        </activity>
+        <activity
+            android:name=".ui.user.AddCarActivity1"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden">
+
+        </activity>
+        <activity android:name=".ui.user.QuestionActivity">
+        </activity>
+        <activity android:name=".ui.user.ParkRecordActivity">
+        </activity>
+        <activity android:name=".ui.main.PayActivity">
+        </activity>
+        <activity android:name=".ui.user.PeccancyQueryActivity">
+        </activity>
+        <activity android:name=".ui.main.PayCompleteActivity">
+        </activity>
+        <activity android:name=".ui.user.MaintenanceActivity">
+        </activity>
+        <activity android:name=".ui.main.ParkActivity"/>
+        <activity android:name=".ui.main.ChooseCityActivity" android:theme="@style/DefaultCityPickerTheme">
+        </activity>
+        <activity android:name=".ui.user.PeccancyQueryDetailsActivity"/>
+        <activity android:name=".ui.device.DeviceActivity" />
+        <activity android:name=".ui.pay.ChoiceCompanyActivity" />
+        <activity android:name=".ui.pay.YouKaPayActivity" />
+        <activity android:name=".ui.pay.PhonePayActivity" />
+        <activity android:name=".ui.main.PayAllActivity" />
+        <activity android:name=".ui.pay.ShuiDianPayMenuActivity" />
+        <activity android:name=".ui.user.AllOrderActivity" />
+        <activity android:name=".ui.pay.DianBindActivity" />
+        <activity android:name=".ui.pay.ShuiChoseJGActivity" />
+        <activity android:name=".ui.pay.YouKaAddActivity" />
+        <activity android:name=".ui.pay.YouKaListActivity" />
+        <activity android:name=".ui.pay.ShuiPayActivity" />
+        <activity android:name=".ui.pay.ShuiHuPayListActivity" />
+        <activity android:name=".ui.pay.ShuiChoseHuActivity" />
+        <activity android:name=".ui.pay.ShuiBindActivity" />
+        <activity android:name=".ui.pay.DianPayActivity" />
+        <activity android:name=".ui.pay.DianHuPayListActivity" />
+        <activity android:name=".ui.pay.DianChoseJGActivity" />
+        <activity android:name=".ui.device.DeviceCheckActivity" />
+        <activity android:name=".ui.device.DeviceWeiLanActivity" />
+        <activity android:name=".ui.device.DeviceWeiLanListActivity" />
+        <activity android:name=".ui.device.DeviceGuiJiActivity" />
+        <activity android:name=".ui.device.DeviceXingChengListActivity" />
+        <activity android:name=".ui.device.DeviceBaoJingListActivity" />
+        <activity android:name=".ui.device.DevicePostionActivity" />
+        <activity android:name=".ui.device.DeviceDetailActivity" />
+        <activity android:name=".ui.device.DeviceCarDetailActivity" />
+        <activity android:name=".ui.user.OrderDetailActivity" />
+        <activity android:name=".ui.main.MainGoodDetailActivity" />
+        <activity android:name=".ui.main.PayAllReleaseActivity" />
+        <activity android:name=".ui.user.AddressListActivity" />
+        <activity android:name=".ui.user.AddressActivity" />
+        <activity android:name=".ui.device.DeviceBindActivity" />
+        <activity android:name=".ui.device.DeviceListActivity" />
+        <activity android:name=".ui.main.ChooseCityActivityNoCopy"  android:theme="@style/DefaultCityPickerTheme"/>
+        <activity android:name=".ui.pay.PhonePayHistoryActivity" />
+        <activity android:name=".ui.user.JingXuanActivity" />
+    </application>
+
+</manifest>
