@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.nado.shopping.ui.main.MineFragment">
+              tools:context="com.jiudi.shopping.ui.main.MineFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                             android:background="@drawable/mine_avatar_background"
                             android:padding="@dimen/dp_2">
 
-                            <com.nado.shopping.widget.CircleImageView
+                            <com.jiudi.shopping.widget.CircleImageView
                                 android:id="@+id/iv_fragment_mine_avatar"
                                 android:layout_width="54dp"
                                 android:layout_height="54dp"

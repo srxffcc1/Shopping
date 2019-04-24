@@ -1,0 +1,44 @@
+package com.jiudi.shopping.bean;
+
+public class Order {
+    public String id;
+    public String out_trade_no;
+    public String goods_id;
+    public String goods_price;
+    public String goods_all_price;
+    public String goods_name;
+    public String goods_number;
+    public String goods_img;
+    public String goods_format;
+    public String goods_unit;
+    public String order_status;
+    public String pay_status;
+    public String pay_type;
+    public String pay_fee;
+    public String cutoff_time;
+    public String auto_take_time;
+    public String create_time;
+    public String pay_time;
+    public String action;
+    public String order_status_text;
+//    bean.id=jsonObject.optString("id");
+//    bean.out_trade_no=jsonObject.optString("out_trade_no");
+//    bean.goods_id=jsonObject.optString("goods_id");
+//    bean.goods_price=jsonObject.optString("goods_price");
+//    bean.goods_all_price=jsonObject.optString("goods_all_price");
+//    bean.goods_name=jsonObject.optString("goods_name");
+//    bean.goods_number=jsonObject.optString("goods_number");
+//    bean.goods_img=jsonObject.optString("goods_img");
+//    bean.goods_format=jsonObject.optString("goods_format");
+//    bean.goods_unit=jsonObject.optString("goods_unit");
+//    bean.order_status=jsonObject.optString("order_status");
+//    bean.pay_status=jsonObject.optString("pay_status");
+//    bean.pay_type=jsonObject.optString("pay_type");
+//    bean.pay_fee=jsonObject.optString("pay_fee");
+//    bean.cutoff_time=jsonObject.optString("cutoff_time");
+//    bean.auto_take_time=jsonObject.optString("auto_take_time");
+//    bean.create_time=jsonObject.optString("create_time");
+//    bean.pay_time=jsonObject.optString("pay_time");
+//    bean.action=jsonObject.optString("action");
+//    bean.order_status_text=jsonObject.optString("order_status_text");
+}

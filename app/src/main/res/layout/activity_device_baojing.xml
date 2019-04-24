@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.nado.shopping.ui.main.MainActivity">
+    tools:context="com.jiudi.shopping.ui.main.MainActivity">
 
     <include layout="@layout/layout_top_back_bar" />
     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout

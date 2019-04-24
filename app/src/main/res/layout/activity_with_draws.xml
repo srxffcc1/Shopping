@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.nado.shopping.ui.user.WithDrawsActivity">
+    tools:context="com.jiudi.shopping.ui.user.WithDrawsActivity">
     <include layout="@layout/layout_top_back_bar"></include>
     <LinearLayout
         android:gravity="center"

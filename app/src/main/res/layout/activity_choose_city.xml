@@ -32,7 +32,7 @@
 
   </LinearLayout>
 
-        <com.nado.shopping.widget.LetterListView
+        <com.jiudi.shopping.widget.LetterListView
             android:visibility="gone"
             android:id="@+id/llv_activity_choose_city_list"
             android:layout_width="30dp"

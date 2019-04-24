@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.nado.shopping.ui.purchasing.great_god_push.GodAlreadyBuyActivity">
+    tools:context="com.jiudi.shopping.ui.purchasing.great_god_push.GodAlreadyBuyActivity">
     <include
         layout="@layout/layout_top_back_bar"
         />

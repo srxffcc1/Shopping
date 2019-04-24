@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.nado.shopping.widget.BannerLayout
+            <com.jiudi.shopping.widget.BannerLayout
                 android:visibility="gone"
                 android:id="@+id/bl_fragment_purchasing"
                 android:layout_width="match_parent"

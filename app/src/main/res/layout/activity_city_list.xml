@@ -97,7 +97,7 @@
             android:textSize="30.0sp"
             android:visibility="gone"/>
 
-        <com.nado.shopping.widget.LetterListView
+        <com.jiudi.shopping.widget.LetterListView
             android:id="@+id/city_loactionbar"
             android:layout_width="30.0dip"
             android:layout_height="fill_parent"

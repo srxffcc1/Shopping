@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.nado.shopping.ui.purchasing.TwoOnOneFragment">
+             tools:context="com.jiudi.shopping.ui.purchasing.TwoOnOneFragment">
 
     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:id="@+id/trl_fragment_two_on_one_list"

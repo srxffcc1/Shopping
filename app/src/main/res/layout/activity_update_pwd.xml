@@ -8,7 +8,7 @@
     android:background="@color/colorBgGray"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.nado.shopping.ui.user.account.UpdatePwdActivity">
+    tools:context="com.jiudi.shopping.ui.user.account.UpdatePwdActivity">
 
     <include layout="@layout/layout_top_back_bar"/>
 

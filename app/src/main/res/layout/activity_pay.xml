@@ -7,7 +7,7 @@
     android:background="@color/colorBgGray"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.nado.shopping.ui.main.PayActivity">
+    tools:context="com.jiudi.shopping.ui.main.PayActivity">
 
     <include layout="@layout/layout_top_back_bar_pic" />
 

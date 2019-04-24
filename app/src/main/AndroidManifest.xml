@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.nado.shopping">
+          package="com.jiudi.shopping">
     <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -41,7 +41,7 @@
 
 
     <application
-        android:name="com.nado.shopping.global.LocalApplication"
+        android:name="com.jiudi.shopping.global.LocalApplication"
 
         android:allowBackup="true"
         android:icon="@mipmap/logo"
@@ -50,7 +50,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
 
-        <activity android:name="com.nado.shopping.ui.main.SplashActivity" >
+        <activity android:name="com.jiudi.shopping.ui.main.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -58,18 +58,18 @@
             </intent-filter>
         </activity>
         <!-- tools:replace="android:value" -->
-        <activity android:name="com.nado.shopping.ui.main.MainActivity" android:launchMode="singleTask">
+        <activity android:name="com.jiudi.shopping.ui.main.MainActivity" android:launchMode="singleTask">
 
         </activity>
-        <activity android:name="com.nado.shopping.ui.user.account.LoginActivity">
+        <activity android:name="com.jiudi.shopping.ui.user.account.LoginActivity">
         </activity>
-        <activity android:name="com.nado.shopping.ui.user.account.RegisterActivity"/>
-        <activity android:name="com.nado.shopping.ui.user.account.ForgetPwdActivity"/>
-        <activity android:name="com.nado.shopping.ui.user.account.UserInfoActivity"/>
-        <activity android:name="com.nado.shopping.ui.user.account.UserSettingActivity"/>
-        <activity android:name="com.nado.shopping.ui.user.account.UpdatePwdActivity"/>
-        <activity android:name="com.nado.shopping.ui.user.account.FeedBackActivity"/>
-        <activity android:name="com.nado.shopping.ui.user.account.AboutUsActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.user.account.RegisterActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.user.account.ForgetPwdActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.user.account.UserInfoActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.user.account.UserSettingActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.user.account.UpdatePwdActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.user.account.FeedBackActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.user.account.AboutUsActivity"/>
 
         <activity android:name="com.amap.api.navi.AmapRouteActivity"
             android:theme="@android:style/Theme.NoTitleBar"
@@ -85,7 +85,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.nado.shopping.fileprovider"
+            android:authorities="com.jiudi.shopping.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -93,17 +93,17 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name="com.nado.shopping.widget.ZoomActivity"/>
+        <activity android:name="com.jiudi.shopping.widget.ZoomActivity"/>
 
         <!-- 微信支付回调界面 -->
         <activity
-            android:name="com.nado.shopping.wxapi.WXPayEntryActivity"
+            android:name="com.jiudi.shopping.wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"/>
 
         <!-- 微信登录、绑定、分享的回调界面 -->
         <activity
-            android:name="com.nado.shopping.wxapi.WXEntryActivity"
+            android:name="com.jiudi.shopping.wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent"/>
@@ -124,66 +124,66 @@
             android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
 
-        <activity android:name="com.nado.shopping.ui.user.UserCarActivity">
+        <activity android:name="com.jiudi.shopping.ui.user.UserCarActivity">
         </activity>
         <activity
-            android:name="com.nado.shopping.ui.user.AddCarActivity1"
+            android:name="com.jiudi.shopping.ui.user.AddCarActivity1"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden">
 
         </activity>
-        <activity android:name="com.nado.shopping.ui.user.QuestionActivity">
+        <activity android:name="com.jiudi.shopping.ui.user.QuestionActivity">
         </activity>
-        <activity android:name="com.nado.shopping.ui.user.ParkRecordActivity">
+        <activity android:name="com.jiudi.shopping.ui.user.ParkRecordActivity">
         </activity>
-        <activity android:name="com.nado.shopping.ui.main.PayActivity">
+        <activity android:name="com.jiudi.shopping.ui.main.PayActivity">
         </activity>
-        <activity android:name="com.nado.shopping.ui.user.PeccancyQueryActivity">
+        <activity android:name="com.jiudi.shopping.ui.user.PeccancyQueryActivity">
         </activity>
-        <activity android:name="com.nado.shopping.ui.main.PayCompleteActivity">
+        <activity android:name="com.jiudi.shopping.ui.main.PayCompleteActivity">
         </activity>
-        <activity android:name="com.nado.shopping.ui.user.MaintenanceActivity">
+        <activity android:name="com.jiudi.shopping.ui.user.MaintenanceActivity">
         </activity>
-        <activity android:name="com.nado.shopping.ui.main.ParkActivity"/>
-        <activity android:name="com.nado.shopping.ui.main.ChooseCityActivity" android:theme="@style/DefaultCityPickerTheme">
+        <activity android:name="com.jiudi.shopping.ui.main.ParkActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.main.ChooseCityActivity" android:theme="@style/DefaultCityPickerTheme">
         </activity>
-        <activity android:name="com.nado.shopping.ui.user.PeccancyQueryDetailsActivity"/>
-        <activity android:name="com.nado.shopping.ui.device.DeviceActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.ChoiceCompanyActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.YouKaPayActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.PhonePayActivity" />
-        <activity android:name="com.nado.shopping.ui.main.PayAllActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.ShuiDianPayMenuActivity" />
-        <activity android:name="com.nado.shopping.ui.user.AllOrderActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.DianBindActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.ShuiChoseJGActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.YouKaAddActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.YouKaListActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.ShuiPayActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.ShuiHuPayListActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.ShuiChoseHuActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.ShuiBindActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.DianPayActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.DianHuPayListActivity" />
-        <activity android:name="com.nado.shopping.ui.pay.DianChoseJGActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceCheckActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceWeiLanActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceWeiLanListActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceGuiJiActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceXingChengListActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceBaoJingListActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DevicePostionActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceDetailActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceCarDetailActivity" />
-        <activity android:name="com.nado.shopping.ui.user.OrderDetailActivity" />
-        <activity android:name="com.nado.shopping.ui.main.MainGoodDetailActivity" />
-        <activity android:name="com.nado.shopping.ui.main.PayAllReleaseActivity" />
-        <activity android:name="com.nado.shopping.ui.user.AddressListActivity" />
-        <activity android:name="com.nado.shopping.ui.user.AddressActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceBindActivity" />
-        <activity android:name="com.nado.shopping.ui.device.DeviceListActivity" />
-        <activity android:name="com.nado.shopping.ui.main.ChooseCityActivityNoCopy"  android:theme="@style/DefaultCityPickerTheme"/>
-        <activity android:name="com.nado.shopping.ui.pay.PhonePayHistoryActivity" />
-        <activity android:name="com.nado.shopping.ui.user.JingXuanActivity" />
+        <activity android:name="com.jiudi.shopping.ui.user.PeccancyQueryDetailsActivity"/>
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.ChoiceCompanyActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.YouKaPayActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.PhonePayActivity" />
+        <activity android:name="com.jiudi.shopping.ui.main.PayAllActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.ShuiDianPayMenuActivity" />
+        <activity android:name="com.jiudi.shopping.ui.user.AllOrderActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.DianBindActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.ShuiChoseJGActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.YouKaAddActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.YouKaListActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.ShuiPayActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.ShuiHuPayListActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.ShuiChoseHuActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.ShuiBindActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.DianPayActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.DianHuPayListActivity" />
+        <activity android:name="com.jiudi.shopping.ui.pay.DianChoseJGActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceCheckActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceWeiLanActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceWeiLanListActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceGuiJiActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceXingChengListActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceBaoJingListActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DevicePostionActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceDetailActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceCarDetailActivity" />
+        <activity android:name="com.jiudi.shopping.ui.user.OrderDetailActivity" />
+        <activity android:name="com.jiudi.shopping.ui.main.MainGoodDetailActivity" />
+        <activity android:name="com.jiudi.shopping.ui.main.PayAllReleaseActivity" />
+        <activity android:name="com.jiudi.shopping.ui.user.AddressListActivity" />
+        <activity android:name="com.jiudi.shopping.ui.user.AddressActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceBindActivity" />
+        <activity android:name="com.jiudi.shopping.ui.device.DeviceListActivity" />
+        <activity android:name="com.jiudi.shopping.ui.main.ChooseCityActivityNoCopy"  android:theme="@style/DefaultCityPickerTheme"/>
+        <activity android:name="com.jiudi.shopping.ui.pay.PhonePayHistoryActivity" />
+        <activity android:name="com.jiudi.shopping.ui.user.JingXuanActivity" />
     </application>
 
 </manifest>
