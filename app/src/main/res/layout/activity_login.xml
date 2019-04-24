@@ -8,7 +8,7 @@
     android:background="@color/colorWhite"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.nado.parking.ui.user.account.LoginActivity">
+    tools:context="com.nado.shopping.ui.user.account.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

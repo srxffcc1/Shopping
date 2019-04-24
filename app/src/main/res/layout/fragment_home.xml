@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.nado.parking.widget.BannerLayout
+            <com.nado.shopping.widget.BannerLayout
                 android:id="@+id/bl_fragment_home"
                 android:layout_width="match_parent"
                 android:layout_height="165dp"

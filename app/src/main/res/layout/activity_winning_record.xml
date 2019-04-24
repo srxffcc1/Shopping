@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.nado.parking.ui.user.WinningRecordActivity">
+    tools:context="com.nado.shopping.ui.user.WinningRecordActivity">
     <include layout="@layout/layout_top_back_bar"></include>
     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:id="@+id/tfl_fragment_arrange"

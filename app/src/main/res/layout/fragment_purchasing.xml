@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.nado.parking.widget.BannerLayout
+            <com.nado.shopping.widget.BannerLayout
                 android:visibility="gone"
                 android:id="@+id/bl_fragment_purchasing"
                 android:layout_width="match_parent"

@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             tools:context="com.nado.parking.ui.purchasing.CompetitiveFragment">
+             tools:context="com.nado.shopping.ui.purchasing.CompetitiveFragment">
 
     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:id="@+id/trl_fragment_competitive_list"

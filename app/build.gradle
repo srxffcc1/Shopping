@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.nado.parking"
+        applicationId "com.nado.shopping"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 19
@@ -52,7 +52,7 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "九弟科技"+"-${variant.versionName}.apk"
+            outputFileName = "九弟商城"+"-${variant.versionName}.apk"
         }
     }
 }

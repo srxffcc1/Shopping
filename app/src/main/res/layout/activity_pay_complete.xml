@@ -7,7 +7,7 @@
     android:background="@color/colorBgGray"
     android:gravity="bottom|center"
     android:orientation="vertical"
-    tools:context="com.nado.parking.ui.main.PayActivity">
+    tools:context="com.nado.shopping.ui.main.PayActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
