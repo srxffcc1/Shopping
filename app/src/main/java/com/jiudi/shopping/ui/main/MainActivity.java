@@ -112,6 +112,13 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mMainTL.getTabAt(0).select();
+    }
+
     private void initTabData() {
         mTabTitleArray = getResources().getStringArray(R.array.main_tab);
         for (int i = 0; i < mTabTitleArray.length; i++) {
@@ -336,7 +343,6 @@ public class MainActivity extends BaseActivity {
         }
         if (requestCode == REQUEST_CODE_OPENCHAT) {
             //说明客服关闭了
-            mMainTL.getTabAt(0).select();
         }
     }
 

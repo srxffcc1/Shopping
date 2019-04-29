@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:hedgehog="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="j***e"
+            android:textColor="#ff3a3a3a"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cart_plus_bg"
+            android:paddingLeft="5dp"
+            android:paddingRight="3dp"
+            android:text="PLUS"
+            android:textColor="#fffff193"
+            android:textSize="9sp" />
+
+        <com.hedgehog.ratingbar.RatingBar
+            android:id="@+id/ratingbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:clickable="true"
+            app:halfstart="true"
+            app:starCount="5"
+            app:starEmpty="@drawable/cart_star_gray"
+            app:starFill="@drawable/cart_star_red" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="2019-04-07"
+            android:textColor="#ff999999"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="上一个经常掉线，这个偶尔频率少了，能够接受，电子
+产品的稳定性还是差。不过服务总算不错，信任一个！"
+        android:textColor="#ff333333"
+        android:textSize="14sp" />
+
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/function_grid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dp_6"
+        android:layout_weight="1"
+        app:columnCount="4">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart_head"
+            app:layout_columnWeight="1" />
+    </android.support.v7.widget.GridLayout>
+
+
+</LinearLayout>

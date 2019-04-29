@@ -1,0 +1,152 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorRed"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp_23">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="分销中心"
+        android:textColor="#ffffffff"
+        android:textSize="17sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/fenxiao_head_icon" />
+
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/head"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/head"
+            android:text="等级：青铜"
+            android:textColor="#ffffffff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/level"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/head"
+            android:text="我的余额:148.00元"
+            android:textColor="#ffffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tixian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/money"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/head"
+            android:background="@drawable/text_back_fenxiao"
+            android:paddingLeft="20dp"
+            android:paddingTop="2dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="2dp"
+            android:text="立即提现"
+            android:textColor="#ffda3b31"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorWhite">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+            <TextView
+                android:padding="15dp"
+                android:gravity="center_vertical"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/weidaozhang1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="未到账佣金"
+                android:textColor="#ff6c6c6c"
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:padding="15dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/huodeyongjin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="累计获得佣金"
+                android:textColor="#ff6c6c6c"
+                android:textSize="13sp"
+                />
+            <TextView
+                android:padding="15dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/yitiyongjin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="累计已提佣金"
+                android:textColor="#ff6c6c6c"
+                android:textSize="13sp"
+                />
+            <TextView
+                android:padding="15dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/yongjinmingxi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="佣金明细"
+                android:textColor="#ff6c6c6c"
+                android:textSize="13sp"
+                />
+            <TextView
+                android:padding="15dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/zhishu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="直属"
+                android:textColor="#ff6c6c6c"
+                android:textSize="13sp"
+                />
+            <TextView
+                android:padding="15dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/tuandui2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="团队"
+                android:textColor="#ff6c6c6c"
+                android:textSize="13sp"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

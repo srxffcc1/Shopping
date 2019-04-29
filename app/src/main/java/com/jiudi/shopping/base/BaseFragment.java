@@ -110,10 +110,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void startActivity(Intent intent) {
-        if (AccountManager.sUserBean == null) {
-            super.startActivity(new Intent(mActivity, LoginActivity.class));
-            return;
-        }
+//        if (AccountManager.sUserBean == null) {
+//            super.startActivity(new Intent(mActivity, LoginActivity.class));
+//            return;
+//        }
         super.startActivity(intent);
     }
 

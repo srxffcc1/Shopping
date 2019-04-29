@@ -61,7 +61,7 @@ public class RegisterActivity extends BaseActivity {
         return R.layout.activity_register;
     }
     @Override
-    public boolean isLoginActivity() {
+    public boolean isNoNeedLogin() {
         return true;
     }
     @Override

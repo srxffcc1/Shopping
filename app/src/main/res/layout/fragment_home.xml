@@ -63,14 +63,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ykcz"/>
+                            android:src="@drawable/fenxiao"/>
                         <TextView
                             android:paddingTop="4dp"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="油卡充值"/>
+                            android:text="分销中心"/>
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/center_2"
@@ -82,14 +82,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/hfcz"/>
+                            android:src="@drawable/tuandui"/>
                         <TextView
                             android:paddingTop="4dp"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="话费充值"/>
+                            android:text="团队"/>
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/center_3"
@@ -101,14 +101,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/sdcz"/>
+                            android:src="@drawable/erweima"/>
                         <TextView
                             android:paddingTop="4dp"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="水电充值"/>
+                            android:text="推广"/>
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/center_4"
@@ -120,14 +120,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/wzcx"/>
+                            android:src="@drawable/tongzhi"/>
                         <TextView
                             android:paddingTop="4dp"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="违章查询"/>
+                            android:text="通知中心"/>
                     </LinearLayout>
                 </LinearLayout>
 

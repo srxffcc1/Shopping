@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/guide2"
+    android:clickable="true"
+    android:onClick="passapp"
+    android:layout_height="match_parent">
+
+
+
+    <ImageView
+        android:src="@drawable/pass_app"
+        android:padding="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="65dp"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

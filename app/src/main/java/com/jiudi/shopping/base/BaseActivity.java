@@ -46,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected LayoutInflater mInflater;
 
     private Handler mHandler;
-    public boolean isLoginActivity(){
+    public boolean isNoNeedLogin(){
         return false;
     }
 
@@ -162,16 +162,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void startActivity(Intent intent) {
-        if (AccountManager.sUserBean == null&&!isLoginActivity()) {
-            super.startActivity(new Intent(mActivity, LoginActivity.class));
-            return;
-        }
+//        if (AccountManager.sUserBean == null&&!isNoNeedLogin()) {
+//            super.startActivity(new Intent(mActivity, LoginActivity.class));
+//            return;
+//        }
         super.startActivity(intent);
     }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-        if (AccountManager.sUserBean == null&&!isLoginActivity()) {
+        if (AccountManager.sUserBean == null&&!isNoNeedLogin()) {
             super.startActivity(new Intent(mActivity, LoginActivity.class));
             return;
         }

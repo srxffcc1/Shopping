@@ -1,6 +1,8 @@
 package com.jiudi.shopping.ui.main;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 
 import com.jiudi.shopping.R;
@@ -13,7 +15,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
-    public boolean isLoginActivity() {
+    public boolean isNoNeedLogin() {
         return true;
     }
 
@@ -24,13 +26,20 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(mActivity,MainActivity.class));
-                finish();
-            }
-        },2000);
+        SharedPreferences sp=getSharedPreferences("config", Context.MODE_PRIVATE);
+        if(sp.getBoolean("isfirstinstall",true)){
+            startActivity(new Intent(mActivity,GuideActivity.class));
+            finish();
+        }else{
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(mActivity,MainActivity.class));
+                    finish();
+                }
+            },2000);
+        }
+
 
     }
 

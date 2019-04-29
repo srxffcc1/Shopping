@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_margin="9dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:text="小米米家（MIJIA）智能摄像机云台版白色
+1080P网络wifi家用监控高清360度红外夜
+视摄像头AI增强移动监测"
+        android:textColor="#ff2c2c2c"
+        android:textSize="17sp" />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/second_title"
+        android:layout_width="347dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:text="1080高清/360度云台全景视角/微光全彩/双向语音/AI
+增强移动侦测/H.265编码/倒置安装/红外夜视全新语音
+升级款购买"
+        android:textColor="#ffe93b3d"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:id="@+id/moneylineatlayout"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/second_title"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:text="¥199.00"
+            android:textColor="#ffe93b3d"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/sum"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/money"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/money"
+            android:text="库存：7件"
+            android:textColor="#ff5f5f5f"
+            android:textSize="9sp" />
+        <TextView
+            android:id="@+id/sales"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:text="销量：3件"
+            android:textColor="#ff5e5e5e"
+            android:textSize="9sp"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>
