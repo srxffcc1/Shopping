@@ -59,13 +59,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/fenxiao"/>
                         <TextView
                             android:paddingTop="4dp"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/fenxiao"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -78,13 +75,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/tuandui"/>
                         <TextView
                             android:paddingTop="4dp"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/tuandui"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -97,12 +91,9 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/erweima"/>
                         <TextView
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/erweimamain"
                             android:paddingTop="4dp"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
@@ -116,13 +107,10 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/tongzhi"/>
                         <TextView
                             android:paddingTop="4dp"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/tongzhi"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

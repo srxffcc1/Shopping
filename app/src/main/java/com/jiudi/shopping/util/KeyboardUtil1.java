@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.jiudi.shopping.R;
-import com.jiudi.shopping.ui.user.AddCarActivity1;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

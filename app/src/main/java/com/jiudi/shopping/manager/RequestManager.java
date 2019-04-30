@@ -20,6 +20,7 @@ public class RequestManager {
     public static final String mBaseUrl2 = "http://apitest.18gps.net/";
 //    public static final String mBaseUrl3 = "http://www.jiudi.cn/";
 
+//    public static final String mBaseUrl3 = "http://jiudi.youacloud.com/";
     public static final String mBaseUrl3 = "http://jiudi.youacloud.com/";
     public static final String mInterfacePrefix = "index.php?g=App&m=Appv1&a=";
     public static final String mInterfacePrefix2 = "index.php?g=App&m=Appv1&a=";

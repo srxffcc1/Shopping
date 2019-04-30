@@ -7,6 +7,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jiudi.shopping.R;
@@ -40,6 +41,18 @@ import java.util.Map;
 public class LoginActivity extends BaseActivity {
 
 
+    private ImageView back;
+    private TextView register;
+    private android.widget.LinearLayout phoneL;
+    private EditText phone;
+    private android.widget.LinearLayout pwd;
+    private ImageView pwdI;
+    private android.widget.LinearLayout yanzhengmaL;
+    private EditText yanzhengma;
+    private TextView yanzhengmaT;
+    private TextView pwdT;
+    private TextView login;
+    private ImageView weixinlogin;
 
     @Override
     protected int getContentViewId() {
@@ -50,6 +63,18 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView() {
 
+        back = (ImageView) findViewById(R.id.back);
+        register = (TextView) findViewById(R.id.register);
+        phoneL = (LinearLayout) findViewById(R.id.phone_l);
+        phone = (EditText) findViewById(R.id.phone);
+        pwd = (LinearLayout) findViewById(R.id.pwd);
+        pwdI = (ImageView) findViewById(R.id.pwd_i);
+        yanzhengmaL = (LinearLayout) findViewById(R.id.yanzhengma_l);
+        yanzhengma = (EditText) findViewById(R.id.yanzhengma);
+        yanzhengmaT = (TextView) findViewById(R.id.yanzhengma_t);
+        pwdT = (TextView) findViewById(R.id.pwd_t);
+        login = (TextView) findViewById(R.id.login);
+        weixinlogin = (ImageView) findViewById(R.id.weixinlogin);
     }
 
     @Override
@@ -59,6 +84,11 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
-
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity,RegisterActivity.class));
+            }
+        });
     }
 }

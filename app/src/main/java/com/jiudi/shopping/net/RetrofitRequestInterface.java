@@ -344,12 +344,12 @@ public interface RetrofitRequestInterface {
 
     /*获取验证码*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "GetCode")
+    @POST("new/public/index.php?s=api/loginController/identifycode")
     Call<String> getCode(@FieldMap Map<String, String> params);
 
     /*用户注册          页面还有问题需要修改*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "Register")
+    @POST("new/public/index.php?s=api/loginController/regist")
     Call<String> register(@FieldMap Map<String, String> params);
 
     /*获取可用分店列表*/
