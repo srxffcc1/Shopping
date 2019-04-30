@@ -53,24 +53,7 @@ public class KeyboardUtil1 {
 
     private boolean isLisence;
 
-    public KeyboardUtil1(Activity activity, EditText edits[]) {
-        mActivity = activity;
-        this.mEdit = edits;
 
-        provinceKeyboard = new Keyboard(activity, R.xml.province_abbreviations);
-        numberKeyboard = new Keyboard(activity, R.xml.numbers_or_letters);
-        mKeyboardView = (KeyboardView) activity.findViewById(R.id.kv_activity_add_car_keyboard);
-        if (currentEditText == 0) {
-            mKeyboardView.setKeyboard(provinceKeyboard);
-        } else {
-            mKeyboardView.setKeyboard(numberKeyboard);
-        }
-        mKeyboardView.setEnabled(true);
-        mKeyboardView.setPreviewEnabled(false);
-
-        provinceShort = mActivity.getResources().getStringArray(R.array.keyboard_province);
-        letterAndDigit = mActivity.getResources().getStringArray(R.array.keyboard_numbers_letters);
-    }
 
 
 

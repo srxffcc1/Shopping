@@ -18,7 +18,6 @@ import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.event.UpdateLoginStateEvent;
 import com.jiudi.shopping.manager.AccountManager;
-import com.jiudi.shopping.ui.device.DeviceListActivity;
 import com.jiudi.shopping.ui.user.AddressListActivity;
 import com.jiudi.shopping.util.ToastUtil;
 
@@ -114,12 +113,6 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mActivity, AddressListActivity.class));
-            }
-        });
-        llActivityUserSetObd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity, DeviceListActivity.class));
             }
         });
     }
