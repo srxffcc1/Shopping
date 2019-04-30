@@ -67,144 +67,12 @@ public class KeyboardUtil1 {
         }
         mKeyboardView.setEnabled(true);
         mKeyboardView.setPreviewEnabled(false);
-        mKeyboardView.setOnKeyboardActionListener(listener);
 
         provinceShort = mActivity.getResources().getStringArray(R.array.keyboard_province);
         letterAndDigit = mActivity.getResources().getStringArray(R.array.keyboard_numbers_letters);
     }
 
 
-    private KeyboardView.OnKeyboardActionListener listener = new KeyboardView.OnKeyboardActionListener() {
-        @Override
-        public void swipeUp() {
-            LogUtil.e(TAG, "swipeUp=");
-        }
-
-        @Override
-        public void swipeRight() {
-            LogUtil.e(TAG, "swipeRight=");
-        }
-
-        @Override
-        public void swipeLeft() {
-            LogUtil.e(TAG, "swipeLeft=");
-        }
-
-        @Override
-        public void swipeDown() {
-            LogUtil.e(TAG, "swipeDown=");
-        }
-
-        @Override
-        public void onText(CharSequence text) {
-            LogUtil.e(TAG, "onText=" + text.toString());
-        }
-
-        @Override
-        public void onRelease(int primaryCode) {
-            LogUtil.e(TAG, "onRelease=" + primaryCode);
-        }
-
-        @Override
-        public void onPress(int primaryCode) {
-            LogUtil.e(TAG, "onPress=" + primaryCode);
-        }
-
-        @Override
-        public void onKey(int primaryCode, int[] keyCodes) {
-            //实时发送数据
-            sendBroadcast("start");
-
-            if (currentEditText == 7) {
-                mType = true;
-            } else {
-                mType = false;
-            }
-
-            editable = mEdit[currentEditText].getText();
-
-            if (primaryCode == -3) {
-                mEdit[currentEditText].setText("");
-                currentEditText--;
-                if (currentEditText < 0) {
-                    //当前最小位置始终为0，没有输入内容时软键盘重置为省份简称软键盘
-                    currentEditText = 0;
-                    changeKeyboard(false);
-                    mEdit[currentEditText].setSelection(0);
-                    isLisence=true;
-                } else if (!TextUtils.isEmpty(mEdit[currentEditText].getText().toString())) {
-                    mEdit[currentEditText].setSelection(1);
-                } else {
-                    mEdit[currentEditText].setSelection(0);
-                }
-                mEdit[currentEditText].requestFocus();
-
-
-                for (int i = 0; i < 8; i++) {
-                    if (TextUtils.isEmpty(mEdit[i].getText().toString())) {
-                        license = "null";
-                    }else {
-                        license="not_null";
-                    }
-                }
-                LogUtil.e(TAG, license+","+currentEditText);
-                if (TextUtils.equals(license, "null") && isLisence) {
-                    LogUtil.e(TAG, license+"-----------------------------");
-                    sendBroadcast(license);
-                }
-            } else {
-                if (currentEditText == 0) {
-                    changeKeyboard(false);
-                    // 然后切换为字母数字键盘
-                    mEdit[0].setText(provinceShort[primaryCode]);
-                    currentEditText = 1;
-                    if (TextUtils.isEmpty(mEdit[currentEditText].getText().toString())) {
-                        mEdit[currentEditText].setSelection(0);
-                        mEdit[currentEditText].requestFocus();
-                        changeKeyboard(true);
-                    } else {
-                        isNullPlate = false;
-                    }
-                } else {
-
-                    // 城市代码必须是大写字母
-                    if (currentEditText == 1 && !letterAndDigit[primaryCode].matches("[A-Z]{1}")) {
-                        return;
-                    }
-
-                    if (!isNullPlate) {
-                        return;
-                    }
-
-                    mEdit[currentEditText].setText(letterAndDigit[primaryCode]);
-                    if (currentEditText < 7) {
-                        if (currentEditText == 6) {
-                            if (!TextUtils.isEmpty(mEdit[currentEditText].getText().toString())) {
-                                mEdit[currentEditText].setSelection(1);
-                                mEdit[currentEditText].requestFocus();
-                            }
-                            return;
-                        }
-                        currentEditText++;
-                        if (TextUtils.isEmpty(mEdit[currentEditText].getText().toString())) {
-                            mEdit[currentEditText].setSelection(0);
-                            mEdit[currentEditText].requestFocus();
-                        } else {
-                            isNullPlate = false;
-                        }
-                    }
-
-                    if (mType) {
-                        mEdit[currentEditText].setText(letterAndDigit[primaryCode]);
-                        mEdit[currentEditText].setSelection(0);
-                        mEdit[currentEditText].requestFocus();
-                        ToastUtil.showShort(mActivity, R.string.write_new_plate);
-                    }
-
-                }
-            }
-        }
-    };
 
 
     /**
@@ -296,10 +164,4 @@ public class KeyboardUtil1 {
         isShow();
     }
 
-    private void sendBroadcast(String licenseType) {
-        Intent intent = new Intent();
-        intent.putExtra(AddCarActivity1.INPUT_LICENSE_KEY, licenseType);
-        intent.setAction(AddCarActivity1.INPUT_LICENSE_COMPLETE);
-        mActivity.sendBroadcast(intent);
-    }
 }
