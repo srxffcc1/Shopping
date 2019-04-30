@@ -1,23 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorWhite"
-              android:orientation="vertical"
-    >
-
-    <include
-        layout="@layout/layout_top_back_bar"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:padding="10dp"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/image"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/about_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/image"
+        android:id="@+id/jiudizhixuan"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="九弟智选"
+        android:textColor="#ff191919"
+        android:textSize="19sp"
         />
-    <WebView
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:id="@+id/wv_activity_notice"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        ></WebView>
+    <TextView
 
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/jiudizhixuan"
+        android:id="@+id/version"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Version 1.0.0"
+        android:textColor="#ff191919"
+        android:textSize="14sp"
+        />
+    <TextView
 
-</LinearLayout>
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/version"
+        android:id="@+id/guanyujiudi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关于九弟智选"
+        android:textColor="#ffe95048"
+        android:textSize="16sp"
+        />
+    <TextView
+        android:layout_marginTop="20dp"
+        android:lineSpacingMultiplier="1.2"
+        android:layout_below="@+id/guanyujiudi"
+        android:id="@+id/guanyuneirong"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="苏州九弟物联网科技有限公司（简称：九弟物联）的使命是连接万物。九弟智选是九弟物联的子品牌。\n
+九弟物联是一家以云商城、智能硬件和IoT平台为核心的高新科技企业，匠心打造车联网、智能家居、智能穿戴等特色产品，开发运营云商城平台（九弟智选）和物联网开放平台（九弟智联），形成了物联网“云-管-端”全方位的体系架构。\n
+九弟物联重视自主创新，在车联网及物联网领域拥有多年的技术积累，已申请和获得多项国内专利、软件著作权等知识产权，在国内物联网行业具备核心竞争优势，支持快速定制“云-管-端”的扩展，为“行业+互联网”提供物联网技术平台，致力于构建从产品智能化接入、电商接入、到触达用户、控制分享的完整生态闭环。\n
+公司始终坚持人才强企战略，通过引进一流科研人才、聘请专家顾问，建立起完善且资深的物联网研发体系，为企业的创新发展提供源源不断的动力。"
+        android:textColor="#ff191919"
+        android:textSize="12sp"
+        />
+    <TextView
+        android:id="@+id/yingsi"
+        android:layout_above="@+id/banquan"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="用户协议和隐私政策"
+        android:textColor="#ffea5048"
+        android:textSize="10sp"
+        />
+    <TextView
+        android:id="@+id/banquan"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="版权所有©2019-2021九弟物联网科技有限公司保留一切权利"
+        android:textColor="#ff737373"
+        android:textSize="10sp"
+        />
+</RelativeLayout>

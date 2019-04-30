@@ -52,7 +52,6 @@ public class AboutUsActivity extends BaseActivity {
         mBackLL = byId(R.id.ll_layout_top_back_bar_back);
         mTitleTV = byId(R.id.tv_layout_top_back_bar_title);
 //        mTitleTV.setText("关于我们");
-        mWebView=byId(R.id.wv_activity_notice);
     }
 
     @Override
