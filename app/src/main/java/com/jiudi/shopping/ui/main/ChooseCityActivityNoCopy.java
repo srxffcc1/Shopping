@@ -217,7 +217,7 @@ public class ChooseCityActivityNoCopy extends BaseActivity {
      */
     private void getPCA() {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getChooseCity(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {

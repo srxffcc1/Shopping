@@ -30,7 +30,7 @@ public class AccountManager {
         if (sUserBean == null) {
             return;
         }
-        SPUtil.put("phone", sUserBean.getTelNumber());
+//        SPUtil.put("phone", sUserBean.getTelNumber());
 //        SPUtil.put("password", sUserBean.get());
     }
 

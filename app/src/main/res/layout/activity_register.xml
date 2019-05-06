@@ -55,6 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
+
         android:gravity="center">
 
         <LinearLayout
@@ -62,8 +63,8 @@
             android:layout_height="wrap_content"
             android:animationCache="false"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/dp_50"
-            android:paddingRight="@dimen/dp_50">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <EditText
                 android:id="@+id/phone"
@@ -89,8 +90,8 @@
 
     <View
         style="@style/HorizontalLine"
-        android:layout_marginLeft="@dimen/dp_50"
-        android:layout_marginRight="@dimen/dp_50"></View>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"></View>
 
     <LinearLayout
         android:id="@+id/yanzhengma_l"
@@ -98,9 +99,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_50"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:paddingTop="@dimen/dp_20"
-        android:paddingRight="@dimen/dp_50"
         android:paddingBottom="@dimen/dp_10"
         app:layout_constraintLeft_toLeftOf="parent">
 
@@ -133,8 +134,8 @@
 
     <View
         style="@style/HorizontalLine"
-        android:layout_marginLeft="@dimen/dp_50"
-        android:layout_marginRight="@dimen/dp_50"></View>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"></View>
 
     <LinearLayout
         android:id="@+id/pwd_l"
@@ -143,9 +144,9 @@
         android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_50"
-        android:paddingTop="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_50">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingTop="@dimen/dp_10">
 
         <EditText
             android:id="@+id/pwd"
@@ -175,24 +176,26 @@
 
     <View
         style="@style/HorizontalLine"
-        android:layout_marginLeft="@dimen/dp_50"
-        android:layout_marginRight="@dimen/dp_50"></View>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"></View>
 
 
     <TextView
         android:id="@+id/register"
-        android:layout_width="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_40"
         android:background="@drawable/text_boder_r_red_r"
         android:gravity="center"
-        android:padding="5dp"
         android:text="注册"
         android:textColor="@color/colorWhite"
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_login_phone" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:layout_width="match_parent"

@@ -61,7 +61,7 @@
         <activity android:name="com.jiudi.shopping.ui.main.MainActivity" android:launchMode="singleTask">
 
         </activity>
-        <activity android:name="com.jiudi.shopping.ui.user.account.LoginActivity">
+        <activity android:name="com.jiudi.shopping.ui.user.account.LoginActivity" android:launchMode="singleTask">
         </activity>
         <activity android:name="com.jiudi.shopping.ui.user.account.RegisterActivity"/>
         <activity android:name="com.jiudi.shopping.ui.user.account.ForgetPwdActivity"/>
@@ -140,7 +140,9 @@
         <activity android:name="com.jiudi.shopping.ui.user.AddressActivity" />
         <activity android:name="com.jiudi.shopping.ui.main.ChooseCityActivityNoCopy"  android:theme="@style/DefaultCityPickerTheme"/>
         <activity android:name=".ui.main.GuideActivity" />
-        <activity android:name=".ui.main.CartDetailActivity" />
+        <activity android:name=".ui.cart.CartDetailActivity" />
+        <activity android:name=".ui.cart.DingDanActivity" />
+        <activity android:name=".ui.cart.PayDingDanActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"  />
     </application>
 
 </manifest>

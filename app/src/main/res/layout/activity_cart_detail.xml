@@ -54,6 +54,7 @@
     <LinearLayout
         android:background="@drawable/text_boder_black"
         android:layout_width="match_parent"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
         <TextView
@@ -96,6 +97,7 @@
             android:textSize="11sp"
             />
         <TextView
+            android:id="@+id/togouwu"
             android:background="@drawable/text_back_jiarugouwuche"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -106,6 +108,7 @@
             android:textSize="14sp"
             />
         <TextView
+            android:id="@+id/topay"
             android:background="@drawable/text_back_lijigoumai"
             android:layout_width="0dp"
             android:gravity="center"

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorTransparentBg2"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/dialog_img"
+            android:scaleType="fitEnd"
+            android:layout_width="250px"
+            android:layout_height="250px"
+            android:layout_gravity="bottom"
+            android:src="@drawable/cart_pay_icon2" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:background="#FFF"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="501.00" />
+            <TextView
+                android:layout_below="@id/money"
+                android:id="@+id/allcount"
+                android:text="库存1973件"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/close"
+                android:layout_marginBottom="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/icon_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sukall"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="#FFF"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:text="购买数量"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/sub"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/cart_sub"
+                android:layout_width="32dp"
+                android:layout_height="32dp" />
+            <TextView
+                android:id="@+id/count"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textColor="#ff2e2d2d"
+                android:textSize="14sp"
+                />
+            <ImageView
+                android:id="@+id/add"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/cart_add"
+                android:layout_width="32dp"
+                android:layout_height="32dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/text_boder_black"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_gouwuche"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/text_back_jiarugouwuche"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="加入购物车"
+            android:textColor="#ffffffff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/dialog_lijigoumai"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/text_back_lijigoumai"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="立即购买"
+            android:textColor="#ffffffff"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

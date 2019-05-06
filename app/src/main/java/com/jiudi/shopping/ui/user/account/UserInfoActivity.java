@@ -251,25 +251,25 @@ public class UserInfoActivity extends BaseActivity {
 
         //头像
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
-        Glide.with(mActivity).load(AccountManager.sUserBean.getHeadPortrait()).apply(requestOptions)
-                .load(R.drawable.head_defuat_circle)
-                .into(mAvatarIV);
+//        Glide.with(mActivity).load(AccountManager.sUserBean.getHeadPortrait()).apply(requestOptions)
+//                .load(R.drawable.head_defuat_circle)
+//                .into(mAvatarIV);
 
         //昵称
-        mNicknameET.setText(AccountManager.sUserBean.getNickName());
+//        mNicknameET.setText(AccountManager.sUserBean.getNickName());
         //个人简介
-        if(AccountManager.sUserBean.getUserIntroduce().equals("")){
-            mUserIntroduceTV.setText(getString(R.string.not_input));
-        }else {
-            mUserIntroduceTV.setText(getString(R.string.already_input));
-        }
+//        if(AccountManager.sUserBean.getUserIntroduce().equals("")){
+//            mUserIntroduceTV.setText(getString(R.string.not_input));
+//        }else {
+//            mUserIntroduceTV.setText(getString(R.string.already_input));
+//        }
 
         //擅长领域
-        if(AccountManager.sUserBean.getUserGoodAt().equals("")){
-            mGoodAtTV.setText(getString(R.string.not_choose));
-        }else {
-            mGoodAtTV.setText(getString(R.string.already_choose));
-        }
+//        if(AccountManager.sUserBean.getUserGoodAt().equals("")){
+//            mGoodAtTV.setText(getString(R.string.not_choose));
+//        }else {
+//            mGoodAtTV.setText(getString(R.string.already_choose));
+//        }
 
         //性别
 //        switch (AccountManager.sUserBean.getSex()) {
@@ -487,10 +487,10 @@ public class UserInfoActivity extends BaseActivity {
     private void updateSex(final TypeBean sex) {
         Map<String, String> map = new HashMap<>();
         if (AccountManager.sUserBean != null) {
-            map.put("userId", AccountManager.sUserBean.getId());
+//            map.put("userId", AccountManager.sUserBean.getId());
         }
         map.put("nickName", mNicknameET.getText().toString().trim() );
-        map.put("userName", AccountManager.sUserBean.getTelNumber());
+//        map.put("userName", AccountManager.sUserBean.getTelNumber());
         LogUtil.e(TAG, map.toString());
         RequestManager.mRetrofitManager
                 .createRequest(RetrofitRequestInterface.class)
@@ -597,16 +597,16 @@ public class UserInfoActivity extends BaseActivity {
 
     private void saveInfo() {
         Map<String, String> map = new HashMap<>();
-        if (AccountManager.sUserBean != null) {
-            map.put("userId", AccountManager.sUserBean.getId());
-        }
-        map.put("nickName", mNicknameET.getText().toString().trim() );
-        map.put("userName", AccountManager.sUserBean.getTelNumber());
-        if (mTempSex==null){
-            map.put("sex", "");
-        }else {
-            map.put("sex", mTempSex.getId());
-        }
+//        if (AccountManager.sUserBean != null) {
+//            map.put("userId", AccountManager.sUserBean.getId());
+//        }
+//        map.put("nickName", mNicknameET.getText().toString().trim() );
+//        map.put("userName", AccountManager.sUserBean.getTelNumber());
+//        if (mTempSex==null){
+//            map.put("sex", "");
+//        }else {
+//            map.put("sex", mTempSex.getId());
+//        }
 
         map.put("province",mSelectProvince.getId());
         map.put("city",mSelectCity.getId());
@@ -679,7 +679,7 @@ public class UserInfoActivity extends BaseActivity {
                     @Override
                     public void run() {
                         Map<String, String> map = new HashMap<>();
-                        map.put("customer_id ", AccountManager.sUserBean.getId());
+//                        map.put("customer_id ", AccountManager.sUserBean.getId());
                         map.put("customer_img", base64);
                         LogUtil.e(TAG, map.toString());
                         RequestManager.mRetrofitManager
@@ -697,7 +697,7 @@ public class UserInfoActivity extends BaseActivity {
                                             String info = res.getString("info");
                                             if (code == 0) {
                                                 ToastUtil.showLong(mActivity, info);
-                                                AccountManager.sUserBean.setHeadPortrait(avatarPath);
+//                                                AccountManager.sUserBean.setHeadPortrait(avatarPath);
                                                 String base64 = CommonUtil.objectToBase64(AccountManager.sUserBean);
                                                 SPUtil.put(Constant.USER, base64);
                                                 RequestOptions requestOptions = RequestOptions.circleCropTransform();
@@ -769,18 +769,18 @@ public class UserInfoActivity extends BaseActivity {
         String imageFileName = "photo";
         //.getExternalFilesDir()方法可以获取到 SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = new File(storageDir, AccountManager.sUserBean.getId() + ".jpg");
-        if (!image.exists()) {
-            image.createNewFile();
-        }
-        mPhotoPath = image.getAbsolutePath();
-        File crop = new File(storageDir, AccountManager.sUserBean.getId() + "_crop" + ".jpg");
-
-        if (!crop.exists()) {
-            crop.createNewFile();
-        }
-        mCropPath = crop.getAbsolutePath();
-        return image;
+//        File image = new File(storageDir, AccountManager.sUserBean.getId() + ".jpg");
+//        if (!image.exists()) {
+//            image.createNewFile();
+//        }
+//        mPhotoPath = image.getAbsolutePath();
+//        File crop = new File(storageDir, AccountManager.sUserBean.getId() + "_crop" + ".jpg");
+//
+//        if (!crop.exists()) {
+//            crop.createNewFile();
+//        }
+//        mCropPath = crop.getAbsolutePath();
+        return null;
     }
 
     /**

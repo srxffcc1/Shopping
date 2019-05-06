@@ -55,7 +55,7 @@ public class Constant {
     /**
      * 微信AppID
      */
-    public static final String WECHAT_APP_ID = "wx8869522c15a7955f";
+    public static final String WECHAT_APP_ID = "wx095bafdd282d2421";//wx8869522c15a7955f
 
     /**
      * 微信支付地址

@@ -116,7 +116,7 @@ public class QuestionActivity extends BaseActivity {
      */
     private void getQuestionList() {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         map.put("page", "1");
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).questionList(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override

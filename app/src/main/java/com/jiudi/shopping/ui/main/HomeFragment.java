@@ -5,26 +5,33 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
 import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
 import com.jiudi.shopping.base.BaseFragment;
 import com.jiudi.shopping.bean.BannerBean;
-import com.jiudi.shopping.bean.CarChoiceBean;
+import com.jiudi.shopping.bean.MainGodsBean;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.ui.cart.CartDetailActivity;
 import com.jiudi.shopping.util.DisplayUtil;
 import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.NetworkUtil;
+import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.ToastUtil;
 import com.jiudi.shopping.widget.BannerLayout;
 import com.jiudi.shopping.widget.DividerItemDecoration;
+import com.jiudi.shopping.widget.GlideImageLoader;
 
 
 import org.json.JSONArray;
@@ -43,12 +50,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = "HomeFragment";
     private List<String> mBannerUrlList = new ArrayList<>();
     private List<BannerBean> mBannerList = new ArrayList<>();
-    private List<CarChoiceBean> mCarChoiceList = new ArrayList<>();
+    private List<MainGodsBean> mCarChoiceList = new ArrayList<>();
     private int mDataStatus = STATUS_REFRESH;
     private static final int STATUS_REFRESH = 1;
     private static final int STATUS_LOAD = 2;
     private int mPage = 1;
-    private RecyclerCommonAdapter<CarChoiceBean> mCarBeanAdapter;
+    private RecyclerCommonAdapter<MainGodsBean> mCarBeanAdapter;
     private android.widget.TextView changeCity;
     /**
      * 声明AMapLocationClientOption对象
@@ -77,6 +84,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
 
     }
+
     /**
      * 声明定位回调监听器
      */
@@ -91,10 +99,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         recycler = (RecyclerView) findViewById(R.id.recycler);
         blFragmentHome = (BannerLayout) findViewById(R.id.bl_fragment_home);
     }
+
     @Override
     public void initData() {
         getHomeBanner();
-        getChoice();
+        getGods();
     }
 
     @Override
@@ -106,12 +115,58 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void initEvent() {
 
     }
-    private void getChoice() {
-        mCarChoiceList.clear();
-        CarChoiceBean beanCarChoice = new CarChoiceBean();
-        mCarChoiceList.add(beanCarChoice);
-        showCarChoiceRecycleView();
+
+    private void getGods() {
+//        mCarChoiceList.clear();
+//        MainGodsBean beanCarChoice = new MainGodsBean();
+//        mCarChoiceList.add(beanCarChoice);
+//        showCarChoiceRecycleView();
+        getGodsList(0);
     }
+
+
+    private void getGodsList(int page) {
+        Map<String, String> map = new HashMap<>();
+        map.put("first", page + "");
+        map.put("limit", "20");
+        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getGodsList(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        JSONArray jsonArray = res.getJSONArray("data");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            MainGodsBean bean = new MainGodsBean();
+                            bean.id = jsonObject.optString("id");
+                            bean.image = jsonObject.optString("image");
+                            bean.store_name = jsonObject.optString("store_name");
+                            bean.keyword = jsonObject.optString("keyword");
+                            bean.sales = jsonObject.optString("sales");
+                            bean.vip_price = jsonObject.optString("vip_price");
+                            bean.price = jsonObject.optString("price");
+                            bean.unit_name = jsonObject.optString("unit_name");
+                            mCarChoiceList.add(bean);
+                        }
+                        showCarChoiceRecycleView();
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+
     /**
      * 车主精选
      */
@@ -119,70 +174,73 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (mCarBeanAdapter == null) {
 
 
-            mCarBeanAdapter = new RecyclerCommonAdapter<CarChoiceBean>(mActivity, R.layout.item_carchoice, mCarChoiceList) {
+            mCarBeanAdapter = new RecyclerCommonAdapter<MainGodsBean>(mActivity, R.layout.item_carchoice, mCarChoiceList) {
 
                 @Override
-                protected void convert(ViewHolder holder, final CarChoiceBean carChoiceBean, int position) {
+                protected void convert(ViewHolder holder, final MainGodsBean carChoiceBean, int position) {
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",carChoiceBean.id));
                         }
                     });
-
-//                    new GlideImageLoader().displayImage(mActivity,carChoiceBean.picture, (ImageView) holder.getView(R.id.picture));
+                    holder.setText(R.id.title,carChoiceBean.store_name);
+                    holder.setText(R.id.second_title,carChoiceBean.keyword);
+                    holder.setText(R.id.show_price,"¥"+carChoiceBean.price);
+                    RequestOptions options = new RequestOptions()
+                            .fitCenter()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+                    Glide.with(mActivity).load(carChoiceBean.image).apply(options).into((ImageView) holder.getView(R.id.picture));
+//                    AccountManager.setBestGood(carChoiceBean.id);
 //                    new GlideImageLoader().displayImage(mActivity,carChoiceBean.picture, (ImageView) holder.getView(R.id.picture));
                 }
 
             };
 
 
-
-
-            recycler.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL_LIST, (int) DisplayUtil.dpToPx(mActivity, 1), ContextCompat.getColor(mActivity, R.color.colorLine), false, 2));
+//            recycler.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL_LIST, (int) DisplayUtil.dpToPx(mActivity, 1), ContextCompat.getColor(mActivity, R.color.colorLine), false, 2));
             recycler.setAdapter(mCarBeanAdapter);
-            recycler.setLayoutManager(new GridLayoutManager(mActivity,2));
-        }else{
+            recycler.setLayoutManager(new GridLayoutManager(mActivity, 2));
+        } else {
 
             mCarBeanAdapter.notifyDataSetChanged();
         }
 
     }
+
     private void getHomeBanner() {
         Map<String, String> map = new HashMap<>();
-        if (AccountManager.sUserBean != null) {
-            map.put("customer_id", AccountManager.sUserBean.getId());
-        }
-        map.put("pid", "2");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getFlash(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+//        if (AccountManager.sUserBean != null) {
+////            map.put("customer_id", AccountManager.sUserBean.getId());
+//        }
+//        map.put("pid", "2");
+        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getFlash(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 LogUtil.e(TAG, response);
-                switch (mDataStatus) {
-                    case STATUS_REFRESH:
-                        break;
-
-                }
+//                switch (mDataStatus) {
+//                    case STATUS_REFRESH:
+//                        break;
+//                }
                 try {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
-                    String info = res.getString("info");
+                    String info = res.getString("msg");
                     JSONArray data = res.getJSONObject("data").getJSONArray("banner");
                     mBannerList.clear();
-                    if (code == 0) {
+                    if (code == 200) {
                         if (mDataStatus == STATUS_REFRESH) {
                             mBannerList.clear();
                         }
-
                         for (int i = 0; i < data.length(); i++) {
-                            JSONObject bannerItem = data.getJSONObject(i);
-                            BannerBean bannerBean = new BannerBean();
-                            bannerBean.setId(bannerItem.getString("id"));//轮播ID
-                            bannerBean.setImage(bannerItem.getString("image"));//轮播图片
-                            bannerBean.setRemark(bannerItem.getString("remark"));//轮播信息
-                            bannerBean.setUrl(bannerItem.getString("linkurl"));//轮播链接
+                            JSONObject jsonObject = data.getJSONObject(i);
+                            BannerBean bean = new BannerBean();
+                            bean.id=jsonObject.optString("id");
+                            bean.title=jsonObject.optString("title");
+                            bean.url=jsonObject.optString("url");
+                            bean.pic=jsonObject.optString("pic");
 
-                            mBannerList.add(bannerBean);
+                            mBannerList.add(bean);
                         }
                         showBanner();
 
@@ -202,22 +260,24 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         });
     }
+
     private void showBanner() {
         mBannerUrlList.clear();
         for (int i = 0; i < mBannerList.size(); i++) {
-            mBannerUrlList.add(mBannerList.get(i).getImage());
+            mBannerUrlList.add(mBannerList.get(i).pic);
         }
         if (mBannerUrlList.size() > 0) {
             blFragmentHome.setViewUrls(mBannerUrlList);
             blFragmentHome.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    final BannerBean bannerBean = mBannerList.get(position);
+//                    final BannerBean bannerBean = mBannerList.get(position);
                 }
             });
         }
 
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

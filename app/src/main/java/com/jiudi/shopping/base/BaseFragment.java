@@ -52,15 +52,15 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     private void getTestList() {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getCanPhonePay(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
-                    String info = res.getString("info");
-                    if (code == 0) {
+                    String info = res.getString("msg");
+                    if (code == 200) {
 
                     }
 
@@ -110,10 +110,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void startActivity(Intent intent) {
-//        if (AccountManager.sUserBean == null) {
-//            super.startActivity(new Intent(mActivity, LoginActivity.class));
-//            return;
-//        }
+        if (AccountManager.sUserBean == null) {
+            super.startActivity(new Intent(mActivity, LoginActivity.class));
+            return;
+        }
         super.startActivity(intent);
     }
 

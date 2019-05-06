@@ -20,6 +20,7 @@
 
 
         <TextView
+            android:id="@+id/nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="j***e"
@@ -37,6 +38,7 @@
             android:textSize="9sp" />
 
         <com.hedgehog.ratingbar.RatingBar
+            android:visibility="gone"
             android:id="@+id/ratingbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,6 +59,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="上一个经常掉线，这个偶尔频率少了，能够接受，电子
@@ -72,66 +75,66 @@
         android:layout_weight="1"
         app:columnCount="4">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
 
-        <ImageView
+        <!--<ImageView-->
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
 
-        <ImageView
+        <!--<ImageView-->
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
 
-        <ImageView
+        <!--<ImageView-->
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
 
-        <ImageView
+        <!--<ImageView-->
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
 
-        <ImageView
+        <!--<ImageView-->
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
 
-        <ImageView
+        <!--<ImageView-->
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
 
-        <ImageView
+        <!--<ImageView-->
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cart_head"
-            app:layout_columnWeight="1" />
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/cart_head"-->
+            <!--app:layout_columnWeight="1" />-->
     </android.support.v7.widget.GridLayout>
 
 

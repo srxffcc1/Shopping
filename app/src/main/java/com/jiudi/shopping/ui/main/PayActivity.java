@@ -167,7 +167,7 @@ public class PayActivity extends BaseActivity {
      */
     private void getWechatPayCheck(int type) {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         map.put("unid", mUnid);
         map.put("paytype",type+"");
         LogUtil.e(TAG, map.toString());
@@ -242,7 +242,7 @@ public class PayActivity extends BaseActivity {
      */
     private void getAlipayCheck(int typePay) {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         map.put("unid", mUnid);
         map.put("paytype", typePay + "");
         LogUtil.e(TAG, map.toString());

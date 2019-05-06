@@ -16,12 +16,12 @@ public class RequestManager {
     public static RetrofitManager mRetrofitManager;
     public static RetrofitManager mRetrofitManager2;
     public static RetrofitManager mRetrofitManager3;
-    public static final String mBaseUrl = "http://jiudi.youacloud.com/";
-    public static final String mBaseUrl2 = "http://apitest.18gps.net/";
+    public static final String mBaseUrl = "http://mall.jiudi.cn/";
+    public static final String mBaseUrl2 = "http://mall.jiudi.cn/";
 //    public static final String mBaseUrl3 = "http://www.jiudi.cn/";
 
 //    public static final String mBaseUrl3 = "http://jiudi.youacloud.com/";
-    public static final String mBaseUrl3 = "http://jiudi.youacloud.com/";
+    public static final String mBaseUrl3 = "http://mall.jiudi.cn/";
     public static final String mInterfacePrefix = "index.php?g=App&m=Appv1&a=";
     public static final String mInterfacePrefix2 = "index.php?g=App&m=Appv1&a=";
 //    RequestManager.mRetrofitManager

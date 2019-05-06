@@ -95,7 +95,7 @@ public class UpdatePwdActivity extends BaseActivity {
                 case EXTRA_UPDATE:
                     mTitleTV.setText(getString(R.string.update_password));
                     mConfirmTV.setText(getString(R.string.confirm_update));
-                    mPhoneNumberET.setText(AccountManager.sUserBean.getTelNumber());
+//                    mPhoneNumberET.setText(AccountManager.sUserBean.getTelNumber());
 //                    mPhoneNumberET.setT
                     mPhoneNumberET.setEnabled(false);
                     mPhoneNumberET.setFocusable(false);
@@ -241,7 +241,7 @@ public class UpdatePwdActivity extends BaseActivity {
      */
     private void updatePwd(final String code, final String password) {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         map.put("code", code);
         map.put("new_pass", password);
         LogUtil.e(TAG, map.toString());

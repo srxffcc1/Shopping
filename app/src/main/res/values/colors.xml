@@ -50,6 +50,7 @@
     <color name="recommend_text_gold">#deb061</color>
 
     <color name="colorRed">#E9391C</color>
+    <color name="colorTransparentBg2">#00000000</color>
     <color name="colorTransparentBg">#66000000</color>
     <color name="colorFontGray5">#b4b5be</color>
     <color name="colorFontLight">#333333</color>

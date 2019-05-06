@@ -77,7 +77,7 @@ public class FeedBackActivity extends BaseActivity {
 
     private void submitFeedback(String context) {
         Map<String, String> map = new HashMap<>();
-        map.put("userId", AccountManager.sUserBean.getId());
+//        map.put("userId", AccountManager.sUserBean.getId());
         map.put("content", context);
         Log.e(TAG, map.toString() + "");
         RequestManager.mRetrofitManager

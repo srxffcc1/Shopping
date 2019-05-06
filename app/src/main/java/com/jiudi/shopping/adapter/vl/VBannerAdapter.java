@@ -46,7 +46,7 @@ public class VBannerAdapter extends DelegateAdapter.Adapter {
         ViewHolder recyclerViewHolder = (ViewHolder) viewHolder;
         mBannerUrlList.clear();
         for (int i = 0; i < mBannerList.size(); i++) {
-            mBannerUrlList.add(mBannerList.get(i).getImage());
+            mBannerUrlList.add(mBannerList.get(i).pic);
         }
         if (mBannerUrlList.size() > 0) {
             recyclerViewHolder.banner.setViewUrls(mBannerUrlList);

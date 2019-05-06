@@ -41,6 +41,13 @@ public class VTitleDetailAdapter extends DelegateAdapter.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(mcarttitlebean!=null){
+            ((TextView)holder.itemView.findViewById(R.id.money)).setText("¥"+mcarttitlebean.price);
+            ((TextView)holder.itemView.findViewById(R.id.sum)).setText("库存："+mcarttitlebean.stock+mcarttitlebean.unit_name);
+            ((TextView)holder.itemView.findViewById(R.id.sales)).setText("销量："+mcarttitlebean.sales+mcarttitlebean.unit_name);
+            ((TextView)holder.itemView.findViewById(R.id.title)).setText(mcarttitlebean.store_name);
+            ((TextView)holder.itemView.findViewById(R.id.second_title)).setText(mcarttitlebean.store_info);
+        }
 
     }
 

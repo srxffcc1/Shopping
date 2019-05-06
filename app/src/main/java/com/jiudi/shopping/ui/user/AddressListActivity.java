@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.util.SPUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,26 +83,27 @@ public class AddressListActivity extends BaseActivity {
     }
     private void getAddressList() {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getAddressList(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getAddressList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
-                    String info = res.getString("info");
+                    String info = res.getString("msg");
                     mBeanList.clear();
-                    if (code == 0) {
-                        JSONArray jsonArray=res.getJSONArray("data");
+                    if (code == 200) {
+                        JSONArray jsonArray=res.getJSONObject("data").getJSONArray("address");
                         for (int i = 0; i <jsonArray.length() ; i++) {
                             JSONObject jsonObject=jsonArray.getJSONObject(i);
                             DiZHi bean=new DiZHi();
-                            bean.id = jsonObject.optString("id");
-                            bean.receiver_name = jsonObject.optString("receiver_name");
-                            bean.receiver_mobile = jsonObject.optString("receiver_mobile");
-                            bean.region = jsonObject.optString("region");
-                            bean.detailed_address = jsonObject.optString("detailed_address");
-                            bean.is_default = jsonObject.optString("is_default");
+                            bean.id=jsonObject.optString("id");
+                            bean.real_name=jsonObject.optString("real_name");
+                            bean.phone=jsonObject.optString("phone");
+                            bean.province=jsonObject.optString("province");
+                            bean.city=jsonObject.optString("city");
+                            bean.district=jsonObject.optString("district");
+                            bean.detail=jsonObject.optString("detail");
+                            bean.is_default=jsonObject.optString("is_default");
                             mBeanList.add(bean);
                         }
                     }
@@ -125,17 +128,25 @@ public class AddressListActivity extends BaseActivity {
             myAdapter = new RecyclerCommonAdapter<DiZHi>(mActivity, R.layout.item_address, mBeanList) {
                 @Override
                 protected void convert(ViewHolder holder, final DiZHi carChoiceBean, int position) {
-                    holder.setText(R.id.username,carChoiceBean.receiver_name+" "+carChoiceBean.receiver_mobile);
-                    holder.setText(R.id.useraddress,carChoiceBean.detailed_address);
+                    holder.setText(R.id.name,"收货人："+carChoiceBean.real_name+" "+carChoiceBean.phone);
+                    holder.setText(R.id.address,"收货地址："+carChoiceBean.province+carChoiceBean.city+carChoiceBean.district+carChoiceBean.detail);
+                    CheckBox checkBox=holder.itemView.findViewById(R.id.check);
+                    checkBox.setOnKeyListener(null);
                     if("1".equals(carChoiceBean.is_default)){
-                        holder.itemView.findViewById(R.id.default_flag).setVisibility(View.VISIBLE);
+                        checkBox.setChecked(true);
                     }else{
-                        holder.itemView.findViewById(R.id.default_flag).setVisibility(View.GONE);
+                        checkBox.setChecked(false);
                     }
-                    holder.setOnClickListener(R.id.passedit, new View.OnClickListener() {
+                    holder.setOnClickListener(R.id.edit, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             startActivity(buildIntent(new Intent(mActivity,AddressActivity.class),carChoiceBean));
+                        }
+                    });
+                    holder.setOnClickListener(R.id.delete, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                            startActivity(buildIntent(new Intent(mActivity,AddressActivity.class),carChoiceBean));
                         }
                     });
 

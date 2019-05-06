@@ -54,7 +54,10 @@ public class RegisterActivity extends BaseActivity {
     private TextView register;
     private CountDownTimer mTimer;
     private boolean mShowPwd = false;
-
+    @Override
+    public boolean isNoNeedLogin() {
+        return true;
+    }
     @Override
     protected int getContentViewId() {
         return R.layout.activity_register;
@@ -148,7 +151,7 @@ public class RegisterActivity extends BaseActivity {
         map.put("phone", phone);
         map.put("code", code);
         map.put("pwd", password);
-        map.put("client", "1");//客户端类别 android为1，ios为2
+//        map.put("invite_code", "1");//客户端类别 android为1，ios为2
         RequestManager.mRetrofitManager3
                 .createRequest(RetrofitRequestInterface.class)
                 .register(RequestManager.encryptParams(map))
@@ -164,16 +167,19 @@ public class RegisterActivity extends BaseActivity {
                             String info = res.getString("info");
                             ToastUtil.showShort(mContext, info);
                             if (code == 0) {
-                                JSONObject data = res.getJSONObject("data");
-                                AccountManager.sUserBean = new UserBean();
-                                AccountManager.sUserBean.setId(data.getString("id"));
-                                AccountManager.sUserBean.setTelNumber(phone);
-                                AccountManager.sUserBean.setPassWord(password);
-                                AccountManager.sUserBean.setNickName(data.getString("nicename"));
-                                AccountManager.sUserBean.setHeadPortrait(data.getString("avatar"));
+//                                JSONObject data = res.getJSONObject("data");
+//                                AccountManager.sUserBean = new UserBean();
+//                                AccountManager.sUserBean.account=phone;
+//                                AccountManager.sUserBean.passwd=password;
+
+//                                AccountManager.sUserBean.setId(data.getString("id"));
+//                                AccountManager.sUserBean.setTelNumber(phone);
+//                                AccountManager.sUserBean.setPassWord(password);
+//                                AccountManager.sUserBean.setNickName(data.getString("nicename"));
+//                                AccountManager.sUserBean.setHeadPortrait(data.getString("avatar"));
                                 String userBase64 = CommonUtil.objectToBase64(AccountManager.sUserBean);
                                 SPUtil.put(Constant.USER, userBase64);
-                                Intent intent = new Intent(mActivity, MainActivity.class);
+                                Intent intent = new Intent(mActivity, LoginActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -196,6 +202,7 @@ public class RegisterActivity extends BaseActivity {
     private void getCode(final String phone) {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
+        map.put("type", "reg");
         RequestManager.mRetrofitManager3
                 .createRequest(RetrofitRequestInterface.class)
                 .getCode(RequestManager.encryptParams(map))
@@ -206,7 +213,7 @@ public class RegisterActivity extends BaseActivity {
                         try {
                             JSONObject res = new JSONObject(response);
                             int code = res.getInt("code");
-                            String info = res.getString("info");
+                            String info = res.getString("data");
 
                             if (code == 0) {
                                 ToastUtil.showShort(mContext, info);

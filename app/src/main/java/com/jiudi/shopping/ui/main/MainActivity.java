@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.vp.VpFragmentAdapter;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.event.FlashEvent;
 import com.jiudi.shopping.event.UpdatePayStatusEvent;
 import com.jiudi.shopping.global.Constant;
 import com.jiudi.shopping.manager.RequestManager;
@@ -117,6 +118,7 @@ public class MainActivity extends BaseActivity {
         super.onResume();
 
         mMainTL.getTabAt(0).select();
+        EventBus.getDefault().post(new FlashEvent());
     }
 
     private void initTabData() {

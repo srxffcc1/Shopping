@@ -122,58 +122,58 @@ public class PayCompleteActivity extends BaseActivity {
      */
     private void getOrderDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         map.put("unid", mUnid);
         
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getCarOrderDetail(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
-            @Override
-            public void onSuccess(String response) {
-                LogUtil.e(TAG, response);
-                try {
-                    JSONObject res = new JSONObject(response);
-                    String info = res.getString("info");
-                    int code = res.getInt("code");
-                    if (code == 0) {
-                        mOrderList.clear();
-                        JSONObject dataItem = res.getJSONObject("data");
-                        CarOrderBean carOrderBean = new CarOrderBean();
-                        carOrderBean.setId(dataItem.getString("id"));
-                        carOrderBean.setUnid(dataItem.getString("unid"));
-                        carOrderBean.setTotalFee(dataItem.getString("total_fee"));
-                        carOrderBean.setPaidFee(dataItem.getString("paid_fee"));
-                        carOrderBean.setTicketFee(dataItem.getString("ticket_fee"));
-                        carOrderBean.setEntryTime(dataItem.getString("entry_time"));
-                        carOrderBean.setExitTime(dataItem.getString("exit_time"));
-                        carOrderBean.setStatus(dataItem.getString("status"));
-                        carOrderBean.setDerateDuration(dataItem.getString("derate_duration"));
-                        carOrderBean.setDuration(dataItem.getString("duration"));
-                        carOrderBean.setPayType(dataItem.getString("paytype"));
-                        mParkNameTV.setText(dataItem.getString("park_name"));
-                        mCarPlateTV.setText(dataItem.getString("plate"));
-                        mPayPriceTV.setText(dataItem.getString("price"));
-                        mPayTimeTV.setText(dataItem.getString("paytime"));
-
-                        startGroupCountDown(dataItem.getString("paytime"));
-                    } else {
-                        ToastUtil.showShort(mActivity, info);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                DialogUtil.hideProgress();
-                LogUtil.e(TAG, t.getMessage());
-                if (!NetworkUtil.isConnected()) {
-                    ToastUtil.showShort(mActivity, getString(R.string.network_error));
-                } else {
-                    ToastUtil.showShort(mActivity, getString(R.string.net_error));
-                }
-            }
-        });
+//        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getCarOrderDetail(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+//            @Override
+//            public void onSuccess(String response) {
+//                LogUtil.e(TAG, response);
+//                try {
+//                    JSONObject res = new JSONObject(response);
+//                    String info = res.getString("info");
+//                    int code = res.getInt("code");
+//                    if (code == 0) {
+//                        mOrderList.clear();
+//                        JSONObject dataItem = res.getJSONObject("data");
+//                        CarOrderBean carOrderBean = new CarOrderBean();
+//                        carOrderBean.setId(dataItem.getString("id"));
+//                        carOrderBean.setUnid(dataItem.getString("unid"));
+//                        carOrderBean.setTotalFee(dataItem.getString("total_fee"));
+//                        carOrderBean.setPaidFee(dataItem.getString("paid_fee"));
+//                        carOrderBean.setTicketFee(dataItem.getString("ticket_fee"));
+//                        carOrderBean.setEntryTime(dataItem.getString("entry_time"));
+//                        carOrderBean.setExitTime(dataItem.getString("exit_time"));
+//                        carOrderBean.setStatus(dataItem.getString("status"));
+//                        carOrderBean.setDerateDuration(dataItem.getString("derate_duration"));
+//                        carOrderBean.setDuration(dataItem.getString("duration"));
+//                        carOrderBean.setPayType(dataItem.getString("paytype"));
+//                        mParkNameTV.setText(dataItem.getString("park_name"));
+//                        mCarPlateTV.setText(dataItem.getString("plate"));
+//                        mPayPriceTV.setText(dataItem.getString("price"));
+//                        mPayTimeTV.setText(dataItem.getString("paytime"));
+//
+//                        startGroupCountDown(dataItem.getString("paytime"));
+//                    } else {
+//                        ToastUtil.showShort(mActivity, info);
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable t) {
+//                DialogUtil.hideProgress();
+//                LogUtil.e(TAG, t.getMessage());
+//                if (!NetworkUtil.isConnected()) {
+//                    ToastUtil.showShort(mActivity, getString(R.string.network_error));
+//                } else {
+//                    ToastUtil.showShort(mActivity, getString(R.string.net_error));
+//                }
+//            }
+//        });
     }
 
     /**

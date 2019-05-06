@@ -89,7 +89,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void cancelOrder(String order_id) {
         Map<String, String> map = new HashMap<>();
         if (AccountManager.sUserBean != null) {
-            map.put("customer_id", AccountManager.sUserBean.getId());
+//            map.put("customer_id", AccountManager.sUserBean.getId());
             map.put("order_id", order_id);
             RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).cancelOrder(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
                 @Override
@@ -134,7 +134,7 @@ public class OrderDetailActivity extends BaseActivity {
                 String paytypekey = "pay_type";
                 String url = "index.php?g=app&m=appv1&a=goodsPay";
                 Map<String, String> postmap = new HashMap<>();
-                postmap.put("customer_id",AccountManager.sUserBean.getId());
+//                postmap.put("customer_id",AccountManager.sUserBean.getId());
                 postmap.put("url",url);
                 postmap.put("paymm",bean.goods_all_price);
                 postmap.put("paytypekey",paytypekey);
@@ -145,7 +145,7 @@ public class OrderDetailActivity extends BaseActivity {
     }
     private void getOrderDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         map.put("order_id",getIntent().getStringExtra("order_id"));
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getOrderDetail(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override

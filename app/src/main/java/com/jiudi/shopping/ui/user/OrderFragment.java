@@ -59,7 +59,7 @@ public class OrderFragment extends BaseFragment {
     private void getTestList(int page) {
         Map<String, String> map = new HashMap<>();
         if (AccountManager.sUserBean != null) {
-            map.put("customer_id", AccountManager.sUserBean.getId());
+//            map.put("customer_id", AccountManager.sUserBean.getId());
             map.put("page", page + "");
             map.put("order_status", getArguments().getString("order_status"));
             map.put("limit", "10");
@@ -88,7 +88,7 @@ public class OrderFragment extends BaseFragment {
 
     private void getOrderList(int page) {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         map.put("page", page + "");
         map.put("order_status", getArguments().getString("order_status"));
         map.put("limit", "10");
@@ -153,7 +153,7 @@ public class OrderFragment extends BaseFragment {
         DialogUtil.showUnCancelableProgress(mActivity, "订单取消中");
         Map<String, String> map = new HashMap<>();
         if (AccountManager.sUserBean != null) {
-            map.put("customer_id", AccountManager.sUserBean.getId());
+//            map.put("customer_id", AccountManager.sUserBean.getId());
             map.put("order_id", order_id);
             RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).cancelOrder(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
                 @Override
@@ -242,7 +242,7 @@ public class OrderFragment extends BaseFragment {
                             String paytypekey = "pay_type";
                             String url = "index.php?g=app&m=appv1&a=goodsPay";
                             Map<String, String> postmap = new HashMap<>();
-                            postmap.put("customer_id",AccountManager.sUserBean.getId());
+//                            postmap.put("customer_id",AccountManager.sUserBean.getId());
                             postmap.put("url",url);
                             postmap.put("paymm",carChoiceBean.goods_all_price);
                             postmap.put("paytypekey",paytypekey);

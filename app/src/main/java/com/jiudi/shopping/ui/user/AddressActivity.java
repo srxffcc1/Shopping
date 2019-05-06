@@ -20,6 +20,7 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.util.GetJsonDataUtil;
+import com.jiudi.shopping.util.SPUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +51,9 @@ public class AddressActivity extends BaseActivity {
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private android.widget.Switch switchdefault;
+    private String province;
+    private String city;
+    private String district;
 
     @Override
     protected int getContentViewId() {
@@ -83,13 +87,16 @@ public class AddressActivity extends BaseActivity {
     public void initData() {
         initJsonData();
         if(getIntent().getStringExtra("id") != null){
-            edaddressdetail.setText(getIntent().getStringExtra("detailed_address"));
-            edphone.setText(getIntent().getStringExtra("receiver_mobile"));
-            edshouhuoren.setText(getIntent().getStringExtra("receiver_name"));
-            textcity.setText(getIntent().getStringExtra("region"));
+            edaddressdetail.setText(getIntent().getStringExtra("detail"));
+            edphone.setText(getIntent().getStringExtra("phone"));
+            edshouhuoren.setText(getIntent().getStringExtra("real_name"));
+            textcity.setText(getIntent().getStringExtra("province")+getIntent().getStringExtra("city")+getIntent().getStringExtra("district"));
             if("1".equals(getIntent().getStringExtra("is_default"))){
                 switchdefault.setChecked(true);
             }
+            province=getIntent().getStringExtra("province");
+            city=getIntent().getStringExtra("city");
+            district=getIntent().getStringExtra("district");
         }
     }
 
@@ -163,23 +170,25 @@ public class AddressActivity extends BaseActivity {
 
     private void saveAddress() {
         Map<String, String> map = new HashMap<>();
-        map.put("customer_id", AccountManager.sUserBean.getId());
+//        map.put("customer_id", AccountManager.sUserBean.getId());
         if (getIntent().getStringExtra("id") != null) {
             map.put("id", getIntent().getStringExtra("id"));
         }
-        map.put("receiver_name", edshouhuoren.getText().toString());
-        map.put("receiver_mobile", edphone.getText().toString());
-        map.put("region", textcity.getText().toString());
-        map.put("detailed_address", edaddressdetail.getText().toString());
-        map.put("is_default", switchdefault.isChecked() ? "1" : "0");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).saveAddress((getIntent().getStringExtra("id") != null)?"index.php?g=app&m=appv1&a=post_updateAddress_json":"index.php?g=app&m=appv1&a=post_addAddress_json",RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        map.put("real_name", edshouhuoren.getText().toString());
+        map.put("phone", edphone.getText().toString());
+        map.put("province", province);
+        map.put("city", city);
+        map.put("district", district);
+        map.put("detail", edaddressdetail.getText().toString());
+        map.put("is_default", switchdefault.isChecked() ? "true" : "false");
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).saveAddress(SPUtil.get("head", "").toString(),(getIntent().getStringExtra("id") != null)?"api/auth_api/edit_user_address":"api/auth_api/edit_user_address",RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
-                    String info = res.getString("info");
-                    if (code == 0) {
+                    String info = res.getString("msg");
+                    if (code == 200) {
                         finish();
                     }
 
@@ -229,6 +238,9 @@ public class AddressActivity extends BaseActivity {
                         options3Items.get(options1).get(options2).get(options3) : "";
 
                 String tx = opt1tx + opt2tx + opt3tx;
+                province=opt1tx;
+                city=opt2tx;
+                district=opt3tx;
                 textcity.setText(tx);
             }
         })

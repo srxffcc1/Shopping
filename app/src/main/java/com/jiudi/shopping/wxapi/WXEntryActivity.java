@@ -7,12 +7,16 @@ package com.jiudi.shopping.wxapi;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.jiudi.shopping.event.WechatLoginEvent;
+import com.jiudi.shopping.event.WechatPayEvent;
 import com.jiudi.shopping.global.LocalApplication;
 import com.jiudi.shopping.util.LogUtil;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
@@ -34,7 +38,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         LogUtil.e(TAG, baseResp.errCode + "");
         if (baseResp instanceof SendAuth.Resp) {
             SendAuth.Resp resp = (SendAuth.Resp) baseResp;//需要app自行使用得到的参数去请求 用户信息 帮助登录 代码解析部分再下面的方法
-            LogUtil.e(TAG,resp.toString());
+//            LogUtil.e(TAG,resp.toString());
+
+
+            WechatLoginEvent wechatPayEvent = new WechatLoginEvent();
+            wechatPayEvent.setResult(resp.code);
+            EventBus.getDefault().post(wechatPayEvent);
             finish();
 
         }

@@ -98,8 +98,8 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void initData() {
-        textnicheng.setText(AccountManager.sUserBean.nicename);
-        textphone.setText(AccountManager.sUserBean.phone);
+//        textnicheng.setText(AccountManager.sUserBean.nicename);
+//        textphone.setText(AccountManager.sUserBean.phone);
     }
 
     @Override
