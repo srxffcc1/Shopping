@@ -50,13 +50,13 @@ public class AllOrderActivity extends BaseActivity {
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i]));
         }
-        mFragments.add(new OrderFragment().setArgumentz("order_status","all"));
-        mFragments.add(new OrderFragment().setArgumentz("order_status","0"));
-        mFragments.add(new OrderFragment().setArgumentz("order_status","1"));
-        mFragments.add(new OrderFragment().setArgumentz("order_status","3"));
-        mFragments.add(new OrderFragment().setArgumentz("order_status","5"));
+        mFragments.add(new OrderFragment().setArgumentz("type",""));
+        mFragments.add(new OrderFragment().setArgumentz("type","0"));
+        mFragments.add(new OrderFragment().setArgumentz("type","1"));
+        mFragments.add(new OrderFragment().setArgumentz("type","2"));
+        mFragments.add(new OrderFragment().setArgumentz("type","3"));
         tl.setTabData(mTabEntities,this,R.id.fl_change,mFragments);
-        tl.setCurrentTab(getIntent().getIntExtra("order_status",0));
+        tl.setCurrentTab(getIntent().getIntExtra("type",0));
 
     }
 

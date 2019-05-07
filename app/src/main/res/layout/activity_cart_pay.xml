@@ -194,6 +194,7 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content" />
                     <RadioButton
+                        android:checked="true"
                         android:padding="3dp"
                         android:layout_marginLeft="10dp"
                         android:id="@+id/checkweixin"
@@ -224,7 +225,6 @@
                         />
                     <RadioButton
                         android:padding="3dp"
-                        android:checked="true"
                         android:layout_marginLeft="10dp"
                         android:id="@+id/checkxianjin"
                         android:layout_width="wrap_content"

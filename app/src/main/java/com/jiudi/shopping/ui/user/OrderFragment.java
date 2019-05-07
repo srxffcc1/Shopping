@@ -3,24 +3,38 @@ package com.jiudi.shopping.ui.user;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
 import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
 import com.jiudi.shopping.base.BaseFragment;
+import com.jiudi.shopping.bean.CartAttrValue;
+import com.jiudi.shopping.bean.CartInfo;
 import com.jiudi.shopping.bean.Order;
 import com.jiudi.shopping.bean.OrderEvent;
-import com.jiudi.shopping.manager.AccountManager;
+import com.jiudi.shopping.bean.CartStatus;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
-import com.jiudi.shopping.ui.main.PayAllReleaseActivity;
+import com.jiudi.shopping.ui.cart.DingDanActivity;
 import com.jiudi.shopping.util.DialogUtil;
+import com.jiudi.shopping.util.SPUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,8 +43,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,78 +70,108 @@ public class OrderFragment extends BaseFragment {
     @Override
     public void initData() {
         EventBus.getDefault().register(this);
-        getOrderList(1);
+        getOrderList(0);
     }
 
     private void getTestList(int page) {
-        Map<String, String> map = new HashMap<>();
-        if (AccountManager.sUserBean != null) {
-//            map.put("customer_id", AccountManager.sUserBean.getId());
-            map.put("page", page + "");
-            map.put("order_status", getArguments().getString("order_status"));
-            map.put("limit", "10");
-            RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGoodOrder(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
-                @Override
-                public void onSuccess(String response) {
-
-                }
-
-                @Override
-                public void onError(Throwable t) {
-
-                }
-            });
-        } else {
-
-        }
+//        Map<String, String> map = new HashMap<>();
+//        if (AccountManager.sUserBean != null) {
+////            map.put("customer_id", AccountManager.sUserBean.getId());
+//            map.put("page", page + "");
+//            map.put("order_status", getArguments().getString("order_status"));
+//            map.put("limit", "10");
+//            RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGoodOrder(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+//                @Override
+//                public void onSuccess(String response) {
+//
+//                }
+//
+//                @Override
+//                public void onError(Throwable t) {
+//
+//                }
+//            });
+//        } else {
+//
+//        }
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshEvent(OrderEvent wechatPayEvent) {
-        getOrderList(1);
+        getOrderList(0);
         DialogUtil.hideProgress();
     }
 
     private void getOrderList(int page) {
         Map<String, String> map = new HashMap<>();
 //        map.put("customer_id", AccountManager.sUserBean.getId());
-        map.put("page", page + "");
-        map.put("order_status", getArguments().getString("order_status"));
+        map.put("first", page + "");
+        map.put("type", getArguments().getString("type"));
         map.put("limit", "10");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGoodOrder(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGoodOrder(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
-                    String info = res.getString("info");
+                    String info = res.getString("msg");
                     mBeanList.clear();
-                    if (code == 0) {
+                    if (code == 200) {
                         JSONArray jsonArray = res.getJSONArray("data");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             Order bean = new Order();
-                            bean.id = jsonObject.optString("id");
-                            bean.out_trade_no = jsonObject.optString("out_trade_no");
-                            bean.goods_id = jsonObject.optString("goods_id");
-                            bean.goods_price = jsonObject.optString("goods_price");
-                            bean.goods_all_price = jsonObject.optString("goods_all_price");
-                            bean.goods_name = jsonObject.optString("goods_name");
-                            bean.goods_number = jsonObject.optString("goods_number");
-                            bean.goods_img = jsonObject.optString("goods_img");
-                            bean.goods_format = jsonObject.optString("goods_format");
-                            bean.goods_unit = jsonObject.optString("goods_unit");
-                            bean.order_status = jsonObject.optString("order_status");
-                            bean.pay_status = jsonObject.optString("pay_status");
-                            bean.pay_type = jsonObject.optString("pay_type");
-                            bean.pay_fee = jsonObject.optString("pay_fee");
-                            bean.cutoff_time = jsonObject.optString("cutoff_time");
-                            bean.auto_take_time = jsonObject.optString("auto_take_time");
-                            bean.create_time = jsonObject.optString("create_time");
-                            bean.pay_time = jsonObject.optString("pay_time");
-                            bean.action = jsonObject.optString("action");
-                            bean.order_status_text = jsonObject.optString("order_status_text");
+                            bean.combination_id=jsonObject.optString("combination_id");
+                            bean.id=jsonObject.optString("id");
+                            bean.order_id=jsonObject.optString("order_id");
+                            bean.pay_price=jsonObject.optString("pay_price");
+                            bean.total_num=jsonObject.optString("total_num");
+                            bean.total_price=jsonObject.optString("total_price");
+                            bean.pay_postage=jsonObject.optString("pay_postage");
+                            bean.total_postage=jsonObject.optString("total_postage");
+                            bean.paid=jsonObject.optString("paid");
+                            bean.status=jsonObject.optString("status");
+                            bean.refund_status=jsonObject.optString("refund_status");
+                            bean.pay_type=jsonObject.optString("pay_type");
+                            bean.coupon_price=jsonObject.optString("coupon_price");
+                            bean.deduction_price=jsonObject.optString("deduction_price");
+                            bean.pink_id=jsonObject.optString("pink_id");
+                            bean.delivery_type=jsonObject.optString("delivery_type");
+                            bean.combination_id=jsonObject.optString("combination_id");
+
+
+
+                            bean.user_address=jsonObject.optString("user_address");
+
+                            bean.real_name=jsonObject.optString("real_name");
+
+                            bean.user_phone=jsonObject.optString("user_phone");
+
+
+                            GsonBuilder builder = new GsonBuilder();
+                            builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                                public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                                    return new Date(json.getAsJsonPrimitive().getAsLong());
+                                }
+                            });
+                            Gson gson = builder.create();
+                            Type cartStatusType = new TypeToken<CartStatus>() {
+                            }.getType();
+                            Type cartInfoType = new TypeToken<CartInfo>() {
+                            }.getType();
+                            String cartStatuss=jsonObject.getJSONObject("_status").toString();
+                            CartStatus cartStatus=gson.fromJson(cartStatuss,cartStatusType);
+                            bean.setStatuz(cartStatus);
+
+                            JSONObject cartInfoObj=jsonObject.getJSONObject("cartInfo");
+                            Iterator iterator = cartInfoObj.keys();
+                            while(iterator.hasNext()){
+                                String key = iterator.next() + "";
+                                CartInfo cartInfo=gson.fromJson(cartInfoObj.getJSONObject(key).toString(),cartInfoType);
+                                bean.addCartInfo(cartInfo);
+                            }
+
                             mBeanList.add(bean);
                         }
                     }
@@ -150,35 +197,35 @@ public class OrderFragment extends BaseFragment {
 
     private void cancelOrder(String order_id) {
 
-        DialogUtil.showUnCancelableProgress(mActivity, "订单取消中");
-        Map<String, String> map = new HashMap<>();
-        if (AccountManager.sUserBean != null) {
-//            map.put("customer_id", AccountManager.sUserBean.getId());
-            map.put("order_id", order_id);
-            RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).cancelOrder(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
-                @Override
-                public void onSuccess(String response) {
-                    try {
-                        JSONObject res = new JSONObject(response);
-                        int code = res.getInt("code");
-                        String info = res.getString("info");
-                        if (code == 0) {
-                            EventBus.getDefault().post(new OrderEvent());
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onError(Throwable t) {
-
-                }
-            });
-        } else {
-
-        }
+//        DialogUtil.showUnCancelableProgress(mActivity, "订单取消中");
+//        Map<String, String> map = new HashMap<>();
+//        if (AccountManager.sUserBean != null) {
+////            map.put("customer_id", AccountManager.sUserBean.getId());
+//            map.put("order_id", order_id);
+//            RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).cancelOrder(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+//                @Override
+//                public void onSuccess(String response) {
+//                    try {
+//                        JSONObject res = new JSONObject(response);
+//                        int code = res.getInt("code");
+//                        String info = res.getString("info");
+//                        if (code == 0) {
+//                            EventBus.getDefault().post(new OrderEvent());
+//                        }
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                @Override
+//                public void onError(Throwable t) {
+//
+//                }
+//            });
+//        } else {
+//
+//        }
 
     }
 
@@ -192,65 +239,52 @@ public class OrderFragment extends BaseFragment {
             myAdapter = new RecyclerCommonAdapter<Order>(mActivity, R.layout.item_order, mBeanList) {
                 @Override
                 protected void convert(ViewHolder holder, final Order carChoiceBean, int position) {
-                    holder.setText(R.id.order_status, carChoiceBean.action);
-
-                    holder.setText(R.id.order_id, "订单号:"+carChoiceBean.out_trade_no);
-
-                    holder.setText(R.id.order_count, "x"+carChoiceBean.goods_number);
-
-                    holder.setText(R.id.order_money, ""+carChoiceBean.goods_price+"元");
-
-                    holder.setText(R.id.order_date, ""+carChoiceBean.create_time);
-
-                    holder.setText(R.id.order_name, ""+carChoiceBean.goods_name);
-
-
-                    RequestOptions options = new RequestOptions()
-                            .fitCenter()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
-
-                    Glide.with(mActivity).load(carChoiceBean.goods_img).apply(options).into((ImageView) holder.getView(R.id.order_img));
-                    if (Integer.parseInt(carChoiceBean.order_status) == 0) {
-                        holder.itemView.findViewById(R.id.order_submit).setVisibility(View.VISIBLE);
-                    } else {
-
-                        holder.itemView.findViewById(R.id.order_submit).setVisibility(View.GONE);
+                    LinearLayout linearLayout=holder.itemView.findViewById(R.id.allcart);
+                    String cartlist=new Gson().toJson(carChoiceBean.getCartInfoList());
+                    buildCartList(linearLayout,cartlist);
+                    String title=carChoiceBean.getStatuz().get_title();
+                    holder.setText(R.id.order_number,"订单："+carChoiceBean.getOrder_id());
+                    holder.setText(R.id.summoney,"商品总价：¥"+carChoiceBean.getTotal_price()+"");
+                    holder.setText(R.id.title,carChoiceBean.getStatuz().get_title());
+                    TextView function_0=holder.itemView.findViewById(R.id.function_0);
+                    final TextView function_1=holder.itemView.findViewById(R.id.function_1);
+                    if("未支付".equals(title)){
+                        function_0.setVisibility(View.GONE);
+                        function_1.setVisibility(View.VISIBLE);
+                        function_1.setText("立即付款");
                     }
-                    if (Integer.parseInt(carChoiceBean.order_status) >= 5) {
-                        holder.itemView.findViewById(R.id.order_cancel).setVisibility(View.GONE);
-                    } else {
+                    if("未发货".equals(title)){
 
-                        holder.itemView.findViewById(R.id.order_cancel).setVisibility(View.VISIBLE);
+                        function_0.setVisibility(View.GONE);
+                        function_1.setVisibility(View.GONE);
+                        function_1.setText("立即付款");
                     }
+                    if("待收货".equals(title)){
+                        function_0.setVisibility(View.GONE);
+                        function_1.setVisibility(View.GONE);
+                        function_1.setText("立即付款");
+
+                    }
+                    if("待评价".equals(title)){
+                        function_0.setVisibility(View.VISIBLE);
+                        function_1.setVisibility(View.VISIBLE);
+                        function_0.setText("立即评价");
+                        function_1.setText("再来一单");
+                    }
+//                    function_1.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            if("立即付款".equals(function_1.getText().toString())){
+//                                startActivity(new Intent(mActivity, DingDanActivity.class).putExtra("bean",carChoiceBean));
+//                            }
+//                        }
+//                    });
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(mActivity,OrderDetailActivity.class).putExtra("order_id",carChoiceBean.id));
+                            startActivity(new Intent(mActivity, DingDanActivity.class).putExtra("bean",carChoiceBean));
                         }
                     });
-                    holder.setOnClickListener(R.id.order_cancel, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            cancelOrder(carChoiceBean.id);
-                        }
-                    });
-
-                    holder.setOnClickListener(R.id.order_submit, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String order_id = carChoiceBean.id;//获得的本司订单号
-                            String paytypekey = "pay_type";
-                            String url = "index.php?g=app&m=appv1&a=goodsPay";
-                            Map<String, String> postmap = new HashMap<>();
-//                            postmap.put("customer_id",AccountManager.sUserBean.getId());
-                            postmap.put("url",url);
-                            postmap.put("paymm",carChoiceBean.goods_all_price);
-                            postmap.put("paytypekey",paytypekey);
-                            postmap.put("order_id",order_id);
-                            PayAllReleaseActivity.open(mActivity, postmap);//打开充值界面 选择支付类型 然后会访问url交换对应的sign或appid来完成充值
-                        }
-                    });
-
 
                 }
 
@@ -263,5 +297,43 @@ public class OrderFragment extends BaseFragment {
             myAdapter.notifyDataSetChanged();
         }
     }
+    private void buildCartList(ViewGroup viewGroup,String cartInfoListString) {
+        try {
+            JSONArray cartInfoList = new JSONArray(cartInfoListString);
+            viewGroup.removeAllViews();
+            for (int i = 0; i < cartInfoList.length(); i++) {
+                View cartinfol = LayoutInflater.from(mActivity).inflate(R.layout.item_cart_item, viewGroup, false);
+                JSONObject cartInfo = cartInfoList.getJSONObject(i);
+                ImageView imageView = cartinfol.findViewById(R.id.cart_icon2);
+                TextView cart_title = cartinfol.findViewById(R.id.cart_title);
+                TextView cart_cunk = cartinfol.findViewById(R.id.cart_cunk);
+                TextView cart_count = cartinfol.findViewById(R.id.cart_count);
+                TextView cart_money = cartinfol.findViewById(R.id.cart_money);
+                String pic = cartInfo.getJSONObject("productInfo").getString("image");
+                String title = cartInfo.getJSONObject("productInfo").getString("store_name");
+                try {
+                    String cunk = cartInfo.getJSONObject("productInfo").getJSONObject("attrInfo").getString("suk");
+                    cart_cunk.setText(cunk);
+                } catch (JSONException e) {
+                    cart_cunk.setVisibility(View.INVISIBLE);
+                    e.printStackTrace();
+                }
+                String count = "X" + cartInfo.getString("cart_num");
+                String money = "¥" + cartInfo.getJSONObject("productInfo").getString("price");
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+                Glide.with(mActivity).load(pic).apply(options).into(imageView);
+                cart_title.setText(title);
+                cart_count.setText(count);
+                cart_money.setText(money);
+                viewGroup.addView(cartinfol);
 
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

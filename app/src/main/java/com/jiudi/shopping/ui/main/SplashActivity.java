@@ -20,6 +20,7 @@ import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.user.account.LoginActivity;
 import com.jiudi.shopping.util.SPUtil;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,6 +120,12 @@ public class SplashActivity extends BaseActivity {
                             bean.team_num=jsonObject.optString("team_num");
                             bean.is_reward=jsonObject.optString("is_reward");
                             bean.allowance_number=jsonObject.optString("allowance_number");
+                            try {
+                                JSONArray array=res.getJSONObject("data").getJSONArray("coupon_num");
+                                bean.coupon_num=array.length()+"";
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             AccountManager.sUserBean=bean;
                             startActivity(new Intent(mActivity, MainActivity.class));
                             finish();
@@ -140,7 +147,8 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onError(Throwable t) {
-
+                startActivity(new Intent(mActivity, LoginActivity.class));
+                finish();
             }
         });
     }

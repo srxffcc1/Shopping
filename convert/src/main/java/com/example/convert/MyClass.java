@@ -5,23 +5,22 @@ import java.util.regex.Pattern;
 
 public class MyClass {
     public static void main(String[] args) {
-        String org="addressId\n" +
-                "收货地址ID\n" +
-                "bargainId\n" +
-                "砍价ID\n" +
-                "couponId\n" +
-                "优惠卷ID\n" +
-                "payType\n" +
-                "支付方式\n" +
-                "seckill_id\n" +
-                "秒杀ID\n" +
-                "useIntegral\n" +
-                "积分\n" +
-                "mark\n" +
-                "标注\n" +
-                "combinationId\n" +
-                "库存ID\n" +
-                "pinkId";
+        String org="      \"combination_id\": 0,\n" +
+                "      \"id\": 89,\n" +
+                "      \"order_id\": \"wx2019050709272610002\",\n" +
+                "      \"pay_price\": \"0.02\",\n" +
+                "      \"total_num\": 1,\n" +
+                "      \"total_price\": \"0.02\",\n" +
+                "      \"pay_postage\": \"0.00\",\n" +
+                "      \"total_postage\": \"0.00\",\n" +
+                "      \"paid\": 0,\n" +
+                "      \"status\": 0,\n" +
+                "      \"refund_status\": 0,\n" +
+                "      \"pay_type\": \"weixin\",\n" +
+                "      \"coupon_price\": \"0.00\",\n" +
+                "      \"deduction_price\": \"0.00\",\n" +
+                "      \"pink_id\": 0,\n" +
+                "      \"delivery_type\": null,";
         //parm参数
         Pattern pattern=null;
         Matcher matcher=null;

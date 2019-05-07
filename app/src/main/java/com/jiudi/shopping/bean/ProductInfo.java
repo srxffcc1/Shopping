@@ -2,6 +2,7 @@
   * Copyright 2019 bejson.com 
   */
 package com.jiudi.shopping.bean;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
-public class ProductInfo {
+public class ProductInfo implements Serializable {
 
     private int id;
     private String image;

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:background="@color/colorAccent"
-              android:paddingTop="@dimen/dp_30"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/dp_72">
+
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_72"
+    android:background="@color/colorWhite"
+    android:paddingTop="@dimen/dp_30">
     <RelativeLayout
         android:id="@+id/rl_layout_top_back_bar"
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back"
+                android:src="@drawable/back_dark_gray"
                 />
             <TextView
                 android:id="@+id/tv_layout_top_back_bar_start"
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_centerInParent="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/sp_17"
             android:drawablePadding="@dimen/dp_10"
             />
@@ -50,7 +51,7 @@
             android:layout_marginRight="5dp"
             android:gravity="center"
             android:layout_centerVertical="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/sp_17"
             android:drawablePadding="@dimen/dp_10"
             android:layout_alignParentRight="true" />

@@ -684,7 +684,7 @@ public class UserInfoActivity extends BaseActivity {
                         LogUtil.e(TAG, map.toString());
                         RequestManager.mRetrofitManager
                                 .createRequest(RetrofitRequestInterface.class)
-                                .updateHead(RequestManager.encryptParams(map))
+                                .updateHead(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map))
                                 .enqueue(new RetrofitCallBack() {
 
                                     @Override

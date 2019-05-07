@@ -3,13 +3,15 @@
   */
 package com.jiudi.shopping.bean;
 
+import java.io.Serializable;
+
 /**
  * Auto-generated: 2019-05-06 19:5:33
  *
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
-public class AttrInfo {
+public class AttrInfo implements Serializable {
 
     private int product_id;
     private String suk;

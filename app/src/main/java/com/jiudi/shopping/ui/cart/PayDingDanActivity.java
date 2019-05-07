@@ -284,9 +284,9 @@ public class PayDingDanActivity extends BaseActivity {
 
     private void buildCartList(JSONObject data) {
         try {
-            JSONArray cartInfoList = data.getJSONArray("cartInfo");
+            JSONArray cartInfoList = data.getJSONArray("CartInfo");
             for (int i = 0; i < cartInfoList.length(); i++) {
-                View cartinfol = LayoutInflater.from(mActivity).inflate(R.layout.item_cart_pay, godss, false);
+                View cartinfol = LayoutInflater.from(mActivity).inflate(R.layout.item_cart_item, godss, false);
                 JSONObject cartInfo = cartInfoList.getJSONObject(i);
                 ImageView imageView = cartinfol.findViewById(R.id.cart_icon2);
                 TextView cart_title = cartinfol.findViewById(R.id.cart_title);
@@ -378,14 +378,17 @@ public class PayDingDanActivity extends BaseActivity {
         switch (result) {
             case 0:
                 ToastUtil.showShort(mActivity, "支付成功");
+                finish();
 //                PayCompleteActivity.open(mActivity,mUnid);
                 break;
             case -1:
                 ToastUtil.showShort(mActivity, "支付失败");
                 showPayPopWindow();
+                finish();
                 break;
             case -2:
                 ToastUtil.showShort(mActivity, "取消了支付");
+                finish();
                 break;
         }
     }

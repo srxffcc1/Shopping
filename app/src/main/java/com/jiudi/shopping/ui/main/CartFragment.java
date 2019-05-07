@@ -25,9 +25,8 @@ import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
 import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
 import com.jiudi.shopping.base.BaseFragment;
-import com.jiudi.shopping.bean.CartShopCart;
+import com.jiudi.shopping.bean.CartInfo;
 import com.jiudi.shopping.event.FlashEvent;
-import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
@@ -55,8 +54,8 @@ public class CartFragment extends BaseFragment {
 
 
     private RecyclerView recycler;
-    private RecyclerCommonAdapter<CartShopCart> myAdapter;
-    private List<CartShopCart> mBeanList = new ArrayList<>();
+    private RecyclerCommonAdapter<CartInfo> myAdapter;
+    private List<CartInfo> mBeanList = new ArrayList<>();
     private android.widget.TextView topay;
     private android.widget.CheckBox allcheck;
 
@@ -97,7 +96,7 @@ public class CartFragment extends BaseFragment {
             public void onClick(View v) {
                 String result="";
                 for (int i = 0; i <mBeanList.size() ; i++) {
-                    CartShopCart bean=mBeanList.get(i);
+                    CartInfo bean=mBeanList.get(i);
                     if(bean.isIscheck()){
                         result+=bean.getId()+",";
                     }
@@ -112,7 +111,7 @@ public class CartFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for (int i = 0; i < mBeanList.size(); i++) {
-                    CartShopCart bean=mBeanList.get(i);
+                    CartInfo bean=mBeanList.get(i);
                     bean.setIscheck(isChecked);
                 }
 
@@ -142,10 +141,10 @@ public class CartFragment extends BaseFragment {
                             }
                         });
                         Gson gson = builder.create();
-                        Type cartshoplisttype = new TypeToken<List<CartShopCart>>() {
+                        Type cartshoplisttype = new TypeToken<List<CartInfo>>() {
                         }.getType();
                         String s=res.getJSONObject("data").getJSONArray("valid").toString();
-                        mBeanList.addAll((Collection<? extends CartShopCart>) gson.fromJson(s,cartshoplisttype));
+                        mBeanList.addAll((Collection<? extends CartInfo>) gson.fromJson(s,cartshoplisttype));
                     }
 
                     showRecycleView();
@@ -164,10 +163,10 @@ public class CartFragment extends BaseFragment {
         if (myAdapter == null) {
 
 
-            myAdapter = new RecyclerCommonAdapter<CartShopCart>(mActivity, R.layout.item_cart_list, mBeanList) {
+            myAdapter = new RecyclerCommonAdapter<CartInfo>(mActivity, R.layout.item_cart_list, mBeanList) {
 
                 @Override
-                protected void convert(final ViewHolder holder, final CartShopCart carChoiceBean, int position) {
+                protected void convert(final ViewHolder holder, final CartInfo carChoiceBean, int position) {
                     holder.setText(R.id.title,carChoiceBean.getProductInfo().getStore_name());
                     try {
                         holder.setText(R.id.fuwu,carChoiceBean.getProductInfo().getAttrInfo().getSuk());

@@ -1,44 +1,202 @@
 package com.jiudi.shopping.bean;
 
-public class Order {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order implements Serializable {
+    public String user_address;
+    public String real_name;
+    public String user_phone;
+    public String combination_id;
     public String id;
-    public String out_trade_no;
-    public String goods_id;
-    public String goods_price;
-    public String goods_all_price;
-    public String goods_name;
-    public String goods_number;
-    public String goods_img;
-    public String goods_format;
-    public String goods_unit;
-    public String order_status;
-    public String pay_status;
+    public String order_id;
+    public String pay_price;
+    public String total_num;
+    public String total_price;
+    public String pay_postage;
+
+    public String getUser_address() {
+        return user_address;
+    }
+
+    public void setUser_address(String user_address) {
+        this.user_address = user_address;
+    }
+
+    public String getReal_name() {
+        return real_name;
+    }
+
+    public void setReal_name(String real_name) {
+        this.real_name = real_name;
+    }
+
+    public String getUser_phone() {
+        return user_phone;
+    }
+
+    public void setUser_phone(String user_phone) {
+        this.user_phone = user_phone;
+    }
+
+    public String total_postage;
+    public String paid;
+    public String status;
+    public String refund_status;
     public String pay_type;
-    public String pay_fee;
-    public String cutoff_time;
-    public String auto_take_time;
-    public String create_time;
-    public String pay_time;
-    public String action;
-    public String order_status_text;
-//    bean.id=jsonObject.optString("id");
-//    bean.out_trade_no=jsonObject.optString("out_trade_no");
-//    bean.goods_id=jsonObject.optString("goods_id");
-//    bean.goods_price=jsonObject.optString("goods_price");
-//    bean.goods_all_price=jsonObject.optString("goods_all_price");
-//    bean.goods_name=jsonObject.optString("goods_name");
-//    bean.goods_number=jsonObject.optString("goods_number");
-//    bean.goods_img=jsonObject.optString("goods_img");
-//    bean.goods_format=jsonObject.optString("goods_format");
-//    bean.goods_unit=jsonObject.optString("goods_unit");
-//    bean.order_status=jsonObject.optString("order_status");
-//    bean.pay_status=jsonObject.optString("pay_status");
-//    bean.pay_type=jsonObject.optString("pay_type");
-//    bean.pay_fee=jsonObject.optString("pay_fee");
-//    bean.cutoff_time=jsonObject.optString("cutoff_time");
-//    bean.auto_take_time=jsonObject.optString("auto_take_time");
-//    bean.create_time=jsonObject.optString("create_time");
-//    bean.pay_time=jsonObject.optString("pay_time");
-//    bean.action=jsonObject.optString("action");
-//    bean.order_status_text=jsonObject.optString("order_status_text");
+    public String coupon_price;
+    public String deduction_price;
+    public String pink_id;
+    public String delivery_type;
+    public List<CartInfo> cartInfoList=new ArrayList<>();
+    public CartStatus statuz;
+
+    public void addCartInfo(CartInfo cartInfo){
+        cartInfoList.add(cartInfo);
+    }
+
+    public CartStatus getStatuz() {
+        return statuz;
+    }
+
+    public void setStatuz(CartStatus statuz) {
+        this.statuz = statuz;
+    }
+
+    public String getCombination_id() {
+        return combination_id;
+    }
+
+    public void setCombination_id(String combination_id) {
+        this.combination_id = combination_id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
+    }
+
+    public String getPay_price() {
+        return pay_price;
+    }
+
+    public void setPay_price(String pay_price) {
+        this.pay_price = pay_price;
+    }
+
+    public String getTotal_num() {
+        return total_num;
+    }
+
+    public void setTotal_num(String total_num) {
+        this.total_num = total_num;
+    }
+
+    public String getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(String total_price) {
+        this.total_price = total_price;
+    }
+
+    public String getPay_postage() {
+        return pay_postage;
+    }
+
+    public void setPay_postage(String pay_postage) {
+        this.pay_postage = pay_postage;
+    }
+
+    public String getTotal_postage() {
+        return total_postage;
+    }
+
+    public void setTotal_postage(String total_postage) {
+        this.total_postage = total_postage;
+    }
+
+    public String getPaid() {
+        return paid;
+    }
+
+    public void setPaid(String paid) {
+        this.paid = paid;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRefund_status() {
+        return refund_status;
+    }
+
+    public void setRefund_status(String refund_status) {
+        this.refund_status = refund_status;
+    }
+
+    public String getPay_type() {
+        return pay_type;
+    }
+
+    public void setPay_type(String pay_type) {
+        this.pay_type = pay_type;
+    }
+
+    public String getCoupon_price() {
+        return coupon_price;
+    }
+
+    public void setCoupon_price(String coupon_price) {
+        this.coupon_price = coupon_price;
+    }
+
+    public String getDeduction_price() {
+        return deduction_price;
+    }
+
+    public void setDeduction_price(String deduction_price) {
+        this.deduction_price = deduction_price;
+    }
+
+    public String getPink_id() {
+        return pink_id;
+    }
+
+    public void setPink_id(String pink_id) {
+        this.pink_id = pink_id;
+    }
+
+    public String getDelivery_type() {
+        return delivery_type;
+    }
+
+    public void setDelivery_type(String delivery_type) {
+        this.delivery_type = delivery_type;
+    }
+
+    public List<CartInfo> getCartInfoList() {
+        return cartInfoList;
+    }
+
+    public void setCartInfoList(List<CartInfo> cartInfoList) {
+        this.cartInfoList = cartInfoList;
+    }
 }

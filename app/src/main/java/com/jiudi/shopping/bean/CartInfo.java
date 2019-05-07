@@ -3,13 +3,15 @@
   */
 package com.jiudi.shopping.bean;
 
+import java.io.Serializable;
+
 /**
  * Auto-generated: 2019-05-06 19:5:33
  *
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
-public class CartShopCart {
+public class CartInfo implements Serializable {
     private boolean ischeck=true;
 
     public boolean isIscheck() {
@@ -23,6 +25,34 @@ public class CartShopCart {
     private int id;
     private int uid;
     private String type;
+    private String user_address;
+    private String real_name;
+    private String user_phone;
+
+    public String getUser_address() {
+        return user_address;
+    }
+
+    public void setUser_address(String user_address) {
+        this.user_address = user_address;
+    }
+
+    public String getReal_name() {
+        return real_name;
+    }
+
+    public void setReal_name(String real_name) {
+        this.real_name = real_name;
+    }
+
+    public String getUser_phone() {
+        return user_phone;
+    }
+
+    public void setUser_phone(String user_phone) {
+        this.user_phone = user_phone;
+    }
+
     private int product_id;
     private String product_attr_unique;
     private int cart_num;

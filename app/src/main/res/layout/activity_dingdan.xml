@@ -10,45 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="15dp"
         android:text="订单详情"
         android:textColor="#ffffffff"
         android:textSize="17sp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp">
-
-        <ImageView
-            android:id="@+id/head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/fenxiao_head_icon" />
-
-        <TextView
-            android:id="@+id/shouhuo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/head"
-            android:text="待收货"
-            android:textColor="#fffefefe"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/fahuo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/shouhuo"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/head"
-            android:text="04月26日16时36分服务商已发货"
-            android:textColor="#fffefefe"
-            android:textSize="11sp" />
-    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -62,6 +28,42 @@
             android:layout_weight="1"
             android:background="@color/colorWhite"
             android:orientation="vertical">
+            <RelativeLayout
+                android:background="@color/colorRed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/head"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/fenxiao_head_icon" />
+
+                <TextView
+                    android:id="@+id/zhuangtai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/head"
+                    android:text="待收货"
+                    android:textColor="#fffefefe"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/fahuo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/zhuangtai"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/head"
+                    android:text=""
+                    android:textColor="#fffefefe"
+                    android:textSize="11sp" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -76,12 +78,12 @@
                     android:src="@drawable/dingdan_dingwei" />
 
                 <TextView
-                    android:id="@+id/shenfen"
+                    android:id="@+id/xingming"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/dingwei"
-                    android:text="自由人"
+                    android:text=""
                     android:textColor="#ff333333"
                     android:textSize="14sp" />
 
@@ -90,8 +92,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/shenfen"
-                    android:text="15863258712"
+                    android:layout_toRightOf="@+id/xingming"
+                    android:text=""
                     android:textColor="#ff333333"
                     android:textSize="16sp" />
 
@@ -99,11 +101,11 @@
                     android:id="@+id/dizhi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/shenfen"
+                    android:layout_below="@+id/xingming"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@+id/dingwei"
-                    android:text="山西 朔州市 怀仁县 荟萃花园一区56幢506室"
+                    android:text=""
                     android:textColor="#ff808080"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -122,59 +124,27 @@
                     android:textColor="#ff545454"
                     android:textSize="13sp" />
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/chanpinxinxi"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/cart_shop_test" />
+            </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/image"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_toRightOf="@+id/image"
-                    android:text="科沃斯 Ecovacs 扫地机器人地宝
-DE53 扫拖一体全自动智能规划..."
-                    android:textColor="#ff313030"
-                    android:textSize="12sp" />
+            <LinearLayout
+                android:id="@+id/godss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/title"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_toRightOf="@+id/image"
-                    android:text="¥1399.00"
-                    android:textColor="#fff0250f"
-                    android:textSize="12sp" />
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/title"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_toRightOf="@+id/money"
-                    android:text="X1"
-                    android:textColor="#ff3d3d3d"
-                    android:textSize="12sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/lianxikefu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image"
-                    android:layout_marginTop="10dp"
-                    android:layout_toLeftOf="@+id/tuikuan"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
                     android:padding="3dp"
@@ -187,8 +157,6 @@ DE53 扫拖一体全自动智能规划..."
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
                     android:padding="3dp"
@@ -196,12 +164,15 @@ DE53 扫拖一体全自动智能规划..."
                     android:text="    退款    "
                     android:textColor="#ff000000"
                     android:textSize="13sp" />
-            </RelativeLayout>
+            </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/peisongfangshil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:layout_alignParentStart="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
                 <TextView
                     android:id="@+id/peisongxinxinxi"
@@ -242,36 +213,6 @@ DE53 扫拖一体全自动智能规划..."
                     android:textSize="11sp" />
 
                 <TextView
-                    android:id="@+id/shangpinzongjia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/kuaididanhao"
-                    android:layout_marginTop="5dp"
-                    android:text="商品总价"
-                    android:textColor="#ff484848"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/yuedikou"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/shangpinzongjia"
-                    android:layout_marginTop="5dp"
-                    android:text="余额抵扣"
-                    android:textColor="#ff484848"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/shifukuan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/yuedikou"
-                    android:layout_marginTop="5dp"
-                    android:text="实付款（含运费） "
-                    android:textColor="#ff484848"
-                    android:textSize="11sp" />
-
-                <TextView
                     android:id="@+id/peisongfangshiv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -303,6 +244,47 @@ DE53 扫拖一体全自动智能规划..."
                     android:text="120"
                     android:textColor="#ff484848"
                     android:textSize="11sp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/jiagel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+
+                <TextView
+                    android:id="@+id/shangpinzongjia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="商品总价"
+                    android:textColor="#ff484848"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/yuedikou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shangpinzongjia"
+                    android:layout_marginTop="5dp"
+                    android:text="余额抵扣"
+                    android:textColor="#ff484848"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/shifukuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/yuedikou"
+                    android:layout_marginTop="5dp"
+                    android:text="实付款（含运费） "
+                    android:textColor="#ff484848"
+                    android:textSize="11sp" />
+
 
                 <TextView
                     android:id="@+id/shangpinzongjiav"
@@ -338,88 +320,94 @@ DE53 扫拖一体全自动智能规划..."
                     android:textSize="11sp" />
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:padding="10dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
                 <TextView
                     android:id="@+id/dingdanxinxi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="订单信息"
                     android:textColor="#ff484848"
-                    android:textSize="13sp"
-                    />
+                    android:textSize="13sp" />
+
                 <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/dingdanxinxi"
                     android:id="@+id/dingdanbianhao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/dingdanxinxi"
+                    android:layout_marginTop="5dp"
                     android:text="订单编号：wx2019042617141510028"
                     android:textColor="#ff484848"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="11sp" />
+
                 <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/dingdanbianhao"
                     android:id="@+id/xiadanshijian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/dingdanbianhao"
+                    android:layout_marginTop="5dp"
                     android:text="下单时间：2019-04-26 17:14"
                     android:textColor="#ff484848"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="11sp" />
+
                 <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/xiadanshijian"
                     android:id="@+id/zhifufangshi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/xiadanshijian"
+                    android:layout_marginTop="5dp"
                     android:text="支付方式：微信支付"
                     android:textColor="#ff484848"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="11sp" />
+
                 <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/zhifufangshi"
                     android:id="@+id/zhifuzhuangtai"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/zhifufangshi"
+                    android:layout_marginTop="5dp"
                     android:text="支付状态：已支付"
                     android:textColor="#ff484848"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="11sp" />
+
                 <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/zhifuzhuangtai"
                     android:id="@+id/zhifushijian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/zhifuzhuangtai"
+                    android:layout_marginTop="5dp"
                     android:text="支付时间：2019-04-26 17:14"
                     android:textColor="#ff484848"
-                    android:textSize="11sp"
-                    />
+                    android:textSize="11sp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/fanhui"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/zhifushijian"
-                    android:layout_marginTop="10dp"
-                    android:layout_toLeftOf="@+id/chakanwuliu"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
                     android:padding="3dp"
                     android:text="返回"
                     android:textColor="#ff000000"
                     android:textSize="13sp" />
+
                 <TextView
                     android:id="@+id/chakanwuliu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/zhifushijian"
-                    android:layout_marginTop="10dp"
-                    android:layout_toLeftOf="@+id/querenshouhuo"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
                     android:padding="3dp"
@@ -433,15 +421,13 @@ DE53 扫拖一体全自动智能规划..."
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/zhifushijian"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:paddingTop="10dp"
                     android:text="确认收货"
                     android:textColor="#ff000000"
                     android:textSize="13sp" />
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -26,8 +26,8 @@ public interface RetrofitRequestInterface {
 
     /*获得订单*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "GetAllOrder")
-    Call<String> getGoodOrder(@FieldMap Map<String, String> params);
+    @POST("api/auth_api/get_user_order_list")
+    Call<String> getGoodOrder(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
     /*取消订单*/
     @FormUrlEncoded
@@ -51,6 +51,11 @@ public interface RetrofitRequestInterface {
     @FormUrlEncoded
     @POST("index.php?g=app&m=telephone&a=telephone_note")
     Call<String> getCanPhonePay(@FieldMap Map<String, String> params);
+
+    /*获得物流信息*/
+    @FormUrlEncoded
+    @POST("api/my/express")
+    Call<String> getWuLiu(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
     /*获得购物车列表*/
     @FormUrlEncoded
@@ -173,8 +178,8 @@ public interface RetrofitRequestInterface {
 
     /*上传用户头像*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "ChangeUserInfo")
-    Call<String> updateHead(@FieldMap Map<String, String> params);
+    @POST("api/images/upload.html")//目前测试
+    Call<String> updateHead(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
     /*问题列表*/
     @FormUrlEncoded

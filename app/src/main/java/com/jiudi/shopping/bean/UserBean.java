@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 
 public class UserBean implements Serializable {
+    public String coupon_num;
     public String account;
     public String tel;
     public String passwd;

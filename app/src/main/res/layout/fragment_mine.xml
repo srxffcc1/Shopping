@@ -49,6 +49,7 @@
             android:textColor="#fffefefe"
             android:textSize="11sp" />
         <ImageView
+            android:id="@+id/passtongzhi"
             android:layout_marginTop="10dp"
             android:layout_alignTop="@+id/xingming"
             android:layout_alignParentRight="true"
@@ -62,6 +63,7 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/mylessmoney"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -69,6 +71,7 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/mylessmoneyvalue"
                 android:text="500"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -84,6 +87,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"/>
         <LinearLayout
+            android:id="@+id/myquan"
             android:layout_width="0dp"
             android:padding="5dp"
             android:layout_weight="1"
@@ -91,6 +95,7 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/myquanvalue"
                 android:text="10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -106,7 +111,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:id="@+id/ll_fragment_order"
+            android:id="@+id/all_order"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:gravity="center_vertical"
@@ -201,6 +206,7 @@
             android:background="@color/colorWhite"
             android:orientation="vertical">
             <LinearLayout
+                android:id="@+id/mycollet"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -210,10 +216,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/youhuiquan"
+                    android:drawableLeft="@drawable/shoucangguanli"
                     android:drawablePadding="@dimen/dp_10"
                     android:gravity="center"
-                    android:text="优惠券"
+                    android:text="我的收藏"
                     android:textColor="@color/colorTitle"
                     android:textSize="@dimen/sp_14"/>
 
@@ -228,6 +234,7 @@
                     android:src="@drawable/next_blue" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/myaddress"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -237,10 +244,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/shezhi"
+                    android:drawableLeft="@drawable/dizhiguanli"
                     android:drawablePadding="@dimen/dp_10"
                     android:gravity="center"
-                    android:text="设置"
+                    android:text="地址管理"
                     android:textColor="@color/colorTitle"
                     android:textSize="@dimen/sp_14"/>
 
@@ -252,9 +259,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/next_blue"/>
+                    android:src="@drawable/next_blue" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/mymoney"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -282,6 +290,7 @@
                     android:src="@drawable/next_blue"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/myunder"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -309,6 +318,7 @@
                     android:src="@drawable/next_blue"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/myup"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -336,6 +346,7 @@
                     android:src="@drawable/next_blue"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/myzxing"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -349,6 +360,34 @@
                     android:drawablePadding="@dimen/dp_10"
                     android:gravity="center"
                     android:text="推广二维码"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/sp_14"/>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/next_blue"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mysetting"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/shezhi"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:gravity="center"
+                    android:text="设置"
                     android:textColor="@color/colorTitle"
                     android:textSize="@dimen/sp_14"/>
 
