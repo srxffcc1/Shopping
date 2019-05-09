@@ -29,9 +29,11 @@ import com.jiudi.shopping.bean.CartInfo;
 import com.jiudi.shopping.bean.Order;
 import com.jiudi.shopping.bean.OrderEvent;
 import com.jiudi.shopping.bean.CartStatus;
+import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.ui.cart.CartDetailActivity;
 import com.jiudi.shopping.ui.cart.DingDanActivity;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.SPUtil;
@@ -160,7 +162,7 @@ public class OrderFragment extends BaseFragment {
                             }.getType();
                             Type cartInfoType = new TypeToken<CartInfo>() {
                             }.getType();
-                            String cartStatuss=jsonObject.getJSONObject("_status").toString();
+                            String cartStatuss=jsonObject.getJSONObject("s_status").toString();
                             CartStatus cartStatus=gson.fromJson(cartStatuss,cartStatusType);
                             bean.setStatuz(cartStatus);
 
@@ -253,36 +255,51 @@ public class OrderFragment extends BaseFragment {
                         function_1.setVisibility(View.VISIBLE);
                         function_1.setText("立即付款");
                     }
-                    if("未发货".equals(title)){
+                    else if("未发货".equals(title)){
 
                         function_0.setVisibility(View.GONE);
                         function_1.setVisibility(View.GONE);
                         function_1.setText("立即付款");
                     }
-                    if("待收货".equals(title)){
+                    else if("待收货".equals(title)){
                         function_0.setVisibility(View.GONE);
                         function_1.setVisibility(View.GONE);
                         function_1.setText("立即付款");
 
                     }
-                    if("待评价".equals(title)){
+                    else if("待评价".equals(title)){
                         function_0.setVisibility(View.VISIBLE);
-                        function_1.setVisibility(View.VISIBLE);
+                        function_1.setVisibility(View.GONE);
                         function_0.setText("立即评价");
-                        function_1.setText("再来一单");
+//                        function_1.setText("再来一单");
+                    }else{
+                        function_0.setVisibility(View.GONE);
+                        function_1.setVisibility(View.GONE);
                     }
-//                    function_1.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
+                    function_1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if("立即付款".equals(function_1.getText().toString())){
+                                lijizhifu(carChoiceBean.getOrder_id());
+                            }else{
+
+                            }
+                        }
+                    });
+                    function_0.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 //                            if("立即付款".equals(function_1.getText().toString())){
-//                                startActivity(new Intent(mActivity, DingDanActivity.class).putExtra("bean",carChoiceBean));
+//                                lijizhifu(carChoiceBean.getOrder_id());
+//                            }else{
+//
 //                            }
-//                        }
-//                    });
+                        }
+                    });
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(mActivity, DingDanActivity.class).putExtra("bean",carChoiceBean));
+                            startActivity(new Intent(mActivity, DingDanActivity.class).putExtra("uni",carChoiceBean.getOrder_id()).putExtra("bean",carChoiceBean));
                         }
                     });
 
@@ -296,6 +313,31 @@ public class OrderFragment extends BaseFragment {
         } else {
             myAdapter.notifyDataSetChanged();
         }
+    }
+    public void lijizhifu(String uni){
+        Map<String, String> map = new HashMap<>();
+        map.put("uni", uni);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).lijizhifu(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
     private void buildCartList(ViewGroup viewGroup,String cartInfoListString) {
         try {
@@ -319,7 +361,7 @@ public class OrderFragment extends BaseFragment {
                     e.printStackTrace();
                 }
                 String count = "X" + cartInfo.getString("cart_num");
-                String money = "¥" + cartInfo.getJSONObject("productInfo").getString("price");
+                String money = "¥" + cartInfo.getString("truePrice");
                 RequestOptions options = new RequestOptions()
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸

@@ -3,24 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorBgGray"
     android:paddingTop="@dimen/dp_23">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:background="#fff"
         android:padding="15dp"
         android:text="设置"
         android:textColor="#ff333333"
         android:textSize="16sp"
         />
-
+    <View
+        style="@style/HorizontalLine"
+        android:background="@color/colorBgGray"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorWhite">
+        android:background="@color/colorBgGray">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,6 +33,7 @@
             android:background="@color/colorWhite"
             android:orientation="vertical">
             <LinearLayout
+                android:id="@+id/userinfo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -54,7 +59,11 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/next_blue" />
             </LinearLayout>
+            <View
+                style="@style/HorizontalLine"
+                android:background="@color/colorBgGray"/>
             <LinearLayout
+                android:id="@+id/clear"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -84,7 +93,11 @@
                     android:textColor="@color/colorTitle"
                     android:textSize="@dimen/sp_14"/>
             </LinearLayout>
+            <View
+                style="@style/HorizontalLine"
+                android:background="@color/colorBgGray"/>
             <LinearLayout
+                android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -110,7 +123,11 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/next_blue"/>
             </LinearLayout>
+            <View
+                style="@style/HorizontalLine"
+                android:background="@color/colorBgGray"/>
             <LinearLayout
+                android:id="@+id/aboutus"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"
@@ -136,8 +153,14 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/next_blue"/>
             </LinearLayout>
+            <View
+                style="@style/HorizontalLine"
+                android:layout_height="@dimen/dp_10"
+                android:background="@color/colorBgGray"
+                />
 
             <TextView
+                android:id="@+id/logout"
                 android:padding="15dp"
                 android:gravity="center"
                 android:layout_width="match_parent"

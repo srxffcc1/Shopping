@@ -143,6 +143,19 @@
         <activity android:name=".ui.cart.CartDetailActivity" />
         <activity android:name=".ui.cart.DingDanActivity" />
         <activity android:name=".ui.cart.PayDingDanActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"  />
+        <activity android:name=".ui.cart.WuLiuActivity" />
+        <activity android:name=".ui.fenxiao.FenXiaoNoActivity" />
+        <activity android:name=".ui.fenxiao.FenXiaoMenuActivity" />
+        <activity android:name=".ui.fenxiao.TuanDuiActivity" />
+        <activity android:name=".ui.fenxiao.TuiGuangActivity" />
+        <activity android:name=".ui.user.account.AccountActivity" />
+        <activity android:name=".ui.user.account.TongZhiActivity" />
+        <activity android:name=".ui.user.account.ShouCangActivity" />
+        <activity android:name=".ui.user.ShopSettingActivity" />
+        <activity android:name=".ui.user.account.TiXianActivity" />
+        <activity android:name=".ui.user.account.AddDiscussActivity" />
+        <activity android:name=".ui.user.account.DiscussListActivity" />
+        <activity android:name=".ui.user.AllQuanActivity" />
     </application>
 
 </manifest>

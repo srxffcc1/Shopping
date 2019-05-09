@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:hedgehog="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,16 +38,17 @@
             android:textColor="#fffff193"
             android:textSize="9sp" />
 
-        <com.hedgehog.ratingbar.RatingBar
-            android:visibility="gone"
-            android:id="@+id/ratingbar"
+        <com.jiudi.shopping.widget.KRatingBar
+            android:id="@+id/ratingbar2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:clickable="true"
-            app:halfstart="true"
-            app:starCount="5"
-            app:starEmpty="@drawable/cart_star_gray"
-            app:starFill="@drawable/cart_star_red" />
+            app:rating="5"
+            android:clickable="false"
+            app:starEmpty="@drawable/ic_stargray"
+            app:starFill="@drawable/ic_starred"
+            app:star_height="15dp"
+            app:star_width="15dp"
+            app:starMax="5" />
 
         <TextView
             android:layout_width="0dp"
@@ -67,75 +69,14 @@
         android:textColor="#ff333333"
         android:textSize="14sp" />
 
-    <android.support.v7.widget.GridLayout
+    <com.jiudi.shopping.widget.NoScrollGridView
         android:id="@+id/function_grid"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/dp_6"
-        android:layout_weight="1"
-        app:columnCount="4">
+        android:layout_height="wrap_content"
+        android:numColumns="4"
+        android:layout_marginBottom="@dimen/dp_6">
 
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-
-        <!--<ImageView-->
-
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-
-        <!--<ImageView-->
-
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-
-        <!--<ImageView-->
-
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-
-        <!--<ImageView-->
-
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-
-        <!--<ImageView-->
-
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-
-        <!--<ImageView-->
-
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-
-        <!--<ImageView-->
-
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/cart_head"-->
-            <!--app:layout_columnWeight="1" />-->
-    </android.support.v7.widget.GridLayout>
+    </com.jiudi.shopping.widget.NoScrollGridView>
 
 
 </LinearLayout>

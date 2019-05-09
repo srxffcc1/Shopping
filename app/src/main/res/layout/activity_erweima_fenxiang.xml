@@ -30,11 +30,12 @@
             android:layout_height="0dp"
             android:layout_weight="510">
             <ImageView
-                android:src="@drawable/zxing_test"
                 android:layout_centerInParent="true"
+                android:src="@drawable/zxing_test"
                 android:id="@+id/zxing_image"
-                android:layout_width="187dp"
-                android:layout_height="187dp" />
+                android:scaleType="fitXY"
+                android:layout_width="500px"
+                android:layout_height="500px" />
             <ImageView
                 android:scaleType="fitStart"
                 android:layout_centerHorizontal="true"

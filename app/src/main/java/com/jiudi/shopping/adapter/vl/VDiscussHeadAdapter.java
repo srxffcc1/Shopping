@@ -1,6 +1,7 @@
 package com.jiudi.shopping.adapter.vl;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.bean.CartTitleBean;
+import com.jiudi.shopping.ui.user.account.DiscussListActivity;
 
 /**
  * Created by admin on 2017/5/16.
@@ -19,10 +21,12 @@ import com.jiudi.shopping.bean.CartTitleBean;
 public class VDiscussHeadAdapter extends DelegateAdapter.Adapter{
     public Context context;
     private LayoutHelper helper;
+    private CartTitleBean mcarttitlebean;
 
-    public VDiscussHeadAdapter(Context context, LayoutHelper helper) {
+    public VDiscussHeadAdapter(Context context, LayoutHelper helper, CartTitleBean mcarttitlebean) {
         this.context = context;
         this.helper = helper;
+        this.mcarttitlebean = mcarttitlebean;
     }
 
     @Override
@@ -39,7 +43,12 @@ public class VDiscussHeadAdapter extends DelegateAdapter.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, DiscussListActivity.class).putExtra("productId",mcarttitlebean.id));
+            }
+        });
     }
 
     @Override

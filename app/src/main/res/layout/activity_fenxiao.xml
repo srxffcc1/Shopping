@@ -21,31 +21,32 @@
 
         <ImageView
             android:id="@+id/head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="250px"
+            android:layout_height="250px"
             android:layout_centerVertical="true"
             android:src="@drawable/fenxiao_head_icon" />
+
         <TextView
             android:id="@+id/name"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_alignTop="@+id/head"
-            android:layout_toRightOf="@+id/head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="艾克"
+            android:layout_alignTop="@+id/head"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/head"
+            android:text=""
             android:textColor="#ffffffff"
-            android:textSize="15sp"
-            />
+            android:textSize="15sp" />
+
         <TextView
             android:id="@+id/level"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/name"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/head"
-            android:text="等级：青铜"
+            android:text=""
             android:textColor="#ffffffff"
             android:textSize="14sp" />
 
@@ -55,40 +56,43 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#ececec"/>
+        android:background="#ececec" />
+
     <RelativeLayout
-        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
         <TextView
             android:id="@+id/moneyt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的现金"
+            android:text="可提现佣金"
             android:textColor="#ffffffff"
-            android:textSize="17sp"
-            />
+            android:textSize="17sp" />
+
         <TextView
             android:id="@+id/money"
-            android:layout_below="@+id/moneyt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="25.80元"
+            android:layout_below="@+id/moneyt"
+            android:text=""
             android:textColor="#ffffffff"
-            android:textSize="19sp"
-            />
+            android:textSize="19sp" />
+
         <TextView
+            android:id="@+id/tixian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@id/money"
             android:layout_alignParentRight="true"
             android:background="@drawable/text_boder_quan_w"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:padding="3dp"
             android:text="提现"
             android:textColor="#ffffffff"
-            android:textSize="19sp"
-            />
+            android:textSize="19sp" />
     </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -101,84 +105,162 @@
             android:layout_weight="1"
             android:background="@color/colorWhite"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/weidaozhangyongjin"
-                android:padding="15dp"
-                android:gravity="center_vertical"
-                android:drawablePadding="10dp"
-                android:drawableLeft="@drawable/weidaozhang1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="未到账佣金"
-                android:textColor="#ff6c6c6c"
-                android:textSize="13sp"
-                />
 
             <TextView
-                android:layout_below="@+id/weidaozhangyongjin"
-                android:id="@+id/leijihuode"
-                android:padding="15dp"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:drawableLeft="@drawable/huodeyongjin"
+                android:id="@+id/weidaozhangyongjin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/weidaozhang1"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="我的佣金（7天后可提现）"
+                android:textColor="#ff6c6c6c"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/leijihuode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/weidaozhangyongjin"
+                android:drawableLeft="@drawable/huodeyongjin"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
                 android:text="累计获得佣金"
                 android:textColor="#ff6c6c6c"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
+
             <TextView
-                android:layout_below="@+id/leijihuode"
                 android:id="@+id/leijiyi"
-                android:padding="15dp"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:drawableLeft="@drawable/yitiyongjin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/leijihuode"
+                android:drawableLeft="@drawable/yitiyongjin"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
                 android:text="累计已提佣金"
                 android:textColor="#ff6c6c6c"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
+
             <TextView
-                android:layout_below="@+id/leijiyi"
                 android:id="@+id/yongjinmingxi"
-                android:padding="15dp"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:drawableLeft="@drawable/yongjinmingxi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/leijiyi"
+                android:drawableLeft="@drawable/yongjinmingxi"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
                 android:text="佣金明细"
                 android:textColor="#ff6c6c6c"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
+
             <TextView
-                android:layout_below="@+id/yongjinmingxi"
                 android:id="@+id/zhishu"
-                android:padding="15dp"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:drawableLeft="@drawable/zhishu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/yongjinmingxi"
+                android:drawableLeft="@drawable/zhishu"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
                 android:text="直属"
                 android:textColor="#ff6c6c6c"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
+
             <TextView
-                android:layout_below="@+id/zhishu"
                 android:id="@+id/tuandui"
-                android:padding="15dp"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:drawableLeft="@drawable/tuandui2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/zhishu"
+                android:drawableLeft="@drawable/tuandui2"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
                 android:text="团队"
                 android:textColor="#ff6c6c6c"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/weidaozhangyongjinv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/weidaozhangyongjin"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="0元"
+                android:textColor="@color/colorRed"
+                android:textSize="13sp" />
+
+
+            <TextView
+                android:id="@+id/leijihuodev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/leijihuode"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="0元"
+                android:textColor="@color/colorRed"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/leijiyiv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/leijiyi"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="0元"
+                android:textColor="@color/colorRed"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/yongjinmingxiv"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/yongjinmingxi"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:gravity="right|center_vertical"
+                android:padding="15dp"
+                android:text=">"
+                android:textColor="@color/colorRed"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/zhishuv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/zhishu"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="0元"
+                android:textColor="@color/colorRed"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tuanduiv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tuandui"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="0元"
+                android:textColor="@color/colorRed"
+                android:textSize="13sp" />
         </RelativeLayout>
     </ScrollView>
 

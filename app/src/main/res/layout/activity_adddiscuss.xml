@@ -1,0 +1,130 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp_23">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:padding="10dp"
+            android:layout_weight="1">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="添加评价"
+                    android:textColor="#ff232326"
+                    android:textSize="17sp" />
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/godss"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </LinearLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:gravity="left"
+                android:layout_height="wrap_content"
+                android:minHeight="200dp"
+                android:text=""
+                android:textColor="#ffa0a0a0"
+                android:hint="宝贝满足你的期待么？说说你的想法，分享给想买的他们吧~"
+                android:textSize="14sp"
+                />
+            <ImageView
+                android:src="@drawable/start_pot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <com.jiudi.shopping.widget.NoScrollGridView
+                android:id="@+id/function_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="4"
+                android:layout_marginBottom="@dimen/dp_6">
+
+            </com.jiudi.shopping.widget.NoScrollGridView>
+            <LinearLayout
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="产品评分 "
+                    android:textColor="#ff2b2b2b"
+                    android:textSize="13sp"
+                    />
+                <com.jiudi.shopping.widget.KRatingBar
+                    android:clickable="true"
+                    android:id="@+id/ratingbar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:rating="1"
+                    app:starEmpty="@drawable/ic_stargray"
+                    app:starFill="@drawable/ic_starred"
+                    app:star_height="25dp"
+                    app:star_width="25dp"
+                    app:starMax="5" />
+            </LinearLayout>
+            <LinearLayout
+                android:padding="10dp"
+                android:background="#FFF"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="商家服务 "
+                    android:textColor="#ff2b2b2b"
+                    android:textSize="13sp"
+                    />
+                <com.jiudi.shopping.widget.KRatingBar
+                    android:clickable="true"
+                    android:id="@+id/ratingbar2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:rating="1"
+                    app:starEmpty="@drawable/ic_stargray"
+                    app:starFill="@drawable/ic_starred"
+                    app:star_height="25dp"
+                    app:star_width="25dp"
+                    app:starMax="5" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+    <TextView
+        android:background="#fff0250f"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:text="立即评价"
+        android:textColor="#ffffffff"
+        android:textSize="14sp"
+        />
+
+</LinearLayout>

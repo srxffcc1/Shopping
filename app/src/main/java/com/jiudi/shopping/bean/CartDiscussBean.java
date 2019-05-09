@@ -1,12 +1,13 @@
 package com.jiudi.shopping.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartDiscussBean {
     private int product_score;
     private int service_score;
     private String comment;
-    private List<String> pics;
+    private List<String> pics=new ArrayList<>();
     private String add_time;
     private String nickname;
     private String avatar;

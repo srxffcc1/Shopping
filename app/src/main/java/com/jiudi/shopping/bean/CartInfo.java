@@ -23,7 +23,7 @@ public class CartInfo implements Serializable {
     }
 
     private int id;
-    private int uid;
+    private String uid;
     private String type;
     private String user_address;
     private String real_name;
@@ -56,134 +56,151 @@ public class CartInfo implements Serializable {
     private int product_id;
     private String product_attr_unique;
     private int cart_num;
-    private long add_time;
-    private int is_pay;
-    private int is_del;
-    private int is_new;
-    private int combination_id;
-    private int seckill_id;
-    private int bargain_id;
+    private String add_time;
+    private String is_pay;
+    private String is_del;
+    private String is_new;
+    private String combination_id;
+    private String seckill_id;
+    private String bargain_id;
     private ProductInfo productInfo;
-    private double truePrice;
-    private int costPrice;
-    private int trueStock;
-    public void setId(int id) {
-         this.id = id;
-     }
-     public int getId() {
-         return id;
-     }
+    private String truePrice;
+    private String costPrice;
+    private String trueStock;
 
-    public void setUid(int uid) {
-         this.uid = uid;
-     }
-     public int getUid() {
-         return uid;
-     }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getType() {
+        return type;
+    }
 
     public void setType(String type) {
-         this.type = type;
-     }
-     public String getType() {
-         return type;
-     }
+        this.type = type;
+    }
+
+    public int getProduct_id() {
+        return product_id;
+    }
 
     public void setProduct_id(int product_id) {
-         this.product_id = product_id;
-     }
-     public int getProduct_id() {
-         return product_id;
-     }
+        this.product_id = product_id;
+    }
+
+    public String getProduct_attr_unique() {
+        return product_attr_unique;
+    }
 
     public void setProduct_attr_unique(String product_attr_unique) {
-         this.product_attr_unique = product_attr_unique;
-     }
-     public String getProduct_attr_unique() {
-         return product_attr_unique;
-     }
+        this.product_attr_unique = product_attr_unique;
+    }
+
+    public int getCart_num() {
+        return cart_num;
+    }
 
     public void setCart_num(int cart_num) {
-         this.cart_num = cart_num;
-     }
-     public int getCart_num() {
-         return cart_num;
-     }
+        this.cart_num = cart_num;
+    }
 
-    public void setAdd_time(long add_time) {
-         this.add_time = add_time;
-     }
-     public long getAdd_time() {
-         return add_time;
-     }
+    public String getAdd_time() {
+        return add_time;
+    }
 
-    public void setIs_pay(int is_pay) {
-         this.is_pay = is_pay;
-     }
-     public int getIs_pay() {
-         return is_pay;
-     }
+    public void setAdd_time(String add_time) {
+        this.add_time = add_time;
+    }
 
-    public void setIs_del(int is_del) {
-         this.is_del = is_del;
-     }
-     public int getIs_del() {
-         return is_del;
-     }
+    public String getIs_pay() {
+        return is_pay;
+    }
 
-    public void setIs_new(int is_new) {
-         this.is_new = is_new;
-     }
-     public int getIs_new() {
-         return is_new;
-     }
+    public void setIs_pay(String is_pay) {
+        this.is_pay = is_pay;
+    }
 
-    public void setCombination_id(int combination_id) {
-         this.combination_id = combination_id;
-     }
-     public int getCombination_id() {
-         return combination_id;
-     }
+    public String getIs_del() {
+        return is_del;
+    }
 
-    public void setSeckill_id(int seckill_id) {
-         this.seckill_id = seckill_id;
-     }
-     public int getSeckill_id() {
-         return seckill_id;
-     }
+    public void setIs_del(String is_del) {
+        this.is_del = is_del;
+    }
 
-    public void setBargain_id(int bargain_id) {
-         this.bargain_id = bargain_id;
-     }
-     public int getBargain_id() {
-         return bargain_id;
-     }
+    public String getIs_new() {
+        return is_new;
+    }
+
+    public void setIs_new(String is_new) {
+        this.is_new = is_new;
+    }
+
+    public String getCombination_id() {
+        return combination_id;
+    }
+
+    public void setCombination_id(String combination_id) {
+        this.combination_id = combination_id;
+    }
+
+    public String getSeckill_id() {
+        return seckill_id;
+    }
+
+    public void setSeckill_id(String seckill_id) {
+        this.seckill_id = seckill_id;
+    }
+
+    public String getBargain_id() {
+        return bargain_id;
+    }
+
+    public void setBargain_id(String bargain_id) {
+        this.bargain_id = bargain_id;
+    }
+
+    public ProductInfo getProductInfo() {
+        return productInfo;
+    }
 
     public void setProductInfo(ProductInfo productInfo) {
-         this.productInfo = productInfo;
-     }
-     public ProductInfo getProductInfo() {
-         return productInfo;
-     }
+        this.productInfo = productInfo;
+    }
 
-    public void setTruePrice(double truePrice) {
-         this.truePrice = truePrice;
-     }
-     public double getTruePrice() {
-         return truePrice;
-     }
+    public String getTruePrice() {
+        return truePrice;
+    }
 
-    public void setCostPrice(int costPrice) {
-         this.costPrice = costPrice;
-     }
-     public int getCostPrice() {
-         return costPrice;
-     }
+    public void setTruePrice(String truePrice) {
+        this.truePrice = truePrice;
+    }
 
-    public void setTrueStock(int trueStock) {
-         this.trueStock = trueStock;
-     }
-     public int getTrueStock() {
-         return trueStock;
-     }
+    public String getCostPrice() {
+        return costPrice;
+    }
 
+    public void setCostPrice(String costPrice) {
+        this.costPrice = costPrice;
+    }
+
+    public String getTrueStock() {
+        return trueStock;
+    }
+
+    public void setTrueStock(String trueStock) {
+        this.trueStock = trueStock;
+    }
 }

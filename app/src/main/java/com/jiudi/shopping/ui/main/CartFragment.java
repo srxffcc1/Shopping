@@ -58,6 +58,10 @@ public class CartFragment extends BaseFragment {
     private List<CartInfo> mBeanList = new ArrayList<>();
     private android.widget.TextView topay;
     private android.widget.CheckBox allcheck;
+    private TextView heji;
+    private TextView guanli;
+    private String old1;
+    private String old2;
 
     @Override
     protected int getInflateViewId() {
@@ -70,6 +74,9 @@ public class CartFragment extends BaseFragment {
         recycler = (RecyclerView) findViewById(R.id.recycler);
         topay = (TextView) findViewById(R.id.topay);
         allcheck = (CheckBox) findViewById(R.id.allcheck);
+        heji = (TextView) findViewById(R.id.heji);
+
+        guanli = (TextView) findViewById(R.id.guanli);
     }
 
     @Override
@@ -91,20 +98,45 @@ public class CartFragment extends BaseFragment {
 
     @Override
     public void initEvent() {
+        guanli.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("管理".equals(guanli.getText().toString())){
+                    guanli.setText("完成");
+                    topay.setText("删除");
+                    heji.setText("");
+                }else{
+                    guanli.setText("管理");
+                    sumMoney();
+                }
+            }
+        });
         topay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String result="";
-                for (int i = 0; i <mBeanList.size() ; i++) {
-                    CartInfo bean=mBeanList.get(i);
-                    if(bean.isIscheck()){
-                        result+=bean.getId()+",";
+                if("完成".equals(guanli.getText().toString())){
+                    String result="";
+                    for (int i = 0; i <mBeanList.size() ; i++) {
+                        CartInfo bean=mBeanList.get(i);
+                        if(bean.isIscheck()){
+                            result+=bean.getId()+",";
+                        }
                     }
+                    deleteCart(result);
+                }else{
+                    String result="";
+                    for (int i = 0; i <mBeanList.size() ; i++) {
+                        CartInfo bean=mBeanList.get(i);
+                        if(bean.isIscheck()){
+                            result+=bean.getId()+",";
+                        }
+                    }
+                    if(result.length()>1){
+                        result=result.substring(0,result.length()-1);
+                    }
+                    toPay(result);
                 }
-                if(result.length()>1){
-                    result=result.substring(0,result.length()-1);
-                }
-                toPay(result);
+
             }
         });
         allcheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -159,6 +191,27 @@ public class CartFragment extends BaseFragment {
             }
         });
     }
+    double sum=0.0;
+    int selectnum=0;
+    public void sumMoney(){
+        if("完成".equals(guanli.getText().toString())){
+
+        }else{
+            sum=0.0;
+            selectnum=0;
+            for (int i = 0; i <mBeanList.size() ; i++) {
+                CartInfo carChoiceBean=mBeanList.get(i);
+                if(carChoiceBean.isIscheck()){
+                    sum+=Double.parseDouble(carChoiceBean.getProductInfo().getPrice())*carChoiceBean.getCart_num();
+                    selectnum++;
+                }
+
+            }
+            heji.setText("合计:¥"+sum);
+            topay.setText("去结算("+selectnum+")");
+        }
+
+    }
     private void showRecycleView() {
         if (myAdapter == null) {
 
@@ -178,6 +231,7 @@ public class CartFragment extends BaseFragment {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             carChoiceBean.setIscheck(isChecked);
+                            sumMoney();
                         }
                     });
                     holder.setText(R.id.money,"¥"+carChoiceBean.getProductInfo().getPrice());
@@ -216,6 +270,7 @@ public class CartFragment extends BaseFragment {
 
             myAdapter.notifyDataSetChanged();
         }
+        sumMoney();
     }
 
     private void sendChangeNum(int id, int cart_num) {
@@ -231,6 +286,31 @@ public class CartFragment extends BaseFragment {
                     String info = res.getString("msg");
                     if (code == 200) {
 //                        getShopList();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+    private void deleteCart(String ids){
+        Map<String, String> map = new HashMap<>();
+        map.put("ids", ids);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).deleteCart(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        getShopList();
                     }
 
                 } catch (JSONException e) {

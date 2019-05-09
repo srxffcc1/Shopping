@@ -16,6 +16,7 @@ public abstract class RecyclerCommonAdapter<T> extends MultiItemTypeAdapter<T> {
     protected int mLayoutId;
     protected List<T> mDatas;
     protected LayoutInflater mInflater;
+    protected boolean isDeleteLoadingMore=true;
 
     public RecyclerCommonAdapter(final Context context, final int layoutId, List<T> datas) {
         super(context, datas);
@@ -44,4 +45,11 @@ public abstract class RecyclerCommonAdapter<T> extends MultiItemTypeAdapter<T> {
 
     protected abstract void convert(ViewHolder holder, T t, int position);
 
+    public  boolean isDeleteLoadingMore(){
+        return isDeleteLoadingMore;
+    }
+
+    public void setDeleteLoadingMore(boolean deleteLoadingMore) {
+        isDeleteLoadingMore = deleteLoadingMore;
+    }
 }

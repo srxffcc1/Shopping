@@ -1,5 +1,6 @@
 package com.jiudi.shopping.ui.cart;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +13,36 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.bean.CartStatus;
 import com.jiudi.shopping.bean.Order;
+import com.jiudi.shopping.bean.OrderDetail;
+import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.util.SPUtil;
+import com.jiudi.shopping.util.TimeUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DingDanActivity extends BaseActivity {
     private Order orderbean;
+    private OrderDetail orderDetail;
     private android.widget.ImageView head;
     private android.widget.TextView zhuangtai;
     private android.widget.TextView fahuo;
@@ -113,6 +127,59 @@ public class DingDanActivity extends BaseActivity {
     @Override
     public void initData() {
         orderbean= (Order) getIntent().getSerializableExtra("bean");
+        bindDataToView();
+        getOrderById();
+//        getWuLiu();
+    }
+
+    private void getOrderById() {
+        Map<String, String> map = new HashMap<>();
+        map.put("uni",getIntent().getStringExtra("uni"));
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getOrderById(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        GsonBuilder builder = new GsonBuilder();
+                        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                                return new Date(json.getAsJsonPrimitive().getAsLong());
+                            }
+                        });
+                        Gson gson = builder.create();
+                        Type orderDetailType = new TypeToken<OrderDetail>() {
+                        }.getType();
+                        orderDetail=gson.fromJson(res.getJSONObject("data").toString(),orderDetailType);
+                        bindDataToView2();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+
+    private void bindDataToView2() {
+        xiadanshijian.setText("下单时间："+TimeUtil.formatLong(orderDetail.getAdd_time()));
+        if("未支付".equals(orderbean.getStatuz().getTitle())){
+
+            zhifushijian.setVisibility(View.GONE);
+        }else{
+
+            zhifushijian.setText("支付时间："+TimeUtil.formatLong(orderDetail.getPay_time()));
+        }
+    }
+
+    public void bindDataToView(){
         String cartlist=new Gson().toJson(orderbean.getCartInfoList());
         buildCartList(godss,cartlist);
         zhuangtai.setText(orderbean.getStatuz().get_title());
@@ -122,7 +189,12 @@ public class DingDanActivity extends BaseActivity {
         if("未支付".equals(orderbean.getStatuz().get_title())){
             peisongfangshil.setVisibility(View.GONE);
         }
-        getWuLiu();
+        fahuo.setText(orderbean.getStatuz().getMsg());
+        shifukuanv.setText("¥"+orderbean.getPay_price());
+        shangpinzongjiav.setText("¥"+orderbean.getTotal_price());
+        dingdanbianhao.setText("订单编号："+orderbean.getOrder_id());
+        zhifufangshi.setText("支付方式："+orderbean.getStatuz().getPayType());
+        zhifuzhuangtai.setText("支付状态："+orderbean.getStatuz().getTitle());
     }
     private void getWuLiu() {
         Map<String, String> map = new HashMap<>();
@@ -151,7 +223,12 @@ public class DingDanActivity extends BaseActivity {
     }
     @Override
     public void initEvent() {
-
+        chakanwuliu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity,WuLiuActivity.class).putExtra("uni",orderbean.getOrder_id()));
+            }
+        });
     }
     private void buildCartList(ViewGroup viewGroup, String cartInfoListString) {
         try {
@@ -175,7 +252,7 @@ public class DingDanActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 String count = "X" + cartInfo.getString("cart_num");
-                String money = "¥" + cartInfo.getJSONObject("productInfo").getString("price");
+                String money = "¥" + cartInfo.getString("truePrice");
                 RequestOptions options = new RequestOptions()
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸

@@ -33,7 +33,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/head"
-            android:text="姓名"
+            android:text="未登录"
             android:textColor="#fffefefe"
             android:textSize="13sp" />
 
@@ -45,7 +45,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/head"
-            android:text="注册时间：2019"
+            android:text="未登录"
             android:textColor="#fffefefe"
             android:textSize="11sp" />
         <ImageView

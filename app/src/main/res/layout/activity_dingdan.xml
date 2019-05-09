@@ -135,6 +135,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
@@ -147,7 +148,11 @@
                     android:layout_below="@+id/image"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
-                    android:padding="3dp"
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:text="联系客服"
                     android:textColor="#ff000000"
                     android:textSize="13sp" />
@@ -159,9 +164,12 @@
                     android:layout_below="@+id/image"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
-                    android:padding="3dp"
-                    android:paddingTop="10dp"
-                    android:text="    退款    "
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="退款"
                     android:textColor="#ff000000"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -387,6 +395,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
@@ -398,7 +407,11 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
-                    android:padding="3dp"
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:text="返回"
                     android:textColor="#ff000000"
                     android:textSize="13sp" />
@@ -410,7 +423,11 @@
                     android:layout_below="@+id/zhifushijian"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
-                    android:padding="3dp"
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:text="查看物流"
                     android:textColor="#ff000000"
                     android:textSize="13sp" />
@@ -423,7 +440,11 @@
                     android:layout_alignParentRight="true"
                     android:background="@drawable/text_boder_cart_all"
                     android:gravity="center"
-                    android:padding="3dp"
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:text="确认收货"
                     android:textColor="#ff000000"
                     android:textSize="13sp" />

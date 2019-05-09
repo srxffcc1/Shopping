@@ -19,6 +19,7 @@
     <color name="colorTopBar">#FFFFFF</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBgGray">#e8eaed</color>
+    <color name="colorBgGray2">#ececec</color>
     <color name="colorLine">#D8D8D8</color>
     <color name="colorBlack">#333333</color>
     <color name="colorGray">#909090</color>
@@ -83,4 +84,6 @@
     <color name="colorRedFont">#fe3336</color>
     <color name="colorItemBgGray">#fafafc</color>
 
+    <color name="green">#ffe9391c</color>
+    <color name="gray">#999999</color>
 </resources>

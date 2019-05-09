@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
 import com.jiudi.shopping.R;
@@ -27,9 +29,19 @@ import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.ui.fenxiao.FenXiaoMenuActivity;
+import com.jiudi.shopping.ui.fenxiao.FenXiaoNoActivity;
+import com.jiudi.shopping.ui.fenxiao.TuanDuiActivity;
+import com.jiudi.shopping.ui.fenxiao.TuiGuangActivity;
 import com.jiudi.shopping.ui.user.AddressListActivity;
 import com.jiudi.shopping.ui.user.AllOrderActivity;
+import com.jiudi.shopping.ui.user.AllQuanActivity;
+import com.jiudi.shopping.ui.user.ShopSettingActivity;
+import com.jiudi.shopping.ui.user.account.AccountActivity;
+import com.jiudi.shopping.ui.user.account.AddDiscussActivity;
 import com.jiudi.shopping.ui.user.account.LoginActivity;
+import com.jiudi.shopping.ui.user.account.ShouCangActivity;
+import com.jiudi.shopping.ui.user.account.TongZhiActivity;
 import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.HttpUrlConnectUtil;
@@ -43,6 +55,7 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
+import com.m7.imkfsdk.SettingActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -220,6 +233,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         zhuce.setText("注册时间 "+simpleDateFormat.format(date));
         mylessmoneyvalue.setText(AccountManager.sUserBean.integral);
         myquanvalue.setText(AccountManager.sUserBean.coupon_num);
+        RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.head_defuat_circle);
+        Glide.with(mActivity).load(AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -228,6 +243,13 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
     @Override
     public void initEvent() {
+        myquan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(mActivity, AllQuanActivity.class));
+            }
+        });
         myaddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,6 +290,68 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 changeUserHeadPopwindow();
+            }
+        });
+        mycollet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, ShouCangActivity.class));
+            }
+        });
+        mymoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, AccountActivity.class));
+
+            }
+        });
+        myunder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
+                }else{
+                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                }
+
+            }
+        });
+        myup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    startActivity(new Intent(mActivity, TuanDuiActivity.class));
+                }else{
+                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                }
+            }
+        });
+        myzxing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    startActivity(new Intent(mActivity, TuiGuangActivity.class));
+                }else{
+                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                }
+            }
+        });
+        mysetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        passtongzhi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, TongZhiActivity.class));
+            }
+        });
+        mysetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, ShopSettingActivity.class));
             }
         });
     }

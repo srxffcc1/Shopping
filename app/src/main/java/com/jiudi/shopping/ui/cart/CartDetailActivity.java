@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
@@ -26,6 +27,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.hss01248.dialog.StyledDialog;
 import com.jiudi.shopping.R;
@@ -43,11 +45,15 @@ import com.jiudi.shopping.bean.CartAttrValue;
 import com.jiudi.shopping.bean.CartDiscussBean;
 import com.jiudi.shopping.bean.CartIntroduceBean;
 import com.jiudi.shopping.bean.CartTitleBean;
+import com.jiudi.shopping.event.CartEvent;
+import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.util.SPUtil;
+import com.m7.imkfsdk.KfStartHelper;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +68,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import q.rorbin.badgeview.Badge;
+import q.rorbin.badgeview.QBadgeView;
 
 /**
  * 商品详情
@@ -92,7 +101,7 @@ public class CartDetailActivity extends BaseActivity {
     private VIntroduceAdapter vIntroduceAdapter;
     private CartTitleBean mcarttitlebean;
     private String[] titles = {"宝贝", "评价", "详情"};
-    private int[] poss = {0, 3, 8};
+    private int[] poss = new int[3];
     private LinearLayoutHelper linearLayoutHelper;
     private LinearLayout titleBar;
     private TabLayout mainTab;
@@ -102,6 +111,11 @@ public class CartDetailActivity extends BaseActivity {
     private TextView togouwu;
     private String productId;//产品id
     private String uniqueId;//商品属性来自 CartAttrValue里的unique
+    private TextView kefunum;
+    private TextView shoucangnum;
+    private TextView gouwuchenum;
+    private KfStartHelper helper;
+    private Badge badgeView;
 
 
     @Override
@@ -112,6 +126,7 @@ public class CartDetailActivity extends BaseActivity {
     @Override
     public void initView() {
 
+        helper = new KfStartHelper(this);
         StyledDialog.init(this);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         titleBar = (LinearLayout) findViewById(R.id.title_bar);
@@ -161,39 +176,90 @@ public class CartDetailActivity extends BaseActivity {
 
         topay = (TextView) findViewById(R.id.topay);
         togouwu = (TextView) findViewById(R.id.togouwu);
+        kefunum = (TextView) findViewById(R.id.kefunum);
+        shoucangnum = (TextView) findViewById(R.id.shoucangnum);
+        gouwuchenum = (TextView) findViewById(R.id.gouwuchenum);
+
     }
+    public void getCartNum(){
+        Map<String, String> map = new HashMap<>();
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getCartNum(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        int data=res.getInt("data");
+                        if(badgeView==null){
+
+                            badgeView = new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(gouwuchenum).setBadgeNumber(data);
+                        }else{
+                            badgeView.setBadgeNumber(data);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+    int nowindex=0;
     public void buildRecyclerView(){
+
         manager = new VirtualLayoutManager(this);
         recycler.setLayoutManager(manager);
         adapter = new DelegateAdapter(manager);
         RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
         recycler.setRecycledViewPool(viewPool);
         viewPool.setMaxRecycledViews(0, 10);
-
+        poss[0]=nowindex;
         vBannerAdapter = new VBannerAdapter(this,new SingleLayoutHelper(), mBannerList);
         adapters.add(vBannerAdapter);
 
+        nowindex+=vBannerAdapter.getItemCount();
 
         vDetailAdapter = new VTitleDetailAdapter(this, new SingleLayoutHelper(), mcarttitlebean);
         adapters.add(vDetailAdapter);
 
+        nowindex+=vDetailAdapter.getItemCount();
 
-        vDiscussHeadAdapter = new VDiscussHeadAdapter(this, new SingleLayoutHelper());
+        poss[1]=nowindex;
+
+        vDiscussHeadAdapter = new VDiscussHeadAdapter(this, new SingleLayoutHelper(),mcarttitlebean);
         adapters.add(vDiscussHeadAdapter);
+
+
+        nowindex+=vDiscussHeadAdapter.getItemCount();
 
         vDiscussAdapter = new VDiscussAdapter(this, new LinearLayoutHelper(), mcartdiscussbeanlist);
         adapters.add(vDiscussAdapter);
 
+        nowindex+=vDiscussAdapter.getItemCount();
 
 //        vDiscussEndAdapter=new VDiscussEndAdapter(this, new SingleLayoutHelper());
 //        adapter.addAdapter(vDiscussEndAdapter);
 
+        poss[2]=nowindex;
 
         vIntroduceHeadAdapter = new VIntroduceHeadAdapter(this, new SingleLayoutHelper());
         adapters.add(vIntroduceHeadAdapter);
 
+
+        nowindex+=vIntroduceHeadAdapter.getItemCount();
+
         vIntroduceAdapter = new VIntroduceAdapter(this, new LinearLayoutHelper(), mcartdintroducebeanlist);
         adapters.add(vIntroduceAdapter);
+
+
+        nowindex+=vIntroduceAdapter.getItemCount();
 
 
         adapter.setAdapters(adapters);
@@ -203,7 +269,7 @@ public class CartDetailActivity extends BaseActivity {
     public void initData() {
 
         getGodsDetail();
-
+        getCartNum();
 
 
 //        getHomeBanner();
@@ -284,7 +350,12 @@ public class CartDetailActivity extends BaseActivity {
                             }
                         });
                         Gson gson = builder.create();
+                        if("true".equals(mcarttitlebean.userCollect)){
+                            shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_star), null, null);
+                        }else {
 
+                            shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_nostar), null, null);
+                        }
 
 
 
@@ -306,18 +377,27 @@ public class CartDetailActivity extends BaseActivity {
                         }.getType();
                         mcartattrlist=gson.fromJson(attrs,cartattrtype);
 //                        mcartdiscussbeanlist=gson.fromJson(replys, cartdisstype);
-                        JSONObject productValueobj=data.getJSONObject("productValue");
-                        Iterator iterator = productValueobj.keys();
-                        while(iterator.hasNext()){
-                            String key = iterator.next() + "";
-                            Type cartattrvaluetype = new TypeToken<CartAttrValue>() {
-                            }.getType();
-                            CartAttrValue cartAttrValue=gson.fromJson(productValueobj.getJSONObject(key).toString(),cartattrvaluetype);
-                            mcartattrvaluelist.add(cartAttrValue);
+                        try {
+                            JSONObject productValueobj=data.getJSONObject("productValue");
+                            Iterator iterator = productValueobj.keys();
+                            while(iterator.hasNext()){
+                                String key = iterator.next() + "";
+                                Type cartattrvaluetype = new TypeToken<CartAttrValue>() {
+                                }.getType();
+                                CartAttrValue cartAttrValue=gson.fromJson(productValueobj.getJSONObject(key).toString(),cartattrvaluetype);
+                                mcartattrvaluelist.add(cartAttrValue);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
                         }
 
 
                         buildRecyclerView();
+                        if("1".equals(mcarttitlebean.is_special)){
+                            togouwu.setVisibility(View.GONE);
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -380,6 +460,29 @@ public class CartDetailActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
+        shoucangnum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("true".equals(mcarttitlebean.userCollect)){
+                    unshoucang();
+                }else {
+                    shoucang();
+                }
+            }
+        });
+        gouwuchenum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new CartEvent());
+                finish();
+            }
+        });
+        kefunum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",60);//陈辰正式
+            }
+        });
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -446,7 +549,14 @@ public class CartDetailActivity extends BaseActivity {
         topay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popChose();
+                if("1".equals(mcarttitlebean.is_special)){
+                    productId=mcarttitlebean.id;
+                    uniqueId="0";
+                    lijiGouWu();
+                }else{
+
+                    popChose();
+                }
             }
         });
         togouwu.setOnClickListener(new View.OnClickListener() {
@@ -457,6 +567,63 @@ public class CartDetailActivity extends BaseActivity {
         });
 
     }
+
+    private void shoucang() {
+        Map<String, String> map = new HashMap<>();
+        map.put("productId", mcarttitlebean.id);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).shoucang(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+
+                        mcarttitlebean.userCollect="true";
+                        shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_star), null, null);
+                        Toast.makeText(mActivity,"收藏成功",Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+    private void unshoucang() {
+        Map<String, String> map = new HashMap<>();
+        map.put("productId", mcarttitlebean.id);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).shoucang(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        mcarttitlebean.userCollect="false";
+                        shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_nostar), null, null);
+                        Toast.makeText(mActivity,"取消收藏",Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+
     public int cartNum =1;
     public void popChose(){
         cartNum =1;
@@ -509,7 +676,9 @@ public class CartDetailActivity extends BaseActivity {
 
             }
         });
-
+        if("1".equals(mcarttitlebean.is_special)){
+            dialog_gouwuche.setVisibility(View.INVISIBLE);
+        }
         TextView money=customView2.findViewById(R.id.money);
         money.setText("¥"+mcarttitlebean.price);
         TextView allcount=customView2.findViewById(R.id.allcount);
@@ -541,8 +710,10 @@ public class CartDetailActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
+                        Toast.makeText(mActivity,"加入购物车成功",Toast.LENGTH_SHORT).show();
 //                        String cartId=res.getJSONObject("data").getString("cartId");
 //                        startActivity(new Intent(mActivity, PayDingDanActivity.class).putExtra("cartId",cartId));
+                        getCartNum();
                     }
 
                 } catch (JSONException e) {

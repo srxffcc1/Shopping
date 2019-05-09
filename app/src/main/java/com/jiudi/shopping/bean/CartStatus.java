@@ -13,44 +13,40 @@ import java.io.Serializable;
  */
 public class CartStatus implements Serializable {
 
-    private int _type;
-    private String _title;
-    private String _msg;
-    private String _class;
-    private String _payType;
-    public void set_type(int _type) {
-         this._type = _type;
-     }
-     public int get_type() {
-         return _type;
-     }
+    private String title;
+    private String payType;
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
 
     public void set_title(String _title) {
-         this._title = _title;
+         this.title = _title;
      }
      public String get_title() {
-         return _title;
+         return title;
      }
 
-    public void set_msg(String _msg) {
-         this._msg = _msg;
-     }
-     public String get_msg() {
-         return _msg;
-     }
-
-    public void set_class(String _class) {
-         this._class = _class;
-     }
-     public String get_class() {
-         return _class;
-     }
-
-    public void set_payType(String _payType) {
-         this._payType = _payType;
-     }
-     public String get_payType() {
-         return _payType;
-     }
 
 }

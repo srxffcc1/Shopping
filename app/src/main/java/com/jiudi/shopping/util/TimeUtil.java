@@ -1,5 +1,7 @@
 package com.jiudi.shopping.util;
 
+import com.jiudi.shopping.manager.AccountManager;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -64,6 +66,15 @@ public class TimeUtil {
     public static String formatTime(long timeMillis, String format) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.CHINA);
         return simpleDateFormat.format(new Date(timeMillis));
+    }
+
+
+    public static String formatLong(String longtime) {
+        long longs =Long.parseLong(longtime)*1000L;
+        Date date=new Date();
+        date.setTime(longs);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(date);
     }
 
     /**

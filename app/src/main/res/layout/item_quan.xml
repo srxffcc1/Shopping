@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_margin="10dp"
-        android:background="@drawable/card_bg_p"
+        android:background="@drawable/card_bg_r"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
@@ -18,7 +18,7 @@
                 android:layout_margin="15dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@drawable/text_boder_quan_r"
+                android:background="@drawable/text_boder_quan_w"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView

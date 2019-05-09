@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.vp.VpFragmentAdapter;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.event.CartEvent;
+import com.jiudi.shopping.event.FinishEvent;
 import com.jiudi.shopping.event.FlashEvent;
 import com.jiudi.shopping.event.UpdatePayStatusEvent;
 import com.jiudi.shopping.global.Constant;
@@ -71,6 +73,7 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_UNKNOWN_APP = 100;
     private static final int REQUEST_CODE_OPENCHAT = 60;
     private KfStartHelper helper;
+    private boolean iskefu=false;
 
     @Override
     public void onBackPressed() {
@@ -116,8 +119,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        mMainTL.getTabAt(0).select();
+        if(iskefu){
+            mMainTL.getTabAt(0).select();
+        }
         EventBus.getDefault().post(new FlashEvent());
     }
 
@@ -166,6 +170,7 @@ public class MainActivity extends BaseActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 mMainVP.setCurrentItem(tab.getPosition(), false);
                 if(tab.getPosition()==2){//说明按到了
+                    iskefu = true;
                     helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",REQUEST_CODE_OPENCHAT);//陈辰正式
                 }
             }
@@ -361,8 +366,16 @@ public class MainActivity extends BaseActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateCartEvent(CartEvent event) {
+        mMainTL.getTabAt(1).select();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateLoginStateEvent(UpdatePayStatusEvent event) {
         initTabData();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void finishEvent(FinishEvent event) {
+        finish();
     }
 
     @Override

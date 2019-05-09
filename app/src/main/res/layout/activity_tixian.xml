@@ -12,8 +12,7 @@
         android:padding="15dp"
         android:text="用户提现"
         android:textColor="#ff333333"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
 
 
     <ScrollView
@@ -28,6 +27,7 @@
             android:layout_weight="1"
             android:background="@color/colorWhite"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
@@ -42,58 +42,35 @@
                     android:gravity="center"
                     android:text="支付宝"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/sp_14"/>
+                    android:textSize="@dimen/sp_14" />
 
                 <android.support.v4.widget.Space
                     android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
+                android:orientation="vertical"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_10">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/dp_10"
-                    android:gravity="center"
-                    android:text="忠层"
+                    android:text=""
+                    android:hint="输入姓名"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/sp_14"/>
-
-                <android.support.v4.widget.Space
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:textSize="@dimen/sp_14" />
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/dp_10"
-                android:paddingRight="@dimen/dp_10">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/dp_10"
-                    android:gravity="center"
-                    android:text="1287750@qq.com"
-                    android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/sp_14"/>
-
-                <android.support.v4.widget.Space
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
@@ -102,16 +79,37 @@
                 android:paddingRight="@dimen/dp_10">
 
                 <EditText
+                    android:id="@+id/account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:text=""
+                    android:hint="输入支付宝账户"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/sp_14" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10">
+
+                <EditText
+                    android:id="@+id/money"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/dp_10"
                     android:hint="请输入提现金额"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/sp_14"/>
-
+                    android:textSize="@dimen/sp_14" />
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
@@ -120,31 +118,35 @@
                 android:paddingRight="@dimen/dp_10">
 
                 <TextView
+                    android:id="@+id/nowmoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/dp_10"
                     android:gravity="center"
-                    android:text="余额500"
+                    android:text="余额:¥0"
                     android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/sp_14"/>
+                    android:textSize="@dimen/sp_14" />
 
                 <android.support.v4.widget.Space
                     android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/passtixian"
                 android:background="@drawable/text_boder_sq"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:gravity="center"
                 android:layout_height="wrap_content"
                 android:text="提现"
                 android:layout_gravity="center_horizontal"
                 android:textColor="#fffffefe"
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
 
         </LinearLayout>
     </ScrollView>

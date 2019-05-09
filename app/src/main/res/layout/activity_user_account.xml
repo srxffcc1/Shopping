@@ -21,46 +21,48 @@
             android:textColor="#ff232326"
             android:textSize="17sp" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:padding="10dp"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/yongjinback"
-        android:layout_height="wrap_content">
+        android:padding="10dp">
+
         <TextView
-            android:layout_marginTop="20dp"
             android:id="@+id/yongjinbiaoti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="当前现金（元）"
             android:textColor="#ffffffff"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
+
         <TextView
-            android:layout_below="@+id/yongjinbiaoti"
             android:id="@+id/money"
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/yongjinbiaoti"
+            android:layout_marginTop="10dp"
             android:text="25.80"
             android:textColor="#ffffffff"
-            android:textSize="44sp"
-            />
+            android:textSize="44sp" />
     </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:drawableLeft="@drawable/yongjinleft"
         android:padding="10dp"
-        android:layout_height="wrap_content"
         android:text="现金明细"
         android:textColor="#ff333333"
-        android:textSize="12sp"
-        />
+        android:textSize="12sp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#ececec"/>
+        android:background="#ececec" />
 
     <LinearLayout
         android:layout_width="match_parent"

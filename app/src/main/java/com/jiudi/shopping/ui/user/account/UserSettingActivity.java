@@ -142,7 +142,7 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
             case R.id.ll_activity_user_set_about_us:
 //                intent = new Intent(mActivity, AboutUsActivity.class);
 //                startActivity(intent);
-                AboutUsActivity.open(mActivity,AboutUsActivity.TYPE_ABOUT_US,"关于我们","");
+//                AboutUsActivity.open(mActivity,AboutUsActivity.TYPE_ABOUT_US,"关于我们","");
                 break;
         }
 

@@ -2,8 +2,10 @@ package com.jiudi.shopping.ui.main;
 
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +26,11 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.cart.CartDetailActivity;
+import com.jiudi.shopping.ui.fenxiao.FenXiaoMenuActivity;
+import com.jiudi.shopping.ui.fenxiao.FenXiaoNoActivity;
+import com.jiudi.shopping.ui.fenxiao.TuanDuiActivity;
+import com.jiudi.shopping.ui.fenxiao.TuiGuangActivity;
+import com.jiudi.shopping.ui.user.account.TongZhiActivity;
 import com.jiudi.shopping.util.DisplayUtil;
 import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.NetworkUtil;
@@ -73,6 +80,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private LinearLayout center4;
     private RecyclerView recycler;
     private BannerLayout blFragmentHome;
+    private int page=0;
+    private NestedScrollView nest;
+    private boolean stoploadmore=false;
 
 
     @Override
@@ -98,6 +108,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         center4 = (LinearLayout) findViewById(R.id.center_4);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         blFragmentHome = (BannerLayout) findViewById(R.id.bl_fragment_home);
+        nest = (NestedScrollView) findViewById(R.id.nest);
     }
 
     @Override
@@ -113,7 +124,58 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initEvent() {
+        center1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("1".equals(AccountManager.sUserBean.is_promoter)){
+                startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
+                }else{
+                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                }
+            }
+        });
+        center2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    startActivity(new Intent(mActivity, TuanDuiActivity.class));
+                }else{
+                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                }
+            }
+        });
+        center3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    startActivity(new Intent(mActivity, TuiGuangActivity.class));
+                }else{
+                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                }
+            }
+        });
+        center4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    startActivity(new Intent(mActivity, TongZhiActivity.class));
+                }else{
+                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                }
+            }
+        });
+        nest.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (mCarBeanAdapter!=null && !stoploadmore &&
+                        scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    //加载更多
+                    page=page+10;
+                    getGodsList();
 
+                }
+            }
+        });
     }
 
     private void getGods() {
@@ -121,14 +183,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 //        MainGodsBean beanCarChoice = new MainGodsBean();
 //        mCarChoiceList.add(beanCarChoice);
 //        showCarChoiceRecycleView();
-        getGodsList(0);
+        getGodsList();
     }
 
 
-    private void getGodsList(int page) {
+    private void getGodsList() {
         Map<String, String> map = new HashMap<>();
         map.put("first", page + "");
-        map.put("limit", "20");
+        map.put("limit", "10");
         RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getGodsList(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
@@ -138,20 +200,25 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     String info = res.getString("msg");
                     if (code == 200) {
                         JSONArray jsonArray = res.getJSONArray("data");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            MainGodsBean bean = new MainGodsBean();
-                            bean.id = jsonObject.optString("id");
-                            bean.image = jsonObject.optString("image");
-                            bean.store_name = jsonObject.optString("store_name");
-                            bean.keyword = jsonObject.optString("keyword");
-                            bean.sales = jsonObject.optString("sales");
-                            bean.vip_price = jsonObject.optString("vip_price");
-                            bean.price = jsonObject.optString("price");
-                            bean.unit_name = jsonObject.optString("unit_name");
-                            mCarChoiceList.add(bean);
+                        if(jsonArray.length()>1){
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                MainGodsBean bean = new MainGodsBean();
+                                bean.id = jsonObject.optString("id");
+                                bean.image = jsonObject.optString("image");
+                                bean.store_name = jsonObject.optString("store_name");
+                                bean.keyword = jsonObject.optString("keyword");
+                                bean.sales = jsonObject.optString("sales");
+                                bean.vip_price = jsonObject.optString("vip_price");
+                                bean.price = jsonObject.optString("price");
+                                bean.unit_name = jsonObject.optString("unit_name");
+                                mCarChoiceList.add(bean);
+                            }
+                            showCarChoiceRecycleView();
+                        }else{
+                            stoploadmore=true;
                         }
-                        showCarChoiceRecycleView();
+
 
                     }
 

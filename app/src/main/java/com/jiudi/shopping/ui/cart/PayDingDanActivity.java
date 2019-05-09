@@ -284,7 +284,7 @@ public class PayDingDanActivity extends BaseActivity {
 
     private void buildCartList(JSONObject data) {
         try {
-            JSONArray cartInfoList = data.getJSONArray("CartInfo");
+            JSONArray cartInfoList = data.getJSONArray("cartInfo");
             for (int i = 0; i < cartInfoList.length(); i++) {
                 View cartinfol = LayoutInflater.from(mActivity).inflate(R.layout.item_cart_item, godss, false);
                 JSONObject cartInfo = cartInfoList.getJSONObject(i);
@@ -304,7 +304,7 @@ public class PayDingDanActivity extends BaseActivity {
                 }
                 String count = "X" + cartInfo.getString("cart_num");
                 sum_cart += Integer.parseInt(cartInfo.getString("cart_num"));
-                String money = "¥" + cartInfo.getJSONObject("productInfo").getString("price");
+                String money = "¥" + cartInfo.getString("truePrice");
                 RequestOptions options = new RequestOptions()
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸

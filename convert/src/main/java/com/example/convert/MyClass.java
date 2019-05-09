@@ -5,22 +5,22 @@ import java.util.regex.Pattern;
 
 public class MyClass {
     public static void main(String[] args) {
-        String org="      \"combination_id\": 0,\n" +
-                "      \"id\": 89,\n" +
-                "      \"order_id\": \"wx2019050709272610002\",\n" +
-                "      \"pay_price\": \"0.02\",\n" +
-                "      \"total_num\": 1,\n" +
-                "      \"total_price\": \"0.02\",\n" +
-                "      \"pay_postage\": \"0.00\",\n" +
-                "      \"total_postage\": \"0.00\",\n" +
-                "      \"paid\": 0,\n" +
-                "      \"status\": 0,\n" +
-                "      \"refund_status\": 0,\n" +
-                "      \"pay_type\": \"weixin\",\n" +
-                "      \"coupon_price\": \"0.00\",\n" +
-                "      \"deduction_price\": \"0.00\",\n" +
-                "      \"pink_id\": 0,\n" +
-                "      \"delivery_type\": null,";
+        String org="                \"id\": 13,\n" +
+                "                \"cid\": 5,\n" +
+                "                \"uid\": 3,\n" +
+                "                \"coupon_title\": \"会员购买400\",\n" +
+                "                \"coupon_price\": 400,\n" +
+                "                \"use_min_price\": 800,\n" +
+                "                \"add_time\": 1555671131,\n" +
+                "                \"end_time\": 1571223131,\n" +
+                "                \"use_time\": 1555927505,\n" +
+                "                \"type\": \"get\",\n" +
+                "                \"status\": 1,\n" +
+                "                \"is_fail\": 0,\n" +
+                "                \"_add_time\": \"2019/04/19\",\n" +
+                "                \"_end_time\": \"2019/10/16\",\n" +
+                "                \"_type\": 0,\n" +
+                "                \"_msg\": \"已使用\"";
         //parm参数
         Pattern pattern=null;
         Matcher matcher=null;

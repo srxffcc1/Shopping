@@ -19,7 +19,11 @@
         <item name="android:windowTranslucentStatus">true</item>
 
     </style>
+    <style name="roomRatingBar" parent="@android:style/Widget.RatingBar">
 
+        <item name="android:progressDrawable">@drawable/ratingbar_drawable</item>
+
+    </style>
     <style name="HorizontalLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dp_0.5</item>

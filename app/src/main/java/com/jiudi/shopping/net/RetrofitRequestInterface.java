@@ -29,6 +29,12 @@ public interface RetrofitRequestInterface {
     @POST("api/auth_api/get_user_order_list")
     Call<String> getGoodOrder(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
+
+    /*获得优惠券*/
+    @FormUrlEncoded
+    @POST("api/my/coupon")
+    Call<String> getQuan(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
     /*取消订单*/
     @FormUrlEncoded
     @POST("index.php?g=app&m=appv1&a=CancelOrder")
@@ -52,10 +58,86 @@ public interface RetrofitRequestInterface {
     @POST("index.php?g=app&m=telephone&a=telephone_note")
     Call<String> getCanPhonePay(@FieldMap Map<String, String> params);
 
+
+    /*提现接口*/
+    @FormUrlEncoded
+    @POST("api/auth_api/user_extract")
+    Call<String> tixian(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*获得提现*/
+    @FormUrlEncoded
+    @POST("api/my/extract")
+    Call<String> gettixian(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*获得团队总人数*/
+    @FormUrlEncoded
+    @POST("api/my/spread_list")
+    Call<String> getTuanDuiNumber(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*获得购物车数量*/
+    @FormUrlEncoded
+    @POST("api/auth_api/get_cart_num")
+    Call<String> getCartNum(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*收藏商品*/
+    @FormUrlEncoded
+    @POST("api/auth_api/collect_product")
+    Call<String> shoucang(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*取消收藏商品*/
+    @FormUrlEncoded
+    @POST("api/auth_api/uncollect_product")
+    Call<String> unshoucang(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*立即支付*/
+    @FormUrlEncoded
+    @POST("api/auth_api/pay_order")
+    Call<String> lijizhifu(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*获得收藏*/
+    @FormUrlEncoded
+    @POST("api/auth_api/get_user_collect_product")
+    Call<String> getShouCang(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*获得通知信息*/
+    @FormUrlEncoded
+    @POST("api/auth_api/get_notice_list")
+    Call<String> getTongZhi(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*获得佣金列表*/
+    @FormUrlEncoded
+    @POST("api/auth_api/user_balance_list")
+    Call<String> getYongJinList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*获得全部评价*/
+    @FormUrlEncoded
+    @POST("api/auth_api/product_reply_list")
+    Call<String> getAllDiscuss(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*获得团队*/
+    @FormUrlEncoded
+    @POST("api/auth_api/get_spread_list")
+    Call<String> getTuanDui(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*获得分销信息*/
+    @FormUrlEncoded
+    @POST("api/my/user_pro")
+    Call<String> getFenXiao(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
     /*获得物流信息*/
     @FormUrlEncoded
     @POST("api/my/express")
     Call<String> getWuLiu(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*获得订单详情*/
+    @FormUrlEncoded
+    @POST("api/my/order")
+    Call<String> getOrderById(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
     /*获得购物车列表*/
     @FormUrlEncoded
@@ -67,6 +149,11 @@ public interface RetrofitRequestInterface {
     @FormUrlEncoded
     @POST("api/auth_api/change_cart_num")
     Call<String> changecartNum(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*删除购物车*/
+    @FormUrlEncoded
+    @POST("api/auth_api/remove_cart")
+    Call<String> deleteCart(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
     /*获得优惠券*/

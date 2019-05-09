@@ -42,4 +42,12 @@
         <attr name="civ_border_overlay" format="boolean"/>
         <attr name="civ_fill_color" format="color"/>
     </declare-styleable>
+    <declare-styleable name="KRatingBar">
+        <attr name="star_width" format="dimension"/>
+        <attr name="star_height" format="dimension"/>
+        <attr name="starMax" format="integer"/>
+        <attr name="rating" format="integer"/>
+        <attr name="starEmpty" format="reference"/>
+        <attr name="starFill" format="reference"/>
+    </declare-styleable>
 </resources>
