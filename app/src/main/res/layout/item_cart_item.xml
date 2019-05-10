@@ -52,16 +52,24 @@
             android:textSize="15sp"
             />
         <TextView
-            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/cart_money"
             android:layout_alignTop="@id/cart_money"
-            android:layout_alignParentRight="true"
             android:id="@+id/cart_count"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X1"
             android:textColor="#ff999999"
-            android:textSize="14sp"
+            android:textSize="15sp"
             />
+        <TextView
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:layout_alignTop="@id/cart_money"
+            android:id="@+id/pingjia"
+            android:layout_width="wrap_content"
+            android:text="评价"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 

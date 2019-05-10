@@ -1,14 +1,26 @@
 package com.jiudi.shopping.ui.cart;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -19,18 +31,29 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.bean.AlipayPayResultBean;
 import com.jiudi.shopping.bean.CartStatus;
 import com.jiudi.shopping.bean.Order;
 import com.jiudi.shopping.bean.OrderDetail;
+import com.jiudi.shopping.event.WechatPayEvent;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.util.DialogUtil;
+import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.TimeUtil;
+import com.jiudi.shopping.util.ToastUtil;
+import com.jiudi.shopping.util.WechatUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,6 +101,29 @@ public class DingDanActivity extends BaseActivity {
     private android.widget.TextView fanhui;
     private android.widget.TextView chakanwuliu;
     private android.widget.TextView querenshouhuo;
+    private Dialog dialogchosetext;
+    private String chosetext;
+    private String uni;
+    private static final String TAG = "DingDanActivity";
+    /**
+     * 支付失败弹窗
+     */
+    private PopupWindow mPayFailPopWindow;
+    private int mPayMethod = TYPE_PAY_ALIPAY;
+    /**
+     * 微信支付
+     */
+    public static final int TYPE_PAY_WECHAT = 2;
+    /**
+     * 支付宝支付
+     */
+    public static final int TYPE_PAY_ALIPAY = 1;
+    /**
+     * 余额支付
+     */
+    public static final int TYPE_PAY_YUE = 3;
+
+    private static final int ZHIFUBAO_SDK_PAY_FLAG = 100;
 
     @Override
     protected int getContentViewId() {
@@ -122,20 +168,30 @@ public class DingDanActivity extends BaseActivity {
         fanhui = (TextView) findViewById(R.id.fanhui);
         chakanwuliu = (TextView) findViewById(R.id.chakanwuliu);
         querenshouhuo = (TextView) findViewById(R.id.querenshouhuo);
+        StyledDialog.init(this);
     }
 
     @Override
     public void initData() {
-        orderbean= (Order) getIntent().getSerializableExtra("bean");
+        orderbean = (Order) getIntent().getSerializableExtra("bean");
         bindDataToView();
         getOrderById();
 //        getWuLiu();
+        if (orderbean != null) {
+            uni=orderbean.getOrder_id();
+            if ("0".equals(orderbean.status) && "1".equals(orderbean.paid) && "0".equals(orderbean.refund_status)) {
+                tuikuan.setVisibility(View.VISIBLE);
+            }
+        }
+        if("2".equals(orderbean.getStatuz().getType())||"3".equals(orderbean.getStatuz().getType())){
+            chakanwuliu.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getOrderById() {
         Map<String, String> map = new HashMap<>();
-        map.put("uni",getIntent().getStringExtra("uni"));
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getOrderById(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        map.put("uni", getIntent().getStringExtra("uni"));
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getOrderById(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -152,7 +208,7 @@ public class DingDanActivity extends BaseActivity {
                         Gson gson = builder.create();
                         Type orderDetailType = new TypeToken<OrderDetail>() {
                         }.getType();
-                        orderDetail=gson.fromJson(res.getJSONObject("data").toString(),orderDetailType);
+                        orderDetail = gson.fromJson(res.getJSONObject("data").toString(), orderDetailType);
                         bindDataToView2();
                     }
 
@@ -169,37 +225,63 @@ public class DingDanActivity extends BaseActivity {
     }
 
     private void bindDataToView2() {
-        xiadanshijian.setText("下单时间："+TimeUtil.formatLong(orderDetail.getAdd_time()));
-        if("未支付".equals(orderbean.getStatuz().getTitle())){
+        xiadanshijian.setText("下单时间：" + TimeUtil.formatLong(orderDetail.getAdd_time()));
+        if ("未支付".equals(orderbean.getStatuz().getTitle())) {
 
             zhifushijian.setVisibility(View.GONE);
-        }else{
-
-            zhifushijian.setText("支付时间："+TimeUtil.formatLong(orderDetail.getPay_time()));
+        } else {
+            zhifushijian.setText("支付时间：" + TimeUtil.formatLong(orderDetail.getPay_time()));
         }
     }
 
-    public void bindDataToView(){
-        String cartlist=new Gson().toJson(orderbean.getCartInfoList());
-        buildCartList(godss,cartlist);
+    public void bindDataToView() {
+        String cartlist = new Gson().toJson(orderbean.getCartInfoList());
+        buildCartList(godss, cartlist);
         zhuangtai.setText(orderbean.getStatuz().get_title());
         dizhi.setText(orderbean.getUser_address());
         dianhua.setText(orderbean.getUser_phone());
         xingming.setText(orderbean.getReal_name());
-        if("未支付".equals(orderbean.getStatuz().get_title())){
+        if ("未支付".equals(orderbean.getStatuz().get_title())) {
             peisongfangshil.setVisibility(View.GONE);
         }
         fahuo.setText(orderbean.getStatuz().getMsg());
-        shifukuanv.setText("¥"+orderbean.getPay_price());
-        shangpinzongjiav.setText("¥"+orderbean.getTotal_price());
-        dingdanbianhao.setText("订单编号："+orderbean.getOrder_id());
-        zhifufangshi.setText("支付方式："+orderbean.getStatuz().getPayType());
-        zhifuzhuangtai.setText("支付状态："+orderbean.getStatuz().getTitle());
+        shifukuanv.setText("¥" + orderbean.getPay_price());
+        shangpinzongjiav.setText("¥" + orderbean.getTotal_price());
+        dingdanbianhao.setText("订单编号：" + orderbean.getOrder_id());
+        zhifufangshi.setText("支付方式：" + orderbean.getStatuz().getPayType());
+        zhifuzhuangtai.setText("支付状态：" + orderbean.getStatuz().getTitle());
     }
-    private void getWuLiu() {
+
+    //    private void getWuLiu() {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("uni","wx2019042517361710007");
+//        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getWuLiu(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+//            @Override
+//            public void onSuccess(String response) {
+//                try {
+//                    JSONObject res = new JSONObject(response);
+//                    int code = res.getInt("code");
+//                    String info = res.getString("msg");
+//                    if (code == 200) {
+//
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable t) {
+//
+//            }
+//        });
+//    }
+    private void tuiKuan(String text) {
         Map<String, String> map = new HashMap<>();
-        map.put("uni","wx2019042517361710007");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getWuLiu(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        map.put("uni", orderbean.getOrder_id());
+        map.put("text",text);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).tuikuan(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -221,15 +303,108 @@ public class DingDanActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     public void initEvent() {
         chakanwuliu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mActivity,WuLiuActivity.class).putExtra("uni",orderbean.getOrder_id()));
+                startActivity(new Intent(mActivity, WuLiuActivity.class).putExtra("uni", orderbean.getOrder_id()));
+            }
+        });
+        tuikuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChoseText();
+            }
+        });
+        chakanwuliu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, WuLiuActivity.class).putExtra("uni",orderbean.getOrder_id()));
+            }
+        });
+        querenshouhuo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("确认收货".equals(querenshouhuo.getText().toString())){
+
+                }
+                if("立即支付".equals(querenshouhuo.getText().toString())){
+                    qurenshouhuo(orderbean.getOrder_id());
+                }
             }
         });
     }
+    public void lijizhifu(){
+        DialogUtil.showUnCancelableProgress(mActivity, "支付开启中");
+        Map<String, String> map = new HashMap<>();
+        map.put("uni", uni);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).lijizhifu(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+
+                        toWePay(res);
+                    }
+
+                    DialogUtil.hideProgress();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+    private void toWePay(JSONObject res) {
+        try {
+            JSONObject data = res.getJSONObject("data").getJSONObject("result").getJSONObject("jsConfig");
+            String appId = data.getString("appid");
+            String partnerId = data.getString("partnerid");
+            String prepayId = data.getString("prepayid");
+            String packageValue = data.getString("package");
+            String nonceStr = data.getString("noncestr");
+            String timeStamp = data.getString("timestamp");
+            String sign = data.getString("sign");
+            WechatUtil.wechatPay(appId, partnerId, prepayId, packageValue, nonceStr, timeStamp, sign);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void showChoseText() {
+        dialogchosetext = StyledDialog.buildNormalInput("退货", "请输入退货理由", "",
+                "", "",  new MyDialogListener() {
+                    @Override
+                    public void onFirst() {
+                        tuiKuan(chosetext);
+                    }
+
+                    @Override
+                    public void onSecond() {
+
+                    }
+
+                    @Override
+                    public boolean onInputValid(CharSequence input1, CharSequence input2, EditText editText1, EditText editText2) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onGetInput(CharSequence input1, CharSequence input2) {
+                        super.onGetInput(input1, input2);
+                        chosetext=input1.toString();
+                    }
+                }).setBtnText("确定","取消").setCancelable(true,true).show();
+    }
+
     private void buildCartList(ViewGroup viewGroup, String cartInfoListString) {
         try {
             JSONArray cartInfoList = new JSONArray(cartInfoListString);
@@ -268,5 +443,162 @@ public class DingDanActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    private void qurenshouhuo(String order_id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("uni", order_id);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).qurenshouhuo(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+    private void toAliPay(JSONObject res) {
+        try {
+            String data = res.getJSONObject("data").getJSONObject("result").getString("jsConfig");
+            alipayPay(data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onWechatPayEvent(WechatPayEvent wechatPayEvent) {
+        LogUtil.e(TAG, "onWechatPayEvent---wechatPayEvent");
+        int result = wechatPayEvent.getResult();
+        switch (result) {
+            case 0:
+                ToastUtil.showShort(mActivity, "支付成功");
+//                PayCompleteActivity.open(mActivity,mUnid);
+                break;
+            case -1:
+                ToastUtil.showShort(mActivity, "支付失败");
+                showPayPopWindow();
+                break;
+            case -2:
+                ToastUtil.showShort(mActivity, "取消了支付");
+                break;
+        }
+    }
+    /**
+     * 支付宝支付
+     */
+    private void alipayPay(final String signOrderData) {
+        Runnable payRunnable = new Runnable() {
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(mActivity);
+                Map<String, String> result = alipay.payV2(signOrderData, true);
+                Log.i("msp", result.toString());
+                Message msg = new Message();
+                msg.what = ZHIFUBAO_SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case ZHIFUBAO_SDK_PAY_FLAG: {
+                    @SuppressWarnings("unchecked") AlipayPayResultBean payResult = new AlipayPayResultBean((Map<String, String>) msg.obj);
+                    /**
+                     对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();//同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    LogUtil.e(TAG, resultInfo.toString());
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        //该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        ToastUtil.showShort(mActivity, "支付成功");
+//                        PayCompleteActivity.open(mActivity,mUnid);
+                        successPay();
+                    } else {
+                        ToastUtil.showShort(mActivity, "支付失败");
+                        showPayPopWindow();
+                    }
+                    break;
+                }
+            }
+        }
+    };
+    //支付成功之后返回刚才的页面
+    public void successPay() {
+//        Intent intent=new Intent();
+//        Bundle bundle = getIntent().getExtras();
+//        Set<String> keys = bundle.keySet();
+//        Iterator<String> it = keys.iterator();
+//        while (it.hasNext()) {
+//            String key = it.next();
+//            if (!"url".equals(key) && !"paytypekey".equals(key) && !"paymm".equals(key)) {
+//
+//                String value = bundle.getString(key);
+//                intent.putExtra(key, value);
+//
+//            }
+//        }
+//        setResult(Activity.RESULT_OK,intent);
+//        finish();
+    }
+    private void showPayPopWindow() {
+        if (mPayFailPopWindow != null && mPayFailPopWindow.isShowing()) {
+            mPayFailPopWindow.dismiss();
+        } else {
+            View view1 = LayoutInflater.from(mActivity).inflate(R.layout.popwindow_pay_fail, null, false);
+
+            TextView pay_cancel = (TextView) view1.findViewById(R.id.tv_popwindow_pay_fail_cancel);
+            TextView pay_again = (TextView) view1.findViewById(R.id.tv_popwindow_pay_fail_again);
+            pay_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPayFailPopWindow.dismiss();
+                }
+            });
+
+            pay_again.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    lijizhifu();
+                }
+            });
+            mPayFailPopWindow = new PopupWindow(view1, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+            mPayFailPopWindow.setBackgroundDrawable(new BitmapDrawable());
+            mPayFailPopWindow.showAtLocation(view1, Gravity.NO_GRAVITY, 0, 0);
+
+//            changeCanPay(true);
+        }
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

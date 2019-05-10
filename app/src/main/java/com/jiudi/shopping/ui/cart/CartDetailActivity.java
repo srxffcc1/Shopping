@@ -599,7 +599,7 @@ public class CartDetailActivity extends BaseActivity {
     private void unshoucang() {
         Map<String, String> map = new HashMap<>();
         map.put("productId", mcarttitlebean.id);
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).shoucang(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).unshoucang(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {

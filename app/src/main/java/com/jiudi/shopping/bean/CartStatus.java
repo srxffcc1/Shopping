@@ -15,7 +15,16 @@ public class CartStatus implements Serializable {
 
     private String title;
     private String payType;
+    private String type;
     private String msg;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getMsg() {
         return msg;

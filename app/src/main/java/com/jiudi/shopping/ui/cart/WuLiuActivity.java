@@ -76,7 +76,7 @@ public class WuLiuActivity extends BaseActivity {
     }
     private void getWuLiu() {
         Map<String, String> map = new HashMap<>();
-        map.put("uni","wx2019042517361710007");
+        map.put("uni",getIntent().getStringExtra("uni"));
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getWuLiu(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {

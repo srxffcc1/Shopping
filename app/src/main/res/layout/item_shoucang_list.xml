@@ -56,7 +56,7 @@ DE53 扫拖一体全自动智能规划..."
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/sub"
+                android:id="@+id/deleteshoucang"
                 android:padding="10dp"
                 android:src="@drawable/delete_shoucang"
                 android:layout_width="42dp"

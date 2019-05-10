@@ -28,6 +28,11 @@ public class KRatingBar extends LinearLayout implements View.OnClickListener {
     private float starHeight;
     private Drawable starEmpty;
     private Drawable starFill;
+
+    public int getRating() {
+        return rating;
+    }
+
     private int rating;//点亮的星星数目
     private Context context;
     private boolean needAnimation=false;

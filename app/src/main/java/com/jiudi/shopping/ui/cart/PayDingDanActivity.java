@@ -8,15 +8,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,9 +30,13 @@ import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.hss01248.dialog.StyledDialog;
 import com.jiudi.shopping.R;
+import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
+import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.bean.AlipayPayResultBean;
+import com.jiudi.shopping.bean.Quan;
 import com.jiudi.shopping.event.WechatPayEvent;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
@@ -46,7 +56,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PayDingDanActivity extends BaseActivity {
@@ -56,6 +68,8 @@ public class PayDingDanActivity extends BaseActivity {
     private TextView lijigoumai;
     private BigRadioGroup paytypegroup;
     private String paytype;
+    private List<Quan> mBeanList = new ArrayList<>();
+    private RecyclerCommonAdapter<Quan> myAdapter;
     /**
      * 支付失败弹窗
      */
@@ -81,6 +95,18 @@ public class PayDingDanActivity extends BaseActivity {
     private TextView cartGroup;
     private TextView needpaymoney;
     private RelativeLayout changeaddress;
+    private ImageView dizhiicon;
+    private TextView keyongyouhuiquan;
+    private CheckBox yuecheck;
+    private RadioButton checkweixin;
+    private RadioButton checkxianjin;
+    private RadioButton checkzhifubao;
+    private String trueprice;
+    private EditText mask;
+    private TextView yuetext;
+    private String yuetexts;
+    private String xianjint;
+    private TextView nowmoneys;
 
     @Override
     protected int getContentViewId() {
@@ -98,11 +124,21 @@ public class PayDingDanActivity extends BaseActivity {
         cartGroup = (TextView) findViewById(R.id.cart_group);
         needpaymoney = (TextView) findViewById(R.id.needpaymoney);
         changeaddress = (RelativeLayout) findViewById(R.id.changeaddress);
+        dizhiicon = (ImageView) findViewById(R.id.dizhiicon);
+        keyongyouhuiquan = (TextView) findViewById(R.id.keyongyouhuiquan);
+        yuecheck = (CheckBox) findViewById(R.id.yuecheck);
+        checkweixin = (RadioButton) findViewById(R.id.checkweixin);
+        checkxianjin = (RadioButton) findViewById(R.id.checkxianjin);
+        checkzhifubao = (RadioButton) findViewById(R.id.checkzhifubao);
+        mask = (EditText) findViewById(R.id.mask);
+        yuetext = (TextView) findViewById(R.id.yuetext);
+        nowmoneys = (TextView) findViewById(R.id.nowmoneys);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StyledDialog.init(this);
         EventBus.getDefault().register(this);
         initView();
     }
@@ -131,6 +167,33 @@ public class PayDingDanActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
+                        JSONArray jsonArray = res.getJSONArray("data");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            Quan bean = new Quan();
+                            bean.id = jsonObject.optString("id");
+                            bean.cid = jsonObject.optString("cid");
+                            bean.uid = jsonObject.optString("uid");
+                            bean.coupon_title = jsonObject.optString("coupon_title");
+                            bean.coupon_price = jsonObject.optString("coupon_price");
+                            bean.use_min_price = jsonObject.optString("use_min_price");
+                            bean.add_time = jsonObject.optString("add_time");
+                            bean.end_time = jsonObject.optString("end_time");
+                            bean.use_time = jsonObject.optString("use_time");
+                            bean.type = jsonObject.optString("type");
+                            bean.status = jsonObject.optString("status");
+                            bean.is_fail = jsonObject.optString("is_fail");
+                            bean._add_time = jsonObject.optString("_add_time");
+                            bean._end_time = jsonObject.optString("_end_time");
+                            bean._type = jsonObject.optString("_type");
+                            bean._msg = jsonObject.optString("_msg");
+//                            if("全部".equals(getArguments().getString("type"))||bean.status.equals(getArguments().getString("type"))){
+//                                mBeanList.add(bean);
+//                            }
+
+                            mBeanList.add(bean);
+
+                        }
 
                     }
 
@@ -160,6 +223,112 @@ public class PayDingDanActivity extends BaseActivity {
                 passToAddAdress();
             }
         });
+        keyongyouhuiquan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!yuecheck.isChecked()) {
+                    showPounList();
+                }
+            }
+        });
+        yuecheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    keyongyouhuiquan.setText("不可使用优惠券");
+                    yuetext.setText("可用余额：" + yuetexts);
+                } else {
+                    keyongyouhuiquan.setText("点选使用优惠券");
+                    yuetext.setText("余额抵扣");
+                }
+            }
+        });
+    }
+
+    private void showPounList() {
+        RecyclerView recyclerView = new RecyclerView(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        if (myAdapter == null) {
+
+            myAdapter = new RecyclerCommonAdapter<Quan>(mActivity, R.layout.item_quan4, mBeanList) {
+                @Override
+                protected void convert(ViewHolder holder, final Quan carChoiceBean, int position) {
+                    LinearLayout quanboder1 = holder.getView(R.id.quanboder1);
+//                    LinearLayout quanboder2 = holder.getView(R.id.quanboder2);
+                    final String newstatus = Double.parseDouble(trueprice) >= Double.parseDouble(carChoiceBean.use_min_price) ? "0" : "1";
+
+
+                    holder.setText(R.id.min, "满" + carChoiceBean.use_min_price + "元可用现金券");
+                    holder.setText(R.id.time, carChoiceBean._add_time + "至" + carChoiceBean._end_time);
+                    holder.setText(R.id.money, "¥" + carChoiceBean.coupon_price);
+                    CheckBox checkBox = holder.itemView.findViewById(R.id.check);
+                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (!buttonView.isPressed()) {
+                                return;
+                            }
+                            if (isChecked && "1".equals(newstatus)) {
+                                setUpon(carChoiceBean);
+                            } else {
+                                unsetUpon();
+                            }
+                        }
+                    });
+                    if (carChoiceBean.id.equals(couponId)) {
+                        checkBox.setChecked(true);
+                    }
+                    if ("0".equals(newstatus)) {
+//                        holder.setText(R.id.status, "可使用");
+                        quanboder1.setBackgroundColor(getResources().getColor(R.color.colorRed));
+//                        quanboder1.setBackgroundResource(R.drawable.card_bg_r);
+//                        quanboder2.setBackgroundResource(R.drawable.text_boder_quan_w);
+                        checkBox.setVisibility(View.VISIBLE);
+                    }
+                    if ("1".equals(newstatus)) {
+//                        holder.setText(R.id.status, "不可使用");
+                        quanboder1.setBackgroundColor(getResources().getColor(R.color.colorGray));
+//                        holder.setBackgroundRes(R.id.status, R.drawable.text_boder_quan_r);
+//                        holder.setTextColor(R.id.min, Color.parseColor("#E9391C"));
+//                        holder.setTextColor(R.id.time, Color.parseColor("#E9391C"));
+//                        holder.setTextColor(R.id.money, Color.parseColor("#E9391C"));
+//                        holder.setTextColor(R.id.status, Color.parseColor("#E9391C"));
+                        holder.itemView.setEnabled(false);
+                        checkBox.setVisibility(View.GONE);
+
+                    }
+//                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            setUpon(carChoiceBean);
+//                        }
+//                    });
+//                    if("2".equals(newstatus)){
+//                        holder.setText(R.id.status,"已过期");
+//                        quanboder1.setBackgroundResource(R.drawable.card_bg_g);
+//                        quanboder2.setBackgroundResource(R.drawable.text_boder_quan_w);
+//
+//                    }
+                }
+
+            };
+        } else {
+
+        }
+        recyclerView.setAdapter(myAdapter);
+        StyledDialog.buildCustomBottomSheet(recyclerView).show();//不好建立回调
+    }
+
+    String couponId;
+
+    private void setUpon(Quan carChoiceBean) {
+        couponId = carChoiceBean.id;
+        keyongyouhuiquan.setText("优惠券抵扣" + carChoiceBean.coupon_price);
+    }
+
+    private void unsetUpon() {
+        couponId = "";
+        keyongyouhuiquan.setText("点选使用优惠券");
     }
 
     private void toPay() {
@@ -167,7 +336,11 @@ public class PayDingDanActivity extends BaseActivity {
         map.put("key", orderKey);
         map.put("addressId", addressId);
         map.put("bargainId", "");
-        map.put("couponId", "");
+        map.put("mark", mask.getText().toString());
+        if (!yuecheck.isChecked()) {
+            map.put("couponId", couponId);
+        }
+        map.put("useIntegral", yuecheck.isChecked() ? "true" : "false");
         if (paytypegroup.getCheckedRadioButtonId() == R.id.checkweixin) {
             mPayMethod = TYPE_PAY_WECHAT;
             paytype = "weixin";
@@ -262,7 +435,11 @@ public class PayDingDanActivity extends BaseActivity {
                         orderKey = data.optString("orderKey");
                         buildCartList(data);
                         cartGroup.setText("共" + sum_cart + "件商品 小计:" + data.getJSONObject("priceGroup").getString("totalPrice") + "元");
+                        trueprice = data.getJSONObject("priceGroup").getString("totalPrice");
                         needpaymoney.setText("应付:¥" + data.getJSONObject("priceGroup").getString("totalPrice") + "");
+                        yuetexts = data.getJSONObject("userInfo").getString("integral");
+                        xianjint = data.getJSONObject("userInfo").getString("now_money");
+                        nowmoneys.setText("可用现金"+xianjint);
 
                     }
 

@@ -107,10 +107,11 @@
                     android:textSize="13sp"
                     />
                 <TextView
+                    android:id="@+id/keyongyouhuiquan"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100元优惠券可用"
+                    android:text="选择优惠券"
                     android:textColor="#ffef403f"
                     android:textSize="13sp"
                     />
@@ -120,20 +121,21 @@
                 android:padding="10dp"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/yuetext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="余额抵扣"
                     android:textColor="#ff333333"
                     android:textSize="13sp"
                     />
-                <TextView
+                <CheckBox
                     android:layout_alignParentRight="true"
+                    android:padding="3dp"
+                    android:id="@+id/yuecheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="#ff333333"
-                    android:textSize="13sp"
-                    />
+                    android:layout_centerVertical="true"
+                    android:button="@drawable/selector_cart" />
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -149,6 +151,7 @@
                     android:textSize="13sp"
                     />
                 <EditText
+                    android:id="@+id/mask"
                     android:layout_marginLeft="10dp"
                     android:background="@null"
                     android:layout_width="0dp"
@@ -217,6 +220,7 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content" />
                     <TextView
+                        android:id="@+id/nowmoneys"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="可用现金0"

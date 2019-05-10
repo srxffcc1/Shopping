@@ -1,6 +1,7 @@
 package com.jiudi.shopping.ui.user;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -203,7 +205,33 @@ public class QuanFragment extends BaseFragment {
             myAdapter = new RecyclerCommonAdapter<Quan>(mActivity, R.layout.item_quan, mBeanList) {
                 @Override
                 protected void convert(ViewHolder holder, final Quan carChoiceBean, int position) {
+                    LinearLayout quanboder1=holder.getView(R.id.quanboder1);
+                    LinearLayout quanboder2=holder.getView(R.id.quanboder2);
+                    holder.setText(R.id.min,"满"+carChoiceBean.use_min_price+"元可用现金券");
+                    holder.setText(R.id.time,carChoiceBean._add_time+"至"+carChoiceBean._end_time);
+                    holder.setText(R.id.money,"¥"+carChoiceBean.coupon_price);
+                    if("0".equals(carChoiceBean.status)){
+                        holder.setText(R.id.status,"可使用");
+                        quanboder1.setBackgroundResource(R.drawable.card_bg_r);
+                        quanboder2.setBackgroundResource(R.drawable.text_boder_quan_w);
+                    }
+                    if("1".equals(carChoiceBean.status)){
+                        holder.setText(R.id.status,"已使用");
+                        quanboder1.setBackgroundResource(R.drawable.card_bg_p);
+                        quanboder2.setBackgroundResource(R.drawable.text_boder_quan_r);
+                        holder.setBackgroundRes(R.id.status,R.drawable.text_boder_quan_r);
+                        holder.setTextColor(R.id.min,Color.parseColor("#E9391C"));
+                        holder.setTextColor(R.id.time,Color.parseColor("#E9391C"));
+                        holder.setTextColor(R.id.money,Color.parseColor("#E9391C"));
+                        holder.setTextColor(R.id.status,Color.parseColor("#E9391C"));
 
+                    }
+                    if("2".equals(carChoiceBean.status)){
+                        holder.setText(R.id.status,"已过期");
+                        quanboder1.setBackgroundResource(R.drawable.card_bg_g);
+                        quanboder2.setBackgroundResource(R.drawable.text_boder_quan_w);
+
+                    }
                 }
 
             };

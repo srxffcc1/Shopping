@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -147,6 +148,17 @@ public class AddressListActivity extends BaseActivity {
                         @Override
                         public void onClick(View v) {
 //                            startActivity(buildIntent(new Intent(mActivity,AddressActivity.class),carChoiceBean));
+                            deleteAddress(carChoiceBean);
+                        }
+                    });
+                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if(!buttonView.isPressed()){
+                                return;
+                            }if(isChecked){
+                                saveAddress(carChoiceBean);
+                            }
                         }
                     });
 
@@ -160,6 +172,63 @@ public class AddressListActivity extends BaseActivity {
         }else{
             myAdapter.notifyDataSetChanged();
         }
+    }
+    private void saveAddress(DiZHi bean) {
+        Map<String, String> map = new HashMap<>();
+        map.put("id", bean.id);
+        map.put("real_name", bean.real_name);
+        map.put("phone", bean.phone);
+        map.put("province", bean.province);
+        map.put("city", bean.city);
+        map.put("district", bean.district);
+        map.put("detail", bean.detail);
+        map.put("is_default", "true");
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).saveAddress(SPUtil.get("head", "").toString(),"api/auth_api/edit_user_address",RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        getAddressList();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+    private void deleteAddress(DiZHi bean) {
+        Map<String, String> map = new HashMap<>();
+        map.put("addressId", bean.id);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).deleteAddress(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        getAddressList();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 
 }

@@ -22,7 +22,7 @@ public class AllOrderActivity extends BaseActivity {
     private android.widget.TextView tvLayoutTopBackBarEnd;
     private android.widget.TextView tvLayoutBackTopBarOperate;
     private com.flyco.tablayout.CommonTabLayout tl;
-    private String[] mTitles = {"全部", "待付款", "待发货", "待收货","已完成"};
+    private String[] mTitles = {"全部", "待付款", "待发货", "待收货","待评价"};
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private android.widget.FrameLayout flChange;

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -123,6 +124,12 @@ public class ShouCangActivity extends BaseActivity {
                             startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",carChoiceBean.pid));
                         }
                     });
+                    holder.setOnClickListener(R.id.deleteshoucang, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            unshoucang(carChoiceBean.pid);
+                        }
+                    });
                 }
 
             };
@@ -136,5 +143,30 @@ public class ShouCangActivity extends BaseActivity {
             mCarBeanAdapter.notifyDataSetChanged();
         }
 
+    }
+    private void unshoucang(String id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("productId", id);
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).rmshoucang(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        Toast.makeText(mActivity,"取消收藏",Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 }

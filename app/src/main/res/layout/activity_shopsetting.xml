@@ -33,6 +33,7 @@
             android:background="@color/colorWhite"
             android:orientation="vertical">
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/userinfo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
@@ -85,6 +86,7 @@
                     android:layout_weight="1"/>
 
                 <TextView
+                    android:id="@+id/userspace"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/dp_10"

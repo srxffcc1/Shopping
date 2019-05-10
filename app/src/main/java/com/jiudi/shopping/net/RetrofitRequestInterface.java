@@ -59,6 +59,22 @@ public interface RetrofitRequestInterface {
     Call<String> getCanPhonePay(@FieldMap Map<String, String> params);
 
 
+    /*新增评价*/
+    @FormUrlEncoded
+    @POST("api/auth_api/user_comment_product")
+    Call<String> addDisscuss(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*退款*/
+    @FormUrlEncoded
+    @POST("api/auth_api/apply_order_refund")
+    Call<String> tuikuan(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*修改头像*/
+    @FormUrlEncoded
+    @POST("api/auth_api/changeavatar")
+    Call<String> changeavatar(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
     /*提现接口*/
     @FormUrlEncoded
     @POST("api/auth_api/user_extract")
@@ -89,11 +105,22 @@ public interface RetrofitRequestInterface {
     @POST("api/auth_api/uncollect_product")
     Call<String> unshoucang(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
+    /*删除收藏商品*/
+    @FormUrlEncoded
+    @POST("api/auth_api/remove_user_collect_product")
+    Call<String> rmshoucang(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
 
     /*立即支付*/
     @FormUrlEncoded
     @POST("api/auth_api/pay_order")
     Call<String> lijizhifu(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*确认收货*/
+    @FormUrlEncoded
+    @POST("api/auth_api/user_take_order")
+    Call<String> qurenshouhuo(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
     /*获得收藏*/
@@ -203,6 +230,11 @@ public interface RetrofitRequestInterface {
     @FormUrlEncoded
     @POST
     Call<String> saveAddress(@Header("Authorization") String auth,@Url String url, @FieldMap Map<String, String> params);
+
+    /*删除地址*/
+    @FormUrlEncoded
+    @POST("api/auth_api/remove_user_address")
+    Call<String> deleteAddress(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
 

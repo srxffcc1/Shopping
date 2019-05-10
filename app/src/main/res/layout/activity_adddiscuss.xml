@@ -38,6 +38,7 @@
 
             </LinearLayout>
             <EditText
+                android:id="@+id/pinjiatext"
                 android:layout_width="match_parent"
                 android:gravity="left"
                 android:layout_height="wrap_content"
@@ -48,6 +49,7 @@
                 android:textSize="14sp"
                 />
             <ImageView
+                android:id="@+id/addpot"
                 android:src="@drawable/start_pot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -117,6 +119,7 @@
 
 
     <TextView
+        android:id="@+id/addDiss"
         android:background="#fff0250f"
         android:layout_width="match_parent"
         android:gravity="center"

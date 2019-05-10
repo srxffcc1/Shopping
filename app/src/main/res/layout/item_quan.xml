@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/quanboder1"
         android:layout_margin="10dp"
         android:background="@drawable/card_bg_r"
         android:layout_width="match_parent"
@@ -15,6 +16,7 @@
             android:layout_weight="454"
             android:layout_height="match_parent">
             <LinearLayout
+                android:id="@+id/quanboder2"
                 android:layout_margin="15dp"
                 android:orientation="vertical"
                 android:gravity="center"
@@ -22,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
+                    android:id="@+id/min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="满500元可用现金券"
@@ -29,6 +32,7 @@
                     android:textSize="14sp"
                     />
                 <TextView
+                    android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2019/04/29至2019/10/26可用"
@@ -53,6 +57,7 @@
                 android:gravity="center"
                 android:layout_height="match_parent">
                 <TextView
+                    android:id="@+id/money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="¥100"
@@ -60,6 +65,7 @@
                     android:textSize="24sp"
                     />
                 <TextView
+                    android:id="@+id/status"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
                     android:paddingLeft="5dp"

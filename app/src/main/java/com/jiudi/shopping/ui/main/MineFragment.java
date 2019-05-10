@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -24,7 +25,6 @@ import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseFragment;
 import com.jiudi.shopping.bean.UserBean;
 import com.jiudi.shopping.event.FlashEvent;
-import com.jiudi.shopping.global.Constant;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
@@ -38,16 +38,10 @@ import com.jiudi.shopping.ui.user.AllOrderActivity;
 import com.jiudi.shopping.ui.user.AllQuanActivity;
 import com.jiudi.shopping.ui.user.ShopSettingActivity;
 import com.jiudi.shopping.ui.user.account.AccountActivity;
-import com.jiudi.shopping.ui.user.account.AddDiscussActivity;
-import com.jiudi.shopping.ui.user.account.LoginActivity;
 import com.jiudi.shopping.ui.user.account.ShouCangActivity;
 import com.jiudi.shopping.ui.user.account.TongZhiActivity;
-import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.HttpUrlConnectUtil;
-import com.jiudi.shopping.util.ImageUtil;
-import com.jiudi.shopping.util.LogUtil;
-import com.jiudi.shopping.util.NetworkUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.ToastUtil;
 import com.jiudi.shopping.widget.GlideImageLoader;
@@ -55,7 +49,6 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
-import com.m7.imkfsdk.SettingActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -234,7 +227,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mylessmoneyvalue.setText(AccountManager.sUserBean.integral);
         myquanvalue.setText(AccountManager.sUserBean.coupon_num);
         RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.head_defuat_circle);
-        Glide.with(mActivity).load(AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
+        Glide.with(mActivity).load((AccountManager.sUserBean.avatar.startsWith("http"))?AccountManager.sUserBean.avatar:"http://"+AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -504,13 +497,13 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             if (data != null && requestCode == REQUEST_CODE_IMAGE) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 DialogUtil.showProgress(mActivity, getString(R.string.prompt_open_modify_head));
-                updateAvatar(images.get(0).path);
+                uploadAvatar(images.get(0).path);
             }
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
             cutPhoto(mPhotoPath);
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CROP) {
             DialogUtil.showProgress(mActivity, getString(R.string.prompt_open_modify_head));
-            updateAvatar(mCropPath);
+            uploadAvatar(mCropPath);
         }
     }
 
@@ -519,7 +512,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
      *
      * @param avatarPath
      */
-    private void updateAvatar(final String avatarPath) {
+    private void uploadAvatar(final String avatarPath) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -527,8 +520,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 Map<String, Object> paramMap=new HashMap<>();
                 paramMap.put("file",file);
                 try {
-                    String result=HttpUrlConnectUtil.uploadFile(RequestManager.mBaseUrl+"api/images/upload.html",paramMap,"");
-                    System.out.println(result);
+                    String result=HttpUrlConnectUtil.uploadFile(RequestManager.mBaseUrl+"api/images/upload.html",paramMap,"");//上传头像
+                    try {
+                        JSONObject jsonObject=new JSONObject(result);
+                        String url=jsonObject.optString("src");
+                        updateAvatar(url);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -568,6 +567,33 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 //                }
 //            }
 //        });
+    }
+    public void updateAvatar(String url){
+        Map<String, String> map = new HashMap<>();
+        map.put("avatar",url);
+        map.put("type","1");
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).changeavatar(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        Toast.makeText(mActivity,"头像修改成功",Toast.LENGTH_SHORT).show();
+                        getMineData();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 
 }
