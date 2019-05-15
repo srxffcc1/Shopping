@@ -9,9 +9,7 @@
         android:id="@+id/title"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
-        android:text="小米米家（MIJIA）智能摄像机云台版白色
-1080P网络wifi家用监控高清360度红外夜
-视摄像头AI增强移动监测"
+        android:text=""
         android:textColor="#ff2c2c2c"
         android:textSize="17sp" />
 
@@ -21,9 +19,7 @@
         android:layout_width="347dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:text="1080高清/360度云台全景视角/微光全彩/双向语音/AI
-增强移动侦测/H.265编码/倒置安装/红外夜视全新语音
-升级款购买"
+        android:text=""
         android:textColor="#ffe93b3d"
         android:textSize="13sp" />
 
@@ -39,9 +35,9 @@
 
         <TextView
             android:id="@+id/money"
-            android:layout_width="55dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¥199.00"
+            android:text="¥"
             android:textColor="#ffe93b3d"
             android:textSize="13sp" />
 
@@ -51,14 +47,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="库存：7件"
+            android:text="库存："
             android:textColor="#ff5f5f5f"
             android:textSize="9sp" />
         <TextView
             android:id="@+id/sales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="销量：3件"
+            android:text="销量："
             android:textColor="#ff5e5e5e"
             android:textSize="9sp"
             />

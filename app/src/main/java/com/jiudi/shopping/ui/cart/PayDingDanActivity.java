@@ -2,6 +2,7 @@ package com.jiudi.shopping.ui.cart;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
@@ -107,6 +109,9 @@ public class PayDingDanActivity extends BaseActivity {
     private String yuetexts;
     private String xianjint;
     private TextView nowmoneys;
+    private Dialog dialogquan;
+    private double orgxiaoji;
+    private TextView addAdress;
 
     @Override
     protected int getContentViewId() {
@@ -133,6 +138,7 @@ public class PayDingDanActivity extends BaseActivity {
         mask = (EditText) findViewById(R.id.mask);
         yuetext = (TextView) findViewById(R.id.yuetext);
         nowmoneys = (TextView) findViewById(R.id.nowmoneys);
+        addAdress = (TextView) findViewById(R.id.add_adress);
     }
 
     @Override
@@ -227,7 +233,15 @@ public class PayDingDanActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (!yuecheck.isChecked()) {
-                    showPounList();
+                    if (mBeanList.size() > 0) {
+
+                        showPounList();
+                    } else {
+
+                        Toast.makeText(mActivity, "没有可以使用的优惠券", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(mActivity, "余额抵扣和优惠券不可同时使用", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -236,8 +250,14 @@ public class PayDingDanActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     keyongyouhuiquan.setText("不可使用优惠券");
-                    yuetext.setText("可用余额：" + yuetexts);
+                    yuetext.setText("抵扣金额：" + yuetexts);
+
+                    cartGroup.setText("共" + sum_cart + "件商品 小计:" + (orgxiaoji - Double.parseDouble(yuetexts)) + "元");
+                    needpaymoney.setText("应付:¥" + (orgxiaoji - Double.parseDouble(yuetexts)) + "");
                 } else {
+                    cartGroup.setText("共" + sum_cart + "件商品 小计:" + (orgxiaoji) + "元");
+                    needpaymoney.setText("应付:¥" + (orgxiaoji) + "");
+                    couponId = "";
                     keyongyouhuiquan.setText("点选使用优惠券");
                     yuetext.setText("余额抵扣");
                 }
@@ -258,7 +278,7 @@ public class PayDingDanActivity extends BaseActivity {
                     final String newstatus = Double.parseDouble(trueprice) >= Double.parseDouble(carChoiceBean.use_min_price) ? "0" : "1";
 
 
-                    holder.setText(R.id.min, "满" + carChoiceBean.use_min_price + "元可用现金券");
+                    holder.setText(R.id.min, "满" + carChoiceBean.use_min_price + "元可用");
                     holder.setText(R.id.time, carChoiceBean._add_time + "至" + carChoiceBean._end_time);
                     holder.setText(R.id.money, "¥" + carChoiceBean.coupon_price);
                     CheckBox checkBox = holder.itemView.findViewById(R.id.check);
@@ -268,7 +288,7 @@ public class PayDingDanActivity extends BaseActivity {
                             if (!buttonView.isPressed()) {
                                 return;
                             }
-                            if (isChecked && "1".equals(newstatus)) {
+                            if (isChecked && "0".equals(newstatus)) {
                                 setUpon(carChoiceBean);
                             } else {
                                 unsetUpon();
@@ -316,14 +336,23 @@ public class PayDingDanActivity extends BaseActivity {
 
         }
         recyclerView.setAdapter(myAdapter);
-        StyledDialog.buildCustomBottomSheet(recyclerView).show();//不好建立回调
+        //不好建立回调
+        dialogquan = StyledDialog.buildCustomBottomSheet(recyclerView).setCancelable(true,true).show();
     }
 
     String couponId;
 
     private void setUpon(Quan carChoiceBean) {
         couponId = carChoiceBean.id;
-        keyongyouhuiquan.setText("优惠券抵扣" + carChoiceBean.coupon_price);
+        if (dialogquan != null) {
+
+            dialogquan.dismiss();
+        }
+
+        cartGroup.setText("共" + sum_cart + "件商品 小计:" + (orgxiaoji - Double.parseDouble(carChoiceBean.coupon_price)) + "元");
+        needpaymoney.setText("应付:¥" + (orgxiaoji - Double.parseDouble(carChoiceBean.coupon_price)) + "");
+//        keyongyouhuiquan.setText("优惠券抵扣:" + carChoiceBean.coupon_price + "元");
+        keyongyouhuiquan.setText("已选择优惠券，节省" + carChoiceBean.coupon_price + "元");
     }
 
     private void unsetUpon() {
@@ -332,15 +361,22 @@ public class PayDingDanActivity extends BaseActivity {
     }
 
     private void toPay() {
+        if (addressId == null) {
+            Toast.makeText(mActivity, "地址不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        DialogUtil.showUnCancelableProgress(mActivity, "开启支付");
         Map<String, String> map = new HashMap<>();
         map.put("key", orderKey);
         map.put("addressId", addressId);
         map.put("bargainId", "");
         map.put("mark", mask.getText().toString());
         if (!yuecheck.isChecked()) {
-            map.put("couponId", couponId);
+            if (couponId != null) {
+                map.put("couponId", couponId);
+            }
         }
-        map.put("useIntegral", yuecheck.isChecked() ? "true" : "false");
+        map.put("useIntegral", yuecheck.isChecked() ? "1" : "0");
         if (paytypegroup.getCheckedRadioButtonId() == R.id.checkweixin) {
             mPayMethod = TYPE_PAY_WECHAT;
             paytype = "weixin";
@@ -357,8 +393,6 @@ public class PayDingDanActivity extends BaseActivity {
         }
         map.put("payType", paytype);
         map.put("seckill_id", "");
-        map.put("useIntegral", "");
-        map.put("mark", "");
         map.put("combinationId", "");
 
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).sendOrder(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
@@ -370,10 +404,16 @@ public class PayDingDanActivity extends BaseActivity {
                     String info = res.getString("msg");
                     if (code == 200) {
                         if (mPayMethod == TYPE_PAY_WECHAT) {
-                            toWePay(res);
+                            if (info.contains("余额") || !res.getJSONObject("data").getJSONObject("result").has("jsConfig")) {
+                                Toast.makeText(mActivity, "支付成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                toWePay(res);
+                            }
                         }
                         if (mPayMethod == TYPE_PAY_YUE) {
-
+                            Toast.makeText(mActivity, "支付成功", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                         if (mPayMethod == TYPE_PAY_ALIPAY) {
                             toAliPay(res);
@@ -385,11 +425,13 @@ public class PayDingDanActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtil.hideProgress();
             }
 
             @Override
             public void onError(Throwable t) {
-
+                Toast.makeText(mActivity, "服务器返回出错", Toast.LENGTH_SHORT).show();
+                DialogUtil.hideProgress();
             }
         });
     }
@@ -434,12 +476,13 @@ public class PayDingDanActivity extends BaseActivity {
                         JSONObject data = res.getJSONObject("data");
                         orderKey = data.optString("orderKey");
                         buildCartList(data);
-                        cartGroup.setText("共" + sum_cart + "件商品 小计:" + data.getJSONObject("priceGroup").getString("totalPrice") + "元");
+                        orgxiaoji = data.getJSONObject("priceGroup").getDouble("totalPrice");
+                        cartGroup.setText("共" + sum_cart + "件商品 小计:" + orgxiaoji + "元");
                         trueprice = data.getJSONObject("priceGroup").getString("totalPrice");
-                        needpaymoney.setText("应付:¥" + data.getJSONObject("priceGroup").getString("totalPrice") + "");
+                        needpaymoney.setText("应付:¥" + orgxiaoji + "");
                         yuetexts = data.getJSONObject("userInfo").getString("integral");
                         xianjint = data.getJSONObject("userInfo").getString("now_money");
-                        nowmoneys.setText("可用现金"+xianjint);
+                        nowmoneys.setText("可用现金" + xianjint);
 
                     }
 
@@ -499,6 +542,8 @@ public class PayDingDanActivity extends BaseActivity {
         }
     }
 
+    public int ispasstime = 0;
+
     private void getDefaultAddress() {
         Map<String, String> map = new HashMap<>();
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getDefaultAddress(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
@@ -513,11 +558,17 @@ public class PayDingDanActivity extends BaseActivity {
                         addressId = data.getString("id");
                         buildAddress(data);
                     } else {
-                        passToAddAdress();
+                        if (ispasstime == 0) {
+                            passToAddAdress();
+                            ispasstime = 1;
+                        }
                     }
 
                 } catch (JSONException e) {
-                    passToAddAdress();
+                    if (ispasstime == 0) {
+                        passToAddAdress();
+                        ispasstime = 1;
+                    }
                     e.printStackTrace();
                 }
             }
@@ -530,7 +581,7 @@ public class PayDingDanActivity extends BaseActivity {
     }
 
     private void passToAddAdress() {
-        startActivityForResult(new Intent(mActivity, AddressListActivity.class), 100);
+        startActivityForResult(new Intent(mActivity, AddressListActivity.class).putExtra("needpay",true), 100);
     }
 
     @Override
@@ -541,6 +592,8 @@ public class PayDingDanActivity extends BaseActivity {
 
     private void buildAddress(JSONObject data) {
         try {
+            dizhiicon.setVisibility(View.VISIBLE);
+            addAdress.setVisibility(View.GONE);
             name.setText(data.getString("real_name") + data.getString("phone"));
             address.setText(data.getString("province") + data.getString("city") + data.getString("district") + data.getString("detail"));
         } catch (JSONException e) {
@@ -564,7 +617,7 @@ public class PayDingDanActivity extends BaseActivity {
                 finish();
                 break;
             case -2:
-                ToastUtil.showShort(mActivity, "取消了支付");
+                ToastUtil.showShort(mActivity, "取消了支付,请重新购买或去未支付订单结算");
                 finish();
                 break;
         }

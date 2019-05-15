@@ -59,10 +59,21 @@ public interface RetrofitRequestInterface {
     Call<String> getCanPhonePay(@FieldMap Map<String, String> params);
 
 
+    /*商品查询*/
+    @FormUrlEncoded
+    @POST("api/auth_api/get_product_list")
+    Call<String> searchShop(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*修改昵称*/
+    @FormUrlEncoded
+    @POST("api/auth_api/changeavatar")
+    Call<String> changeNick(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
     /*新增评价*/
     @FormUrlEncoded
     @POST("api/auth_api/user_comment_product")
-    Call<String> addDisscuss(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+    Call<String> addDisscuss(@Header("Authorization") String auth,@FieldMap Map<String, Object> params);
 
 
     /*退款*/
@@ -230,6 +241,11 @@ public interface RetrofitRequestInterface {
     @FormUrlEncoded
     @POST
     Call<String> saveAddress(@Header("Authorization") String auth,@Url String url, @FieldMap Map<String, String> params);
+
+    /*获得内容*/
+    @FormUrlEncoded
+    @POST
+    Call<String> auto(@Header("Authorization") String auth,@Url String url, @FieldMap Map<String, String> params);
 
     /*删除地址*/
     @FormUrlEncoded

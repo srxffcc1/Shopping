@@ -67,6 +67,15 @@ public class CartInfo implements Serializable {
     private String truePrice;
     private String costPrice;
     private String trueStock;
+    private String unique;
+
+    public String getUnique() {
+        return unique;
+    }
+
+    public void setUnique(String unique) {
+        this.unique = unique;
+    }
 
     public int getId() {
         return id;

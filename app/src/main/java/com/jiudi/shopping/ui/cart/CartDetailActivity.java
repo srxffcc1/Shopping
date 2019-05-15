@@ -2,10 +2,13 @@ package com.jiudi.shopping.ui.cart;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,19 +49,35 @@ import com.jiudi.shopping.bean.CartDiscussBean;
 import com.jiudi.shopping.bean.CartIntroduceBean;
 import com.jiudi.shopping.bean.CartTitleBean;
 import com.jiudi.shopping.event.CartEvent;
+import com.jiudi.shopping.event.PassCartEvent;
+import com.jiudi.shopping.global.LocalApplication;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.ui.main.MainActivity;
 import com.jiudi.shopping.util.SPUtil;
+import com.jiudi.shopping.util.WechatUtil;
 import com.m7.imkfsdk.KfStartHelper;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -82,9 +101,9 @@ public class CartDetailActivity extends BaseActivity {
 
     final List<DelegateAdapter.Adapter> adapters = new LinkedList<>();
     private List<CartDiscussBean> mcartdiscussbeanlist = new ArrayList<>();
-    private List<CartIntroduceBean> mcartdintroducebeanlist=new ArrayList<>();
-    private List<CartAttr> mcartattrlist=new ArrayList<>();
-    private List<CartAttrValue> mcartattrvaluelist=new ArrayList<>();
+    private List<CartIntroduceBean> mcartdintroducebeanlist = new ArrayList<>();
+    private List<CartAttr> mcartattrlist = new ArrayList<>();
+    private List<CartAttrValue> mcartattrvaluelist = new ArrayList<>();
     private RecyclerView recycler;
 
     private DelegateAdapter adapter;
@@ -116,6 +135,10 @@ public class CartDetailActivity extends BaseActivity {
     private TextView gouwuchenum;
     private KfStartHelper helper;
     private Badge badgeView;
+    private ImageView backIm;
+    private ImageView fenxiangim;
+    private String urlShare;
+    private Dialog dialog;
 
 
     @Override
@@ -127,7 +150,6 @@ public class CartDetailActivity extends BaseActivity {
     public void initView() {
 
         helper = new KfStartHelper(this);
-        StyledDialog.init(this);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         titleBar = (LinearLayout) findViewById(R.id.title_bar);
         mainTab = (TabLayout) findViewById(R.id.main_tab);
@@ -141,15 +163,17 @@ public class CartDetailActivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
-                if(pos==0){
+                if (pos == 0) {
                     mainTab.setVisibility(View.GONE);
                     titleBar.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));
                 }
-
-                    //滑动时不能点击,
-                    //第一个参数是指定的位置，锚点
-                    // 第二个参数表示 Item 移动到第一项后跟 RecyclerView 上边界或下边界之间的距离（默认是 0）
+                if (!isScrolled) {
+                    Log.v("SRX", "出错调用");
                     manager.scrollToPositionWithOffset(poss[pos], 0);
+                }
+                //滑动时不能点击,
+                //第一个参数是指定的位置，锚点
+                // 第二个参数表示 Item 移动到第一项后跟 RecyclerView 上边界或下边界之间的距离（默认是 0）
 
 
             }
@@ -162,15 +186,18 @@ public class CartDetailActivity extends BaseActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
-                if(pos==0){
+                if (pos == 0) {
                     mainTab.setVisibility(View.GONE);
                     titleBar.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));
                 }
-
+                if (!isScrolled) {
+                    Log.v("SRX", "出错调用");
+                    manager.scrollToPositionWithOffset(poss[pos], 0);
+                }
                 //滑动时不能点击,
                 //第一个参数是指定的位置，锚点
                 // 第二个参数表示 Item 移动到第一项后跟 RecyclerView 上边界或下边界之间的距离（默认是 0）
-                manager.scrollToPositionWithOffset(poss[pos], 0);
+
             }
         });
 
@@ -180,8 +207,11 @@ public class CartDetailActivity extends BaseActivity {
         shoucangnum = (TextView) findViewById(R.id.shoucangnum);
         gouwuchenum = (TextView) findViewById(R.id.gouwuchenum);
 
+        backIm = (ImageView) findViewById(R.id.back_im);
+        fenxiangim = (ImageView) findViewById(R.id.fenxiangim);
     }
-    public void getCartNum(){
+
+    public void getCartNum() {
         Map<String, String> map = new HashMap<>();
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getCartNum(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
@@ -191,11 +221,11 @@ public class CartDetailActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-                        int data=res.getInt("data");
-                        if(badgeView==null){
+                        int data = res.getInt("data");
+                        if (badgeView == null) {
 
                             badgeView = new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(gouwuchenum).setBadgeNumber(data);
-                        }else{
+                        } else {
                             badgeView.setBadgeNumber(data);
                         }
                     }
@@ -211,8 +241,10 @@ public class CartDetailActivity extends BaseActivity {
             }
         });
     }
-    int nowindex=0;
-    public void buildRecyclerView(){
+
+    int nowindex = 0;
+
+    public void buildRecyclerView() {
 
         manager = new VirtualLayoutManager(this);
         recycler.setLayoutManager(manager);
@@ -220,51 +252,54 @@ public class CartDetailActivity extends BaseActivity {
         RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
         recycler.setRecycledViewPool(viewPool);
         viewPool.setMaxRecycledViews(0, 10);
-        poss[0]=nowindex;
-        vBannerAdapter = new VBannerAdapter(this,new SingleLayoutHelper(), mBannerList);
+        poss[0] = nowindex;
+        vBannerAdapter = new VBannerAdapter(this, new SingleLayoutHelper(), mBannerList);
         adapters.add(vBannerAdapter);
 
-        nowindex+=vBannerAdapter.getItemCount();
+        nowindex += vBannerAdapter.getItemCount();
 
         vDetailAdapter = new VTitleDetailAdapter(this, new SingleLayoutHelper(), mcarttitlebean);
         adapters.add(vDetailAdapter);
 
-        nowindex+=vDetailAdapter.getItemCount();
+        nowindex += vDetailAdapter.getItemCount();
 
-        poss[1]=nowindex;
+        poss[1] = nowindex;
 
-        vDiscussHeadAdapter = new VDiscussHeadAdapter(this, new SingleLayoutHelper(),mcarttitlebean);
+        vDiscussHeadAdapter = new VDiscussHeadAdapter(this, new SingleLayoutHelper(), mcarttitlebean,mcartdiscussbeanlist);
         adapters.add(vDiscussHeadAdapter);
 
 
-        nowindex+=vDiscussHeadAdapter.getItemCount();
+
+
+        nowindex += vDiscussHeadAdapter.getItemCount();
 
         vDiscussAdapter = new VDiscussAdapter(this, new LinearLayoutHelper(), mcartdiscussbeanlist);
         adapters.add(vDiscussAdapter);
 
-        nowindex+=vDiscussAdapter.getItemCount();
+        nowindex += vDiscussAdapter.getItemCount();
 
 //        vDiscussEndAdapter=new VDiscussEndAdapter(this, new SingleLayoutHelper());
 //        adapter.addAdapter(vDiscussEndAdapter);
 
-        poss[2]=nowindex;
+        poss[2] = nowindex;
 
         vIntroduceHeadAdapter = new VIntroduceHeadAdapter(this, new SingleLayoutHelper());
         adapters.add(vIntroduceHeadAdapter);
 
 
-        nowindex+=vIntroduceHeadAdapter.getItemCount();
+        nowindex += vIntroduceHeadAdapter.getItemCount();
 
         vIntroduceAdapter = new VIntroduceAdapter(this, new LinearLayoutHelper(), mcartdintroducebeanlist);
         adapters.add(vIntroduceAdapter);
 
 
-        nowindex+=vIntroduceAdapter.getItemCount();
+        nowindex += vIntroduceAdapter.getItemCount();
 
 
         adapter.setAdapters(adapters);
         recycler.setAdapter(adapter);
     }
+
     @Override
     public void initData() {
 
@@ -286,7 +321,7 @@ public class CartDetailActivity extends BaseActivity {
     private void getGodsDetail() {
         Map<String, String> map = new HashMap<>();
         map.put("id", getIntent().getStringExtra("id"));
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGodsDetail(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGodsDetail(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -294,55 +329,56 @@ public class CartDetailActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-                        JSONObject data=res.getJSONObject("data");
-                        JSONObject storeInfo=data.getJSONObject("storeInfo");
-                        JSONArray images=storeInfo.getJSONArray("slider_image");
-                        for (int i = 0; i <images.length() ; i++) {
-                            BannerBean bannerBean=new BannerBean();
-                            bannerBean.pic=images.get(i).toString();
+                        JSONObject data = res.getJSONObject("data");
+                        urlShare = data.optString("urlShare");
+                        JSONObject storeInfo = data.getJSONObject("storeInfo");
+                        JSONArray images = storeInfo.getJSONArray("slider_image");
+                        for (int i = 0; i < images.length(); i++) {
+                            BannerBean bannerBean = new BannerBean();
+                            bannerBean.pic = images.get(i).toString();
                             mBannerList.add(bannerBean);
                         }
-                        mcarttitlebean=new CartTitleBean();
-                        mcarttitlebean.id=storeInfo.optString("id");
-                        mcarttitlebean.mer_id=storeInfo.optString("mer_id");
-                        mcarttitlebean.image=storeInfo.optString("image");
-                        mcarttitlebean.store_name=storeInfo.optString("store_name");
-                        mcarttitlebean.store_info=storeInfo.optString("store_info");
-                        mcarttitlebean.keyword=storeInfo.optString("keyword");
-                        mcarttitlebean.cate_id=storeInfo.optString("cate_id");
-                        mcarttitlebean.price=storeInfo.optString("price");
-                        mcarttitlebean.vip_price=storeInfo.optString("vip_price");
-                        mcarttitlebean.ot_price=storeInfo.optString("ot_price");
-                        mcarttitlebean.postage=storeInfo.optString("postage");
-                        mcarttitlebean.basics_commission=storeInfo.optString("basics_commission");
-                        mcarttitlebean.parent_commission=storeInfo.optString("parent_commission");
-                        mcarttitlebean.unit_name=storeInfo.optString("unit_name");
-                        mcarttitlebean.sort=storeInfo.optString("sort");
-                        mcarttitlebean.sales=storeInfo.optString("sales");
-                        mcarttitlebean.stock=storeInfo.optString("stock");
-                        mcarttitlebean.is_show=storeInfo.optString("is_show");
-                        mcarttitlebean.is_hot=storeInfo.optString("is_hot");
-                        mcarttitlebean.is_benefit=storeInfo.optString("is_benefit");
-                        mcarttitlebean.is_best=storeInfo.optString("is_best");
-                        mcarttitlebean.is_new=storeInfo.optString("is_new");
-                        mcarttitlebean.description=storeInfo.optString("description");
-                        mcarttitlebean.add_time=storeInfo.optString("add_time");
-                        mcarttitlebean.is_postage=storeInfo.optString("is_postage");
-                        mcarttitlebean.is_del=storeInfo.optString("is_del");
-                        mcarttitlebean.is_special=storeInfo.optString("is_special");
-                        mcarttitlebean.mer_use=storeInfo.optString("mer_use");
-                        mcarttitlebean.give_integral=storeInfo.optString("give_integral");
-                        mcarttitlebean.cost=storeInfo.optString("cost");
-                        mcarttitlebean.is_seckill=storeInfo.optString("is_seckill");
-                        mcarttitlebean.is_bargain=storeInfo.optString("is_bargain");
-                        mcarttitlebean.ficti=storeInfo.optString("ficti");
-                        mcarttitlebean.browse=storeInfo.optString("browse");
-                        mcarttitlebean.code_path=storeInfo.optString("code_path");
-                        mcarttitlebean.coupon=storeInfo.optString("coupon");
-                        mcarttitlebean.userLike=storeInfo.optString("userLike");
-                        mcarttitlebean.like_num=storeInfo.optString("like_num");
-                        mcarttitlebean.userCollect=storeInfo.optString("userCollect");
-                        String replys=data.getJSONArray("reply").toString();
+                        mcarttitlebean = new CartTitleBean();
+                        mcarttitlebean.id = storeInfo.optString("id");
+                        mcarttitlebean.mer_id = storeInfo.optString("mer_id");
+                        mcarttitlebean.image = storeInfo.optString("image");
+                        mcarttitlebean.store_name = storeInfo.optString("store_name");
+                        mcarttitlebean.store_info = storeInfo.optString("store_info");
+                        mcarttitlebean.keyword = storeInfo.optString("keyword");
+                        mcarttitlebean.cate_id = storeInfo.optString("cate_id");
+                        mcarttitlebean.price = storeInfo.optString("price");
+                        mcarttitlebean.vip_price = storeInfo.optString("vip_price");
+                        mcarttitlebean.ot_price = storeInfo.optString("ot_price");
+                        mcarttitlebean.postage = storeInfo.optString("postage");
+                        mcarttitlebean.basics_commission = storeInfo.optString("basics_commission");
+                        mcarttitlebean.parent_commission = storeInfo.optString("parent_commission");
+                        mcarttitlebean.unit_name = storeInfo.optString("unit_name");
+                        mcarttitlebean.sort = storeInfo.optString("sort");
+                        mcarttitlebean.sales = storeInfo.optString("sales");
+                        mcarttitlebean.stock = storeInfo.optString("stock");
+                        mcarttitlebean.is_show = storeInfo.optString("is_show");
+                        mcarttitlebean.is_hot = storeInfo.optString("is_hot");
+                        mcarttitlebean.is_benefit = storeInfo.optString("is_benefit");
+                        mcarttitlebean.is_best = storeInfo.optString("is_best");
+                        mcarttitlebean.is_new = storeInfo.optString("is_new");
+                        mcarttitlebean.description = storeInfo.optString("description");
+                        mcarttitlebean.add_time = storeInfo.optString("add_time");
+                        mcarttitlebean.is_postage = storeInfo.optString("is_postage");
+                        mcarttitlebean.is_del = storeInfo.optString("is_del");
+                        mcarttitlebean.is_special = storeInfo.optString("is_special");
+                        mcarttitlebean.mer_use = storeInfo.optString("mer_use");
+                        mcarttitlebean.give_integral = storeInfo.optString("give_integral");
+                        mcarttitlebean.cost = storeInfo.optString("cost");
+                        mcarttitlebean.is_seckill = storeInfo.optString("is_seckill");
+                        mcarttitlebean.is_bargain = storeInfo.optString("is_bargain");
+                        mcarttitlebean.ficti = storeInfo.optString("ficti");
+                        mcarttitlebean.browse = storeInfo.optString("browse");
+                        mcarttitlebean.code_path = storeInfo.optString("code_path");
+                        mcarttitlebean.coupon = storeInfo.optString("coupon");
+                        mcarttitlebean.userLike = storeInfo.optString("userLike");
+                        mcarttitlebean.like_num = storeInfo.optString("like_num");
+                        mcarttitlebean.userCollect = storeInfo.optString("userCollect");
+                        String replys = data.getJSONArray("reply").toString();
                         GsonBuilder builder = new GsonBuilder();
                         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                             public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -350,41 +386,39 @@ public class CartDetailActivity extends BaseActivity {
                             }
                         });
                         Gson gson = builder.create();
-                        if("true".equals(mcarttitlebean.userCollect)){
+                        if ("true".equals(mcarttitlebean.userCollect)) {
                             shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_star), null, null);
-                        }else {
+                        } else {
 
                             shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_nostar), null, null);
                         }
 
 
-
-
                         Type cartdisstype = new TypeToken<List<CartDiscussBean>>() {
                         }.getType();
-                        mcartdiscussbeanlist=gson.fromJson(replys, cartdisstype);
+                        mcartdiscussbeanlist = gson.fromJson(replys, cartdisstype);
 
-                        Pattern pattern=Pattern.compile("src=\\\"(.*?)\\\"");
-                        Matcher matcher=pattern.matcher(mcarttitlebean.description);
-                        while (matcher.find()){
-                            CartIntroduceBean cartIntroduceBean=new CartIntroduceBean();
-                            System.out.println("获得的介绍"+matcher.group(1));
-                            cartIntroduceBean.url=matcher.group(1);
+                        Pattern pattern = Pattern.compile("src=\\\"(.*?)\\\"");
+                        Matcher matcher = pattern.matcher(mcarttitlebean.description);
+                        while (matcher.find()) {
+                            CartIntroduceBean cartIntroduceBean = new CartIntroduceBean();
+                            System.out.println("获得的介绍:" + matcher.group(1));
+                            cartIntroduceBean.url = matcher.group(1);
                             mcartdintroducebeanlist.add(cartIntroduceBean);
                         }
-                        String attrs=data.getJSONArray("productAttr").toString();
+                        String attrs = data.getJSONArray("productAttr").toString();
                         Type cartattrtype = new TypeToken<List<CartAttr>>() {
                         }.getType();
-                        mcartattrlist=gson.fromJson(attrs,cartattrtype);
+                        mcartattrlist = gson.fromJson(attrs, cartattrtype);
 //                        mcartdiscussbeanlist=gson.fromJson(replys, cartdisstype);
                         try {
-                            JSONObject productValueobj=data.getJSONObject("productValue");
+                            JSONObject productValueobj = data.getJSONObject("productValue");
                             Iterator iterator = productValueobj.keys();
-                            while(iterator.hasNext()){
+                            while (iterator.hasNext()) {
                                 String key = iterator.next() + "";
                                 Type cartattrvaluetype = new TypeToken<CartAttrValue>() {
                                 }.getType();
-                                CartAttrValue cartAttrValue=gson.fromJson(productValueobj.getJSONObject(key).toString(),cartattrvaluetype);
+                                CartAttrValue cartAttrValue = gson.fromJson(productValueobj.getJSONObject(key).toString(), cartattrvaluetype);
                                 mcartattrvaluelist.add(cartAttrValue);
                             }
                         } catch (JSONException e) {
@@ -395,9 +429,12 @@ public class CartDetailActivity extends BaseActivity {
 
 
                         buildRecyclerView();
-                        if("1".equals(mcarttitlebean.is_special)){
+                        if ("1".equals(mcarttitlebean.is_special)) {
                             togouwu.setVisibility(View.GONE);
                         }
+                    }else{
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                 } catch (JSONException e) {
@@ -458,14 +495,82 @@ public class CartDetailActivity extends BaseActivity {
 //        });
 //    }
 
+public InputStream getImageStream(String path) throws Exception {
+    URL url = new URL(path);
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    conn.setConnectTimeout(5 * 1000);
+    conn.setRequestMethod("GET");
+    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+        return conn.getInputStream();
+    }
+    return null;
+}
+    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
+        if (needRecycle) {
+            bmp.recycle();
+        }
+
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     @Override
     public void initEvent() {
+
+
+
+        fenxiangim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new ShareAction(mActivity).setDisplayList(
+                        SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setShareboardclickCallback(new ShareBoardlistener() {
+                            @Override
+                            public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+
+                                if(share_media==SHARE_MEDIA.WEIXIN){
+                                    Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
+                                    byte[] tumb=bmpToByteArray(bmp,true);
+                                    WechatUtil.wechatShare(urlShare,"优质商品","九弟智选,优质体验",tumb, SendMessageToWX.Req.WXSceneSession);
+                                }
+                                if(share_media==SHARE_MEDIA.WEIXIN_CIRCLE){
+                                    Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
+                                    byte[] tumb=bmpToByteArray(bmp,true);
+                                    WechatUtil.wechatShare(urlShare,"优质商品","九弟智选,优质体验",tumb, SendMessageToWX.Req.WXSceneTimeline);
+                                }
+                            }
+                        }).open();
+
+
+//                Intent intent = new Intent(Intent.ACTION_SEND);
+//                intent.setType("image/*");
+//                intent.putExtra(Intent.EXTRA_SUBJECT, "分享商品");
+//                intent.putExtra(Intent.EXTRA_TEXT, urlShare);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(Intent.createChooser(intent, "推荐商品"));
+            }
+        });
+        backIm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         shoucangnum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("true".equals(mcarttitlebean.userCollect)){
+                if ("true".equals(mcarttitlebean.userCollect)) {
                     unshoucang();
-                }else {
+                } else {
                     shoucang();
                 }
             }
@@ -473,14 +578,15 @@ public class CartDetailActivity extends BaseActivity {
         gouwuchenum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(mActivity, MainActivity.class));
                 EventBus.getDefault().post(new CartEvent());
-                finish();
+                EventBus.getDefault().post(new PassCartEvent());
             }
         });
         kefunum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",60);//陈辰正式
+                helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789", 60);//陈辰正式
             }
         });
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -505,8 +611,6 @@ public class CartDetailActivity extends BaseActivity {
                 if (isScrolled) {
                     int top = manager.findFirstVisibleItemPosition();
                     int bottom = manager.findLastVisibleItemPosition();
-//                    System.out.println("滑动到位" + top + "," + bottom);
-
                     int pos = 0;
                     for (int i = 0; i < poss.length; i++) {
                         if (top >= poss[i]) {
@@ -520,25 +624,6 @@ public class CartDetailActivity extends BaseActivity {
                         mainTab.setVisibility(View.GONE);
                         titleBar.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));
                     }
-//                    if (bottom == getAllAdapterCount() - 1) {
-//                        //先判断滑到底部，tab定位到最后一个
-//                        pos = poss.length - 1;
-//                    } else if (top == poss[poss.length - 1]) {
-//                        //如果top等于指定的位置，对应到tab即可，
-//                        pos = poss[poss.length - 1];
-//                    } else {
-//                        //循环遍历，需要比较i+1的位置，所以循环长度要减1，
-//                        //  如果 i<top<i+1,  那么tab应该定位到i位置的字符，不管是向上还是向下滑动
-//                        for (int i = 0; i < poss.length - 1; i++) {
-//                            if (top == poss[i]) {
-//                                pos = i;
-//                                break;
-//                            } else if (top > poss[i] && top < poss[i + 1]) {
-//                                pos = i;
-//                                break;
-//                            }
-//                        }
-//                    }
 
                     //设置tab滑动到第pos个
                     mainTab.setScrollPosition(pos, 0f, true);
@@ -549,11 +634,11 @@ public class CartDetailActivity extends BaseActivity {
         topay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("1".equals(mcarttitlebean.is_special)){
-                    productId=mcarttitlebean.id;
-                    uniqueId="0";
+                if ("1".equals(mcarttitlebean.is_special)) {
+                    productId = mcarttitlebean.id;
+                    uniqueId = "0";
                     lijiGouWu();
-                }else{
+                } else {
 
                     popChose();
                 }
@@ -580,9 +665,9 @@ public class CartDetailActivity extends BaseActivity {
                     String info = res.getString("msg");
                     if (code == 200) {
 
-                        mcarttitlebean.userCollect="true";
+                        mcarttitlebean.userCollect = "true";
                         shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_star), null, null);
-                        Toast.makeText(mActivity,"收藏成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "收藏成功", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -596,6 +681,7 @@ public class CartDetailActivity extends BaseActivity {
             }
         });
     }
+
     private void unshoucang() {
         Map<String, String> map = new HashMap<>();
         map.put("productId", mcarttitlebean.id);
@@ -607,9 +693,9 @@ public class CartDetailActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-                        mcarttitlebean.userCollect="false";
+                        mcarttitlebean.userCollect = "false";
                         shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_nostar), null, null);
-                        Toast.makeText(mActivity,"取消收藏",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "取消收藏", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -624,85 +710,105 @@ public class CartDetailActivity extends BaseActivity {
         });
     }
 
-    public int cartNum =1;
-    public void popChose(){
-        cartNum =1;
-        ViewGroup customView2 = (ViewGroup) View.inflate(this,R.layout.popwindow_cart_chose,null);
-        final Dialog dialog=StyledDialog.buildCustom(customView2, Gravity.BOTTOM).setForceWidthPercent(1f).show();
-        ImageView add=customView2.findViewById(R.id.add);
-        final TextView count=customView2.findViewById(R.id.count);
-        ImageView sub=customView2.findViewById(R.id.sub);
+    public int cartNum = 1;
+
+    public void popChose() {
+
+        StyledDialog.init(this);
+        cartNum = 1;
+        ViewGroup customView2 = (ViewGroup) View.inflate(this, R.layout.popwindow_cart_chose, null);
+        dialog = StyledDialog.buildCustom(customView2, Gravity.BOTTOM).setForceWidthPercent(1f).setCancelable(true,true).show();
+        ImageView add = customView2.findViewById(R.id.add);
+        final TextView count = customView2.findViewById(R.id.count);
+        ImageView sub = customView2.findViewById(R.id.sub);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count.setText(++cartNum +"");
+                count.setText(++cartNum + "");
             }
         });
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(cartNum !=1){
-                    count.setText(--cartNum +"");
+                if (cartNum != 1) {
+                    count.setText(--cartNum + "");
                 }
 
             }
         });
-        ImageView dialog_img=customView2.findViewById(R.id.dialog_img);
+        ImageView dialog_img = customView2.findViewById(R.id.dialog_img);
         RequestOptions options = new RequestOptions()
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
         Glide.with(mActivity).load(mcarttitlebean.image).apply(options).into(dialog_img);
 
 
-        TextView dialog_gouwuche=customView2.findViewById(R.id.dialog_gouwuche);
+        TextView dialog_gouwuche = customView2.findViewById(R.id.dialog_gouwuche);
         dialog_gouwuche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productId=mcartattrvaluelist.get(0).getProduct_id();
-                uniqueId=mcartattrvaluelist.get(0).getUnique();
+                try {
+                    productId = mcartattrvaluelist.get(0).getProduct_id();
+                    uniqueId = mcartattrvaluelist.get(0).getUnique();
+                } catch (Exception e) {
+                    productId = mcarttitlebean.id;
+                    uniqueId = "0";
+                    e.printStackTrace();
+                }
                 addGouWu();
                 dialog.dismiss();
             }
         });
 
-        TextView dialog_lijigoumai=customView2.findViewById(R.id.dialog_lijigoumai);
+        TextView dialog_lijigoumai = customView2.findViewById(R.id.dialog_lijigoumai);
         dialog_lijigoumai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productId=mcartattrvaluelist.get(0).getProduct_id();
-                uniqueId=mcartattrvaluelist.get(0).getUnique();
+                try {
+                    productId = mcartattrvaluelist.get(0).getProduct_id();
+                    uniqueId = mcartattrvaluelist.get(0).getUnique();
+                } catch (Exception e) {
+                    productId = mcarttitlebean.id;
+                    uniqueId = "0";
+                    e.printStackTrace();
+                }
                 lijiGouWu();
                 dialog.dismiss();
 
             }
         });
-        if("1".equals(mcarttitlebean.is_special)){
+        if ("1".equals(mcarttitlebean.is_special)) {
             dialog_gouwuche.setVisibility(View.INVISIBLE);
         }
-        TextView money=customView2.findViewById(R.id.money);
-        money.setText("¥"+mcarttitlebean.price);
-        TextView allcount=customView2.findViewById(R.id.allcount);
-        allcount.setText("库存："+mcarttitlebean.stock+mcarttitlebean.unit_name);
-        ImageView close=customView2.findViewById(R.id.close);
+        TextView money = customView2.findViewById(R.id.money);
+        money.setText("¥"+("1".equals(AccountManager.sUserBean.is_promoter)?mcarttitlebean.vip_price:mcarttitlebean.price));
+        TextView allcount = customView2.findViewById(R.id.allcount);
+        allcount.setText("库存：" + mcarttitlebean.stock + mcarttitlebean.unit_name);
+        ImageView close = customView2.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-        LinearLayout sukall=customView2.findViewById(R.id.sukall);
+        LinearLayout sukall = customView2.findViewById(R.id.sukall);
 //        for (int i = 0; i < ; i++) {
 //
 //        }
     }
+
     private void addGouWu() {
+        if ("1".equals(mcarttitlebean.is_special) && "1".equals(AccountManager.sUserBean.is_promoter)) {
+            Toast.makeText(mActivity, "已经是会员不可重复购买", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Map<String, String> map = new HashMap<>();
         map.put("productId", productId);
-        map.put("cartNum", cartNum+"");
+        map.put("cartNum", cartNum + "");
         map.put("uniqueId", uniqueId);
         map.put("combinationId", "");
         map.put("secKillId", "");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).addgoumai(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).addgoumai(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -710,7 +816,7 @@ public class CartDetailActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-                        Toast.makeText(mActivity,"加入购物车成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "加入购物车成功", Toast.LENGTH_SHORT).show();
 //                        String cartId=res.getJSONObject("data").getString("cartId");
 //                        startActivity(new Intent(mActivity, PayDingDanActivity.class).putExtra("cartId",cartId));
                         getCartNum();
@@ -729,13 +835,17 @@ public class CartDetailActivity extends BaseActivity {
     }
 
     private void lijiGouWu() {
+        if ("1".equals(mcarttitlebean.is_special) && "1".equals(AccountManager.sUserBean.is_promoter)) {
+            Toast.makeText(mActivity, "已经是会员不可重复购买", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Map<String, String> map = new HashMap<>();
         map.put("productId", productId);
-        map.put("cartNum", cartNum+"");
+        map.put("cartNum", cartNum + "");
         map.put("uniqueId", uniqueId);
         map.put("combinationId", "");
         map.put("secKillId", "");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).lijigoumai(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).lijigoumai(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -743,8 +853,8 @@ public class CartDetailActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-                        String cartId=res.getJSONObject("data").getString("cartId");
-                        startActivity(new Intent(mActivity, PayDingDanActivity.class).putExtra("cartId",cartId));
+                        String cartId = res.getJSONObject("data").getString("cartId");
+                        startActivity(new Intent(mActivity, PayDingDanActivity.class).putExtra("cartId", cartId));
                     }
 
                 } catch (JSONException e) {

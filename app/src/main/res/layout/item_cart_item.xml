@@ -13,8 +13,8 @@
             android:layout_centerVertical="true"
             android:id="@+id/cart_icon2"
             android:src="@drawable/cart_pay_icon2"
-            android:layout_width="250px"
-            android:layout_height="250px" />
+            android:layout_width="200px"
+            android:layout_height="200px" />
         <TextView
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/cart_icon2"
@@ -64,6 +64,13 @@
             />
         <TextView
             android:layout_alignParentRight="true"
+            android:background="@drawable/text_boder_cart_all"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textSize="13sp"
             android:visibility="gone"
             android:layout_alignTop="@id/cart_money"
             android:id="@+id/pingjia"

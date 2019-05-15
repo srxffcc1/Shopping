@@ -11,6 +11,7 @@ import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.bean.CartTitleBean;
+import com.jiudi.shopping.manager.AccountManager;
 
 /**
  * Created by admin on 2017/5/16.
@@ -42,7 +43,7 @@ public class VTitleDetailAdapter extends DelegateAdapter.Adapter{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(mcarttitlebean!=null){
-            ((TextView)holder.itemView.findViewById(R.id.money)).setText("¥"+mcarttitlebean.price);
+            ((TextView)holder.itemView.findViewById(R.id.money)).setText("¥"+("1".equals(AccountManager.sUserBean.is_promoter)?mcarttitlebean.vip_price:mcarttitlebean.price));
             ((TextView)holder.itemView.findViewById(R.id.sum)).setText("库存："+mcarttitlebean.stock+mcarttitlebean.unit_name);
             ((TextView)holder.itemView.findViewById(R.id.sales)).setText("销量："+mcarttitlebean.sales+mcarttitlebean.unit_name);
             ((TextView)holder.itemView.findViewById(R.id.title)).setText(mcarttitlebean.store_name);

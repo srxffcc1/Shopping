@@ -1,6 +1,7 @@
 package com.jiudi.shopping.ui.main;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,12 +10,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.dengzq.simplerefreshlayout.SimpleRefreshLayout;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
 import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
@@ -31,6 +34,7 @@ import com.jiudi.shopping.ui.fenxiao.FenXiaoNoActivity;
 import com.jiudi.shopping.ui.fenxiao.TuanDuiActivity;
 import com.jiudi.shopping.ui.fenxiao.TuiGuangActivity;
 import com.jiudi.shopping.ui.user.account.TongZhiActivity;
+import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.DisplayUtil;
 import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.NetworkUtil;
@@ -39,6 +43,9 @@ import com.jiudi.shopping.util.ToastUtil;
 import com.jiudi.shopping.widget.BannerLayout;
 import com.jiudi.shopping.widget.DividerItemDecoration;
 import com.jiudi.shopping.widget.GlideImageLoader;
+import com.jiudi.shopping.widget.SimpleBottomView;
+import com.jiudi.shopping.widget.SimpleLoadView;
+import com.jiudi.shopping.widget.SimpleRefreshView;
 
 
 import org.json.JSONArray;
@@ -83,6 +90,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private int page=0;
     private NestedScrollView nest;
     private boolean stoploadmore=false;
+    private double oldTime=0;
+    private com.jiudi.shopping.widget.SimpleLoadView loadmoreview;
+    private int limit=20;
+    private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
 
 
     @Override
@@ -109,12 +120,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         recycler = (RecyclerView) findViewById(R.id.recycler);
         blFragmentHome = (BannerLayout) findViewById(R.id.bl_fragment_home);
         nest = (NestedScrollView) findViewById(R.id.nest);
+        simpleRefresh = (SimpleRefreshLayout) findViewById(R.id.simple_refresh);
     }
 
     @Override
     public void initData() {
         getHomeBanner();
         getGods();
+        simpleRefresh.setScrollEnable(true);
+        simpleRefresh.setPullUpEnable(true);
+        simpleRefresh.setPullDownEnable(true);
+        simpleRefresh.setHeaderView(new SimpleRefreshView(mActivity));
+        simpleRefresh.setFooterView(new SimpleLoadView(mActivity));
+        simpleRefresh.setBottomView(new SimpleBottomView(mActivity));
     }
 
     @Override
@@ -124,56 +142,99 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initEvent() {
+
+        simpleRefresh.setOnSimpleRefreshListener(new SimpleRefreshLayout.OnSimpleRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        simpleRefresh.onRefreshComplete();
+                        simpleRefresh.onLoadMoreComplete();
+                    }
+                },500);
+                mCarChoiceList.clear();
+                page=0;
+                getGodsList();
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        simpleRefresh.onRefreshComplete();
+                        simpleRefresh.onLoadMoreComplete();
+                    }
+                },500);
+                if(stoploadmore){
+
+                    Toast.makeText(mActivity,"没有更多",Toast.LENGTH_SHORT).show();
+                }else{
+                    page=page+limit;
+                    getGodsList();
+                }
+
+            }
+        });
+
+
         center1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("1".equals(AccountManager.sUserBean.is_promoter)){
-                startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
-                }else{
-                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                try {
+                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
+                    }else{
+                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             }
         });
         center2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("1".equals(AccountManager.sUserBean.is_promoter)){
-                    startActivity(new Intent(mActivity, TuanDuiActivity.class));
-                }else{
-                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                try {
+                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                        startActivity(new Intent(mActivity, TuanDuiActivity.class));
+                    }else{
+                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             }
         });
         center3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("1".equals(AccountManager.sUserBean.is_promoter)){
-                    startActivity(new Intent(mActivity, TuiGuangActivity.class));
-                }else{
-                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                try {
+                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                        startActivity(new Intent(mActivity, TuiGuangActivity.class));
+                    }else{
+                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             }
         });
         center4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("1".equals(AccountManager.sUserBean.is_promoter)){
-                    startActivity(new Intent(mActivity, TongZhiActivity.class));
-                }else{
-                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
-                }
+
+                startActivity(new Intent(mActivity, SearchShopActivity.class));
             }
         });
         nest.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (mCarBeanAdapter!=null && !stoploadmore &&
-                        scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-                    //加载更多
-                    page=page+10;
-                    getGodsList();
 
-                }
             }
         });
     }
@@ -190,10 +251,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private void getGodsList() {
         Map<String, String> map = new HashMap<>();
         map.put("first", page + "");
-        map.put("limit", "10");
+        map.put("limit", limit+"");
         RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getGodsList(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
+
+
+//                simpleRefresh.onRefreshComplete();
+//                simpleRefresh.onLoadMoreComplete();
                 try {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
@@ -214,6 +279,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                                 bean.unit_name = jsonObject.optString("unit_name");
                                 mCarChoiceList.add(bean);
                             }
+
                             showCarChoiceRecycleView();
                         }else{
                             stoploadmore=true;
@@ -230,6 +296,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onError(Throwable t) {
 
+//                simpleRefresh.onRefreshComplete();
+//                simpleRefresh.onLoadMoreComplete();
             }
         });
     }
@@ -253,9 +321,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     });
                     holder.setText(R.id.title,carChoiceBean.store_name);
                     holder.setText(R.id.second_title,carChoiceBean.keyword);
-                    holder.setText(R.id.show_price,"¥"+carChoiceBean.price);
+                    holder.setText(R.id.show_price,"¥"+("1".equals(AccountManager.sUserBean.is_promoter)?carChoiceBean.vip_price:carChoiceBean.price));
                     RequestOptions options = new RequestOptions()
                             .fitCenter()
+                            .placeholder(R.drawable.tmp_gods)
+                            .error(R.drawable.tmp_gods)
                             .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
                     Glide.with(mActivity).load(carChoiceBean.image).apply(options).into((ImageView) holder.getView(R.id.picture));
 //                    AccountManager.setBestGood(carChoiceBean.id);
@@ -338,7 +408,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             blFragmentHome.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-//                    final BannerBean bannerBean = mBannerList.get(position);
+                    final BannerBean bannerBean = mBannerList.get(position);
+                    startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",bannerBean.url.replace("/wap/store/detail/id/","")));
                 }
             });
         }

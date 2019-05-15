@@ -1,7 +1,9 @@
 package com.jiudi.shopping.ui.user;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -99,7 +101,13 @@ public class AddressActivity extends BaseActivity {
             district=getIntent().getStringExtra("district");
         }
     }
-
+    public void clodeKeyBoard(){
+        View view = getWindow().peekDecorView();
+        if (view != null) {
+            InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
     private void initJsonData() {//解析数据
 
         /**
@@ -157,6 +165,7 @@ public class AddressActivity extends BaseActivity {
         llActivityUserSetCityd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clodeKeyBoard();
                 showPickerView();
             }
         });
@@ -180,7 +189,7 @@ public class AddressActivity extends BaseActivity {
         map.put("city", city);
         map.put("district", district);
         map.put("detail", edaddressdetail.getText().toString());
-        map.put("is_default", switchdefault.isChecked() ? "true" : "false");
+        map.put("is_default", switchdefault.isChecked() ? "1" : "0");
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).saveAddress(SPUtil.get("head", "").toString(),(getIntent().getStringExtra("id") != null)?"api/auth_api/edit_user_address":"api/auth_api/edit_user_address",RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {

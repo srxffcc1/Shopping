@@ -13,43 +13,51 @@
         android:text="分享二维码"
         android:textColor="#ff333333"
         android:textSize="16sp" />
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/fenxiang"
-        android:orientation="vertical">
-
+        android:background="#E83A31"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/fenxiang"
+            android:layout_height="match_parent" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="370"></LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="510">
-            <ImageView
-                android:layout_centerInParent="true"
-                android:src="@drawable/zxing_test"
-                android:id="@+id/zxing_image"
-                android:scaleType="fitXY"
-                android:layout_width="500px"
-                android:layout_height="500px" />
-            <ImageView
-                android:scaleType="fitStart"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/zxing_image"
-                android:id="@+id/yingyin"
-                android:src="@drawable/yingyin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="370"></LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="220"></LinearLayout>
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="510">
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/zxing_test"
+                    android:id="@+id/zxing_image"
+                    android:scaleType="fitXY"
+                    android:layout_width="500px"
+                    android:layout_height="500px" />
+                <ImageView
+                    android:scaleType="fitStart"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/zxing_image"
+                    android:id="@+id/yingyin"
+                    android:src="@drawable/yingyin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="220"></LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

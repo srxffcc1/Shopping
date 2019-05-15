@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +80,7 @@ public class ShouCangActivity extends BaseActivity {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
                     String info = res.getString("msg");
+                    mCarChoiceList.clear();
                     if (code == 200) {
                         GsonBuilder builder = new GsonBuilder();
                         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
@@ -89,7 +91,7 @@ public class ShouCangActivity extends BaseActivity {
                         Gson gson = builder.create();
                         Type cartStatusType = new TypeToken<List<ShouCang>>() {
                         }.getType();
-                        mCarChoiceList=gson.fromJson(res.getJSONArray("data").toString(),cartStatusType);
+                        mCarChoiceList.addAll((Collection<? extends ShouCang>) gson.fromJson(res.getJSONArray("data").toString(),cartStatusType));
                         showCarChoiceRecycleView();
                     }
 
@@ -155,6 +157,7 @@ public class ShouCangActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
+                        getList();
                         Toast.makeText(mActivity,"取消收藏",Toast.LENGTH_SHORT).show();
                     }
 

@@ -10,8 +10,11 @@ import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.bean.OrderEvent;
 import com.jiudi.shopping.bean.TabEntity;
 import com.jiudi.shopping.manager.AccountManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -58,6 +61,13 @@ public class AllOrderActivity extends BaseActivity {
         tl.setTabData(mTabEntities,this,R.id.fl_change,mFragments);
         tl.setCurrentTab(getIntent().getIntExtra("type",0));
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+                            EventBus.getDefault().post(new OrderEvent());
     }
 
     @Override

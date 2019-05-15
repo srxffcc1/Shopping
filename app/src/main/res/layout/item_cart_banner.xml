@@ -8,7 +8,7 @@
     <com.jiudi.shopping.widget.BannerLayout
         android:id="@+id/bannerlayout"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="950px"
         android:layout_marginTop="@dimen/dp_0"
         app:autoPlayDuration="5000"
         app:indicatorMargin="@dimen/dp_15"

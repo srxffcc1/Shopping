@@ -14,13 +14,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -58,6 +64,7 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -72,8 +79,8 @@ import java.util.Map;
 
 public class AddDiscussActivity extends BaseActivity {
 
-    private List<String> pics=new ArrayList<>();
-    private List<String> picst=new ArrayList<>();
+    private List<String> pics = new ArrayList<>();
+    private List<String> picst = new ArrayList<>();
     private String mPhotoPath;
     private String mCropPath;
     public static final int REQUEST_CODE_IMAGE = 1;
@@ -82,12 +89,12 @@ public class AddDiscussActivity extends BaseActivity {
     public static final int PERMISSION_CODE_TAKE_PHOTO = 100;
     private android.widget.LinearLayout godss;
     private android.widget.EditText pinjiatext;
-    private ImageView addpot;
-    private NoScrollGridView functionGrid;
     private com.jiudi.shopping.widget.KRatingBar ratingbar1;
     private com.jiudi.shopping.widget.KRatingBar ratingbar2;
     private GridAdapter adapter;
     private android.widget.TextView addDiss;
+    private android.widget.GridLayout fujianLayout;
+    private int fujian_px;
 
 
     @Override
@@ -100,17 +107,39 @@ public class AddDiscussActivity extends BaseActivity {
 
         godss = (LinearLayout) findViewById(R.id.godss);
         pinjiatext = (EditText) findViewById(R.id.pinjiatext);
-        addpot = (ImageView) findViewById(R.id.addpot);
-        functionGrid = (NoScrollGridView) findViewById(R.id.function_grid);
         ratingbar1 = (KRatingBar) findViewById(R.id.ratingbar1);
         ratingbar2 = (KRatingBar) findViewById(R.id.ratingbar2);
         addDiss = (TextView) findViewById(R.id.addDiss);
+        StyledDialog.init(this);
+        fujianLayout = (GridLayout) findViewById(R.id.fujian_layout);
     }
 
     @Override
     public void initData() {
-        adapter = new GridAdapter(mActivity,picst);
-        functionGrid.setAdapter(adapter);
+
+        ViewTreeObserver vto = fujianLayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int temppx = fujianLayout.getWidth();
+                fujianLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                fujian_px = (temppx - 0) / 4;
+                System.out.println("获得的大小" + fujian_px);
+
+                new GridAdapter(mActivity, picst, fujianLayout).build();
+
+            }
+        });
+        buildCart(godss, getIntent().getStringExtra("gods"));
+    }
+
+    private int dp2px(int dp, Context context) {
+        if (dp == 0) {
+            return 0;
+        } else {
+            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                    context.getResources().getDisplayMetrics());
+        }
     }
 
     @Override
@@ -121,13 +150,14 @@ public class AddDiscussActivity extends BaseActivity {
                 addDisscuss();
             }
         });
-        addpot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeUserHeadPopwindow();
-            }
-        });
+//        addpot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                changeUserHeadPopwindow();
+//            }
+//        });
     }
+
     /**
      * 初始化图片编辑器
      */
@@ -144,6 +174,7 @@ public class AddDiscussActivity extends BaseActivity {
         imagePicker.setOutPutX(1000); //保存文件的宽度。单位像素
         imagePicker.setOutPutY(1000); //保存文件的高度。单位像素
     }
+
     /**
      * 上传图片
      *
@@ -153,20 +184,20 @@ public class AddDiscussActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                File file=new File(avatarPath);
-                Map<String, Object> paramMap=new HashMap<>();
-                paramMap.put("file",file);
+                File file = new File(avatarPath);
+                Map<String, Object> paramMap = new HashMap<>();
+                paramMap.put("file", file);
                 try {
-                    String result= HttpUrlConnectUtil.uploadFile(RequestManager.mBaseUrl+"api/images/upload.html",paramMap,"");//上传头像
+                    String result = HttpUrlConnectUtil.uploadFile(RequestManager.mBaseUrl + "api/images/upload.html", paramMap, "");//上传头像
                     try {
-                        JSONObject jsonObject=new JSONObject(result);
-                        String url=jsonObject.optString("src");
+                        JSONObject jsonObject = new JSONObject(result);
+                        String url = jsonObject.optString("src");
                         pics.add(url);
                         picst.add(avatarPath);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                adapter.notifyDataSetChanged();
+                                new GridAdapter(mActivity, picst, fujianLayout).build();
                             }
                         });
                     } catch (JSONException e) {
@@ -179,22 +210,24 @@ public class AddDiscussActivity extends BaseActivity {
             }
         }).start();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == REQUEST_CODE_IMAGE) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                DialogUtil.showProgress(mActivity, getString(R.string.prompt_open_modify_head));
+                DialogUtil.showProgress(mActivity, "提交图片");
                 uploadAvatar(images.get(0).path);
             }
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
             cutPhoto(mPhotoPath);
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CROP) {
-            DialogUtil.showProgress(mActivity, getString(R.string.prompt_open_modify_head));
+            DialogUtil.showProgress(mActivity, "提交图片");
             uploadAvatar(mCropPath);
         }
     }
+
     /**
      * 裁剪拍摄的照片
      *
@@ -232,20 +265,18 @@ public class AddDiscussActivity extends BaseActivity {
 
 
     private void addDisscuss() {
-        Map<String, String> map = new HashMap<>();
+
+        DialogUtil.showUnCancelableProgress(mActivity, "提交评价");
+        Map<String, Object> map = new HashMap<>();
         map.put("unique", getIntent().getStringExtra("unique"));
         map.put("comment", pinjiatext.getText().toString());
-        String picss="";
-        for (int i = 0; i <pics.size() ; i++) {
-            picss=pics.get(i)+",";
+        String picss = "";
+        for (int i = 0; i < pics.size(); i++) {
+            map.put("pics["+i+"]", pics.get(i));
         }
-        if(picss.length()>1){
-            picss=picss.substring(0,picss.length()-1);
-        }
-        map.put("pics", picss);
-        map.put("product_score", ratingbar1.getRating()+"");
-        map.put("service_score", ratingbar2.getRating()+"");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).addDisscuss(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        map.put("product_score", ratingbar1.getRating() + "");
+        map.put("service_score", ratingbar2.getRating() + "");
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).addDisscuss(SPUtil.get("head", "").toString(), RequestManager.encryptParamss(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -253,35 +284,35 @@ public class AddDiscussActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-
+                        finish();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtil.hideProgress();
             }
 
             @Override
             public void onError(Throwable t) {
-
+                DialogUtil.hideProgress();
             }
         });
     }
-
 
 
     /**
      * 更换头像弹窗
      */
     private void changeUserHeadPopwindow() {
-        List<String> list=new ArrayList<>();
+        List<String> list = new ArrayList<>();
         list.add("拍照");
         list.add("从相册选");
         list.add("取消");
         StyledDialog.buildIosSingleChoose(list, new MyItemDialogListener() {
             @Override
             public void onItemClick(CharSequence charSequence, int i) {
-                if("拍照".equals(charSequence)){
+                if ("拍照".equals(charSequence)) {
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                             if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE)) {//用户已拒绝过一次
@@ -300,17 +331,17 @@ public class AddDiscussActivity extends BaseActivity {
                         } else {
                             openCamera();
                         }
-                    }else{
+                    } else {
 
                         openCamera();
                     }
                 }
-                if("从相册选".equals(charSequence)){
+                if ("从相册选".equals(charSequence)) {
                     Intent intent = new Intent(mActivity, ImageGridActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_IMAGE);
 //                    mBottomPopwindow.dismiss();
                 }
-                if("取消".equals(charSequence)){
+                if ("取消".equals(charSequence)) {
 
                 }
 
@@ -318,6 +349,7 @@ public class AddDiscussActivity extends BaseActivity {
         }).show();
 
     }
+
     /**
      * 调用系统照相机拍照
      */
@@ -334,6 +366,7 @@ public class AddDiscussActivity extends BaseActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
         startActivityForResult(intent, REQUEST_CODE_CAMERA);
     }
+
     /**
      * 创建拍照文件夹
      *
@@ -357,38 +390,121 @@ public class AddDiscussActivity extends BaseActivity {
         mCropPath = crop.getAbsolutePath();
         return image;
     }
-    class GridAdapter extends BaseAdapter {
-        public GridAdapter(Context context, List<String> images) {
-            this.context = context;
-            this.images = images;
-        }
 
+    class GridAdapter {
         public Context context;
         private List<String> images;
+        private ViewGroup parent;
 
-        @Override
-        public int getCount() {
-            return images==null?0:images.size();
+        public GridAdapter(Context context, List<String> images, ViewGroup parent) {
+            this.context = context;
+            this.images = images;
+            this.parent = parent;
         }
 
-        @Override
+        public int getCount() {
+            return images == null ? 0 : images.size();
+        }
+
         public Object getItem(int position) {
             return images.get(position);
         }
 
-        @Override
         public long getItemId(int position) {
             return position;
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView=new ImageView(context);
+        public void build() {
+            parent.removeAllViews();
+
+            LinearLayout layout = new LinearLayout(context);
+            LinearLayout.LayoutParams LL_MW = new LinearLayout.LayoutParams
+                    (fujian_px, fujian_px);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setGravity(Gravity.CENTER);
+            layout.setLayoutParams(LL_MW);
+
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            LinearLayout.LayoutParams LL_IM = new LinearLayout.LayoutParams
+                    (fujian_px - 10, fujian_px - 10);
+            imageView.setLayoutParams(LL_IM);
+            imageView.setImageResource(R.drawable.start_pot);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(images.size()<=3){
+
+                        changeUserHeadPopwindow();
+                    }else{
+                        Toast.makeText(context,"这可上传三张图片",Toast.LENGTH_SHORT);
+                    }
+                }
+            });
+            layout.addView(imageView);
+            parent.addView(layout);
+            for (int i = 0; i < getCount(); i++) {
+                parent.addView(getView(i));
+            }
+        }
+
+        public View getView(int position) {
+            System.out.println("进来");
+            LinearLayout layout = new LinearLayout(context);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams LL_MW = new LinearLayout.LayoutParams
+                    (fujian_px, fujian_px);
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            LinearLayout.LayoutParams LL_IM = new LinearLayout.LayoutParams
+                    (fujian_px - 10, fujian_px - 10);
+            imageView.setLayoutParams(LL_IM);
             RequestOptions options = new RequestOptions()
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
             Glide.with(context).load(images.get(position)).apply(options).into(imageView);
-            return imageView;
+            layout.addView(imageView);
+            return layout;
+        }
+    }
+
+    private void buildCart(ViewGroup viewGroup, String cartInfoInfoString) {
+        try {
+
+            View cartinfol = LayoutInflater.from(mActivity).inflate(R.layout.item_cart_item, viewGroup, false);
+            JSONObject cartInfo = new JSONObject(cartInfoInfoString);
+            ImageView imageView = cartinfol.findViewById(R.id.cart_icon2);
+            TextView cart_title = cartinfol.findViewById(R.id.cart_title);
+            TextView cart_cunk = cartinfol.findViewById(R.id.cart_cunk);
+            TextView cart_count = cartinfol.findViewById(R.id.cart_count);
+            TextView cart_money = cartinfol.findViewById(R.id.cart_money);
+            String pic = cartInfo.getJSONObject("productInfo").getString("image");
+            String title = cartInfo.getJSONObject("productInfo").getString("store_name");
+            String unique = "";
+            try {
+                String cunk = cartInfo.getJSONObject("productInfo").getJSONObject("attrInfo").getString("suk");
+                cart_cunk.setText(cunk);
+            } catch (JSONException e) {
+                cart_cunk.setVisibility(View.INVISIBLE);
+                e.printStackTrace();
+            }
+            TextView pinjia = cartinfol.findViewById(R.id.pingjia);
+            pinjia.setVisibility(View.GONE);
+            String count = "X" + cartInfo.getString("cart_num");
+            String money = "¥" + cartInfo.getString("truePrice");
+            RequestOptions options = new RequestOptions()
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+            Glide.with(mActivity).load(pic).apply(options).into(imageView);
+            cart_title.setText(title);
+            cart_count.setText(count);
+            cart_money.setText(money);
+            viewGroup.addView(cartinfol);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -16,12 +16,12 @@ public class RequestManager {
     public static RetrofitManager mRetrofitManager;
     public static RetrofitManager mRetrofitManager2;
     public static RetrofitManager mRetrofitManager3;
-    public static final String mBaseUrl = "http://mall.jiudi.cn/";
-    public static final String mBaseUrl2 = "http://mall.jiudi.cn/";
+    public static final String mBaseUrl = "http://mall.jiudicar.com/";
+    public static final String mBaseUrl2 = "http://mall.jiudicar.com/";
 //    public static final String mBaseUrl3 = "http://www.jiudi.cn/";
 
 //    public static final String mBaseUrl3 = "http://jiudi.youacloud.com/";
-    public static final String mBaseUrl3 = "http://mall.jiudi.cn/";
+    public static final String mBaseUrl3 = "http://mall.jiudicar.com/";
     public static final String mInterfacePrefix = "index.php?g=App&m=Appv1&a=";
     public static final String mInterfacePrefix2 = "index.php?g=App&m=Appv1&a=";
 //    RequestManager.mRetrofitManager
@@ -62,6 +62,37 @@ public class RequestManager {
 //        }
 //    });
 
+    /**
+     * 加密:增加时间戳 MD5签名
+     *
+     * @param map Map集合
+     * @return 加密之后的Map集合
+     */
+    public static Map<String, Object> encryptParamss(Map<String, Object> map) {
+        String timestamp = Long.toString(System.currentTimeMillis()).substring(0, 10);
+        map.put("timestamp", timestamp);
+        String[] array = new String[map.size()];
+        int i = 0;
+        for (String key : map.keySet()) {
+            array[i] = key;
+            i++;
+        }
+        Arrays.sort(array);
+        String signature = "";
+        for (int j = 0; j < array.length; j++) {
+            String key = array[j];
+            if (signature.equals("")) {
+                signature = signature + key + "=" + map.get(key);
+            } else {
+                signature = signature + "&" + key + "=" + map.get(key);
+            }
+            if (j == array.length - 1) {
+                signature = signature + "&nado";
+            }
+        }
+        map.put("sig", MD5Util.getMD5Str(signature));
+        return map;
+    }
     /**
      * 加密:增加时间戳 MD5签名
      *

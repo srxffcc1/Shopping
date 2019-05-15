@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.TabLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
@@ -44,12 +46,14 @@ import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.ui.user.account.AddDiscussActivity;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.TimeUtil;
 import com.jiudi.shopping.util.ToastUtil;
 import com.jiudi.shopping.util.WechatUtil;
+import com.m7.imkfsdk.KfStartHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -169,6 +173,7 @@ public class DingDanActivity extends BaseActivity {
         chakanwuliu = (TextView) findViewById(R.id.chakanwuliu);
         querenshouhuo = (TextView) findViewById(R.id.querenshouhuo);
         StyledDialog.init(this);
+
     }
 
     @Override
@@ -185,6 +190,14 @@ public class DingDanActivity extends BaseActivity {
         }
         if("2".equals(orderbean.getStatuz().getType())||"3".equals(orderbean.getStatuz().getType())){
             chakanwuliu.setVisibility(View.VISIBLE);
+        }
+        if("2".equals(orderbean.getStatuz().getType())){
+            querenshouhuo.setText("确认收货");
+        }
+        else if("0".equals(orderbean.getStatuz().getType())){
+            querenshouhuo.setText("立即支付");
+        }else{
+            querenshouhuo.setVisibility(View.GONE);
         }
     }
 
@@ -227,21 +240,24 @@ public class DingDanActivity extends BaseActivity {
     private void bindDataToView2() {
         xiadanshijian.setText("下单时间：" + TimeUtil.formatLong(orderDetail.getAdd_time()));
         if ("未支付".equals(orderbean.getStatuz().getTitle())) {
-
             zhifushijian.setVisibility(View.GONE);
         } else {
             zhifushijian.setText("支付时间：" + TimeUtil.formatLong(orderDetail.getPay_time()));
         }
+        dizhi.setText(orderDetail.getUser_address());
+        dianhua.setText(orderDetail.getUser_phone());
+        xingming.setText(orderDetail.getReal_name());
+        yuedikouv.setText("-¥"+orderDetail.getUse_integral());
     }
 
     public void bindDataToView() {
         String cartlist = new Gson().toJson(orderbean.getCartInfoList());
-        buildCartList(godss, cartlist);
+        buildCartList(godss, cartlist,orderbean.getStatuz().getType());
         zhuangtai.setText(orderbean.getStatuz().get_title());
-        dizhi.setText(orderbean.getUser_address());
-        dianhua.setText(orderbean.getUser_phone());
-        xingming.setText(orderbean.getReal_name());
+
         if ("未支付".equals(orderbean.getStatuz().get_title())) {
+            peisongfangshil.setVisibility(View.GONE);
+        }else{
             peisongfangshil.setVisibility(View.GONE);
         }
         fahuo.setText(orderbean.getStatuz().getMsg());
@@ -250,6 +266,9 @@ public class DingDanActivity extends BaseActivity {
         dingdanbianhao.setText("订单编号：" + orderbean.getOrder_id());
         zhifufangshi.setText("支付方式：" + orderbean.getStatuz().getPayType());
         zhifuzhuangtai.setText("支付状态：" + orderbean.getStatuz().getTitle());
+        RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.head_defuat_circle);
+        Glide.with(mActivity).load((AccountManager.sUserBean.avatar.startsWith("http"))?AccountManager.sUserBean.avatar:"http://"+AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
+
     }
 
     //    private void getWuLiu() {
@@ -289,7 +308,8 @@ public class DingDanActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-
+                        Toast.makeText(mActivity,"退货申请成功",Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                 } catch (JSONException e) {
@@ -328,11 +348,23 @@ public class DingDanActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if("确认收货".equals(querenshouhuo.getText().toString())){
-
-                }
-                if("立即支付".equals(querenshouhuo.getText().toString())){
                     qurenshouhuo(orderbean.getOrder_id());
                 }
+                if("立即支付".equals(querenshouhuo.getText().toString())){
+                    lijizhifu();
+                }
+            }
+        });
+        lianxikefu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new KfStartHelper(mActivity).initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",60);//陈辰正式
+            }
+        });
+        fanhui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -380,8 +412,8 @@ public class DingDanActivity extends BaseActivity {
         }
     }
     private void showChoseText() {
-        dialogchosetext = StyledDialog.buildNormalInput("退货", "请输入退货理由", "",
-                "", "",  new MyDialogListener() {
+        dialogchosetext = StyledDialog.buildNormalInput("退款", "请输入退款理由", "",
+                "确定", "取消",  new MyDialogListener() {
                     @Override
                     public void onFirst() {
                         tuiKuan(chosetext);
@@ -393,25 +425,20 @@ public class DingDanActivity extends BaseActivity {
                     }
 
                     @Override
-                    public boolean onInputValid(CharSequence input1, CharSequence input2, EditText editText1, EditText editText2) {
-                        return false;
-                    }
-
-                    @Override
                     public void onGetInput(CharSequence input1, CharSequence input2) {
                         super.onGetInput(input1, input2);
                         chosetext=input1.toString();
                     }
-                }).setBtnText("确定","取消").setCancelable(true,true).show();
+                }).setCancelable(true,true).show();
     }
 
-    private void buildCartList(ViewGroup viewGroup, String cartInfoListString) {
+    private void buildCartList(ViewGroup viewGroup, String cartInfoListString,String type) {
         try {
             JSONArray cartInfoList = new JSONArray(cartInfoListString);
             viewGroup.removeAllViews();
             for (int i = 0; i < cartInfoList.length(); i++) {
                 View cartinfol = LayoutInflater.from(mActivity).inflate(R.layout.item_cart_item, viewGroup, false);
-                JSONObject cartInfo = cartInfoList.getJSONObject(i);
+                final JSONObject cartInfo = cartInfoList.getJSONObject(i);
                 ImageView imageView = cartinfol.findViewById(R.id.cart_icon2);
                 TextView cart_title = cartinfol.findViewById(R.id.cart_title);
                 TextView cart_cunk = cartinfol.findViewById(R.id.cart_cunk);
@@ -426,6 +453,22 @@ public class DingDanActivity extends BaseActivity {
                     cart_cunk.setVisibility(View.INVISIBLE);
                     e.printStackTrace();
                 }
+                String unique="";
+                unique= cartInfo.getString("unique");
+                TextView pinjia=cartinfol.findViewById(R.id.pingjia);
+                if("3".equals(type)&&!cartInfo.optBoolean("is_reply")){
+                    pinjia.setVisibility(View.VISIBLE);
+                }
+                final String finalUnique = unique;
+                pinjia.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        startActivity(new Intent(mActivity, AddDiscussActivity.class).putExtra("unique", finalUnique).putExtra("gods",cartInfo.toString()));
+                    }
+                });
+
+
                 String count = "X" + cartInfo.getString("cart_num");
                 String money = "¥" + cartInfo.getString("truePrice");
                 RequestOptions options = new RequestOptions()
@@ -455,7 +498,7 @@ public class DingDanActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-
+                        Toast.makeText(mActivity,"操作成功",Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {

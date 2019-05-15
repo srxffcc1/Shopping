@@ -131,7 +131,7 @@ public class AddressListActivity extends BaseActivity {
                 protected void convert(ViewHolder holder, final DiZHi carChoiceBean, int position) {
                     holder.setText(R.id.name,"收货人："+carChoiceBean.real_name+" "+carChoiceBean.phone);
                     holder.setText(R.id.address,"收货地址："+carChoiceBean.province+carChoiceBean.city+carChoiceBean.district+carChoiceBean.detail);
-                    CheckBox checkBox=holder.itemView.findViewById(R.id.check);
+                    final CheckBox checkBox=holder.itemView.findViewById(R.id.check);
                     checkBox.setOnKeyListener(null);
                     if("1".equals(carChoiceBean.is_default)){
                         checkBox.setChecked(true);
@@ -161,6 +161,13 @@ public class AddressListActivity extends BaseActivity {
                             }
                         }
                     });
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            saveAddress(carChoiceBean);
+                        }
+                    });
 
                 }
 
@@ -182,7 +189,7 @@ public class AddressListActivity extends BaseActivity {
         map.put("city", bean.city);
         map.put("district", bean.district);
         map.put("detail", bean.detail);
-        map.put("is_default", "true");
+        map.put("is_default", "1");
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).saveAddress(SPUtil.get("head", "").toString(),"api/auth_api/edit_user_address",RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
@@ -192,6 +199,9 @@ public class AddressListActivity extends BaseActivity {
                     String info = res.getString("msg");
                     if (code == 200) {
                         getAddressList();
+                        if(getIntent().getBooleanExtra("needpay",false)){
+                            finish();
+                        }
                     }
 
                 } catch (JSONException e) {

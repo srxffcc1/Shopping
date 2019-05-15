@@ -38,6 +38,7 @@ import com.jiudi.shopping.ui.user.AllOrderActivity;
 import com.jiudi.shopping.ui.user.AllQuanActivity;
 import com.jiudi.shopping.ui.user.ShopSettingActivity;
 import com.jiudi.shopping.ui.user.account.AccountActivity;
+import com.jiudi.shopping.ui.user.account.LoginActivity;
 import com.jiudi.shopping.ui.user.account.ShouCangActivity;
 import com.jiudi.shopping.ui.user.account.TongZhiActivity;
 import com.jiudi.shopping.util.DialogUtil;
@@ -199,13 +200,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                             bindDataToView();
 
                         }else{
-
+                            AccountManager.sUserBean=null;
                         }
                     }else{
-
+                        AccountManager.sUserBean=null;
                     }
 
                 } catch (JSONException e) {
+                    AccountManager.sUserBean=null;
                     e.printStackTrace();
                 }
             }
@@ -282,7 +284,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeUserHeadPopwindow();
+                if(AccountManager.sUserBean==null){
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }else{
+                    changeUserHeadPopwindow();
+                }
             }
         });
         mycollet.setOnClickListener(new View.OnClickListener() {
@@ -301,10 +307,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         myunder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("1".equals(AccountManager.sUserBean.is_promoter)){
-                    startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
-                }else{
-                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                try {
+                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                        startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
+                    }else{
+                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
 
             }
@@ -312,29 +323,54 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         myup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("1".equals(AccountManager.sUserBean.is_promoter)){
-                    startActivity(new Intent(mActivity, TuanDuiActivity.class));
-                }else{
-                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                try {
+                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                        startActivity(new Intent(mActivity, TuanDuiActivity.class));
+                    }else{
+                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        });
+        mylessmoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                        startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
+                    }else{
+                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             }
         });
         myzxing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("1".equals(AccountManager.sUserBean.is_promoter)){
-                    startActivity(new Intent(mActivity, TuiGuangActivity.class));
-                }else{
-                    startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                try {
+                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                        startActivity(new Intent(mActivity, TuiGuangActivity.class));
+                    }else{
+                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             }
         });
-        mysetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        mysetting.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
         passtongzhi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

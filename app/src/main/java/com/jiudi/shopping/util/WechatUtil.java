@@ -1,7 +1,10 @@
 package com.jiudi.shopping.util;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import com.jiudi.shopping.R;
 import com.jiudi.shopping.global.LocalApplication;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -9,6 +12,8 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
+
+import java.io.InputStream;
 
 /**
  * 作者：maqing on 2016/10/18 0018 23:02
@@ -51,6 +56,16 @@ public class WechatUtil {
         req.scene = scene;
         LocalApplication.mIWXApi.sendReq(req);
     }
+
+
+//    * 分享url地址
+//     *
+//             * @param url            地址
+//     * @param title          标题
+//     * @param desc           描述
+//     * @param wxSceneSession 类型
+//     */
+
 
     /**
      * 微信支付

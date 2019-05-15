@@ -286,7 +286,7 @@ public class OrderFragment extends BaseFragment {
                 protected void convert(ViewHolder holder, final Order carChoiceBean, int position) {
                     LinearLayout linearLayout=holder.itemView.findViewById(R.id.allcart);
                     String cartlist=new Gson().toJson(carChoiceBean.getCartInfoList());
-                    buildCartList(linearLayout,cartlist);
+                    buildCartList(linearLayout,cartlist,carChoiceBean.getStatuz().getType());
                     String title=carChoiceBean.getStatuz().get_title();
                     String type=carChoiceBean.getStatuz().getType();
                     holder.setText(R.id.order_number,"订单："+carChoiceBean.getOrder_id());
@@ -303,7 +303,6 @@ public class OrderFragment extends BaseFragment {
 
                         function_0.setVisibility(View.GONE);
                         function_1.setVisibility(View.GONE);
-                        function_1.setText("立即付款");
                     }
                     else if("2".equals(type)){//待收货
                         function_0.setVisibility(View.VISIBLE);
@@ -340,8 +339,10 @@ public class OrderFragment extends BaseFragment {
 //                                lijizhifu();
 
                                 qurenshouhuo(carChoiceBean.getOrder_id());
-                            }else{
                             }
+//                            if("立即评价".equals(function_0.getText().toString())){
+//                                startActivity(new Intent(mActivity, AddDiscussActivity.class).putExtra("unique",carChoiceBean.getOrder_id()));
+//                            }
                         }
                     });
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -402,7 +403,6 @@ public class OrderFragment extends BaseFragment {
                     String info = res.getString("msg");
                     if (code == 200) {
 
-
                         toWePay(res);
                     }
                     DialogUtil.hideProgress();
@@ -418,13 +418,13 @@ public class OrderFragment extends BaseFragment {
             }
         });
     }
-    private void buildCartList(ViewGroup viewGroup,String cartInfoListString) {
+    private void buildCartList(ViewGroup viewGroup,String cartInfoListString,String type) {
         try {
             JSONArray cartInfoList = new JSONArray(cartInfoListString);
             viewGroup.removeAllViews();
             for (int i = 0; i < cartInfoList.length(); i++) {
                 View cartinfol = LayoutInflater.from(mActivity).inflate(R.layout.item_cart_item, viewGroup, false);
-                JSONObject cartInfo = cartInfoList.getJSONObject(i);
+                final JSONObject cartInfo = cartInfoList.getJSONObject(i);
                 ImageView imageView = cartinfol.findViewById(R.id.cart_icon2);
                 TextView cart_title = cartinfol.findViewById(R.id.cart_title);
                 TextView cart_cunk = cartinfol.findViewById(R.id.cart_cunk);
@@ -432,25 +432,27 @@ public class OrderFragment extends BaseFragment {
                 TextView cart_money = cartinfol.findViewById(R.id.cart_money);
                 String pic = cartInfo.getJSONObject("productInfo").getString("image");
                 String title = cartInfo.getJSONObject("productInfo").getString("store_name");
-                String unique="";
+
                 try {
                     String cunk = cartInfo.getJSONObject("productInfo").getJSONObject("attrInfo").getString("suk");
-                    unique= cartInfo.getJSONObject("productInfo").getJSONObject("attrInfo").getString("unique");
+
                     cart_cunk.setText(cunk);
                 } catch (JSONException e) {
                     cart_cunk.setVisibility(View.INVISIBLE);
                     e.printStackTrace();
                 }
+                String unique="";
+                unique= cartInfo.getString("unique");
                 TextView pinjia=cartinfol.findViewById(R.id.pingjia);
-                if("3".equals(getArguments().getString("type"))){
-
+                if("3".equals(type)&&!cartInfo.optBoolean("is_reply")){
                     pinjia.setVisibility(View.VISIBLE);
                 }
                 final String finalUnique = unique;
                 pinjia.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(mActivity,AddDiscussActivity.class).putExtra("unique", finalUnique));
+
+                        startActivity(new Intent(mActivity,AddDiscussActivity.class).putExtra("unique", finalUnique).putExtra("gods",cartInfo.toString()));
                     }
                 });
                 String count = "X" + cartInfo.getString("cart_num");

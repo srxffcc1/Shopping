@@ -38,6 +38,16 @@
     <!-- GPS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
 
 
     <application
@@ -101,10 +111,11 @@
             android:exported="true"
             android:launchMode="singleTop"/>
 
-        <!-- 微信登录、绑定、分享的回调界面 -->
+         <!--微信登录、绑定、分享的回调界面-->
         <activity
             android:name="com.jiudi.shopping.wxapi.WXEntryActivity"
             android:exported="true"
+            tools:replace="android:theme"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent"/>
 
@@ -153,9 +164,14 @@
         <activity android:name=".ui.user.account.ShouCangActivity" />
         <activity android:name=".ui.user.ShopSettingActivity" />
         <activity android:name=".ui.user.account.TiXianActivity" />
-        <activity android:name=".ui.user.account.AddDiscussActivity" />
+        <activity android:name=".ui.user.account.AddDiscussActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".ui.user.account.DiscussListActivity" />
         <activity android:name=".ui.user.AllQuanActivity" />
+        <activity android:name=".ui.main.SearchShopActivity" />
+        <activity android:name=".ui.user.account.TextActivity" />
+
+
     </application>
 
 </manifest>

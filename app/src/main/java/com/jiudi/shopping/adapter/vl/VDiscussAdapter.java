@@ -1,14 +1,18 @@
 package com.jiudi.shopping.adapter.vl;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
@@ -18,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.bean.CartDiscussBean;
 import com.jiudi.shopping.manager.RequestManager;
+import com.jiudi.shopping.util.TimeUtil;
 import com.jiudi.shopping.widget.KRatingBar;
 import com.jiudi.shopping.widget.NoScrollGridView;
 
@@ -31,6 +36,7 @@ public class VDiscussAdapter extends DelegateAdapter.Adapter{
     public Context context;
     private LayoutHelper helper;
     private List<CartDiscussBean> mcartdiscussbeanlist;
+    private int fujian_px=0;
 
     public VDiscussAdapter(Context context, LayoutHelper helper, List<CartDiscussBean> mcartdiscussbeanlist) {
         this.context = context;
@@ -53,11 +59,45 @@ public class VDiscussAdapter extends DelegateAdapter.Adapter{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(mcartdiscussbeanlist.get(position)!=null){
-            CartDiscussBean bean=mcartdiscussbeanlist.get(position);
+            final CartDiscussBean bean=mcartdiscussbeanlist.get(position);
             KRatingBar ratingBar=holder.itemView.findViewById(R.id.ratingbar2);
             ratingBar.setRating(bean.getStar());
             ((TextView)holder.itemView.findViewById(R.id.comment)).setText(""+bean.getComment());
             ((TextView)holder.itemView.findViewById(R.id.nickname)).setText(bean.getNickname());
+            final ImageView imageView=holder.itemView.findViewById(R.id.head);
+            if(bean.getAvatar()!=null){
+                RequestOptions options = new RequestOptions()
+                        .fitCenter()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+                Glide.with(context).load(bean.getAvatar()).apply(options).into(imageView);
+            }
+
+            ((TextView)holder.itemView.findViewById(R.id.time)).setText(""+bean.getAdd_time());
+
+
+            final GridLayout fujianLayout = (GridLayout) holder.itemView.findViewById(R.id.fujian_layout);
+
+            ViewTreeObserver vto = fujianLayout.getViewTreeObserver();
+            if(fujian_px==0){
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int temppx = fujianLayout.getWidth();
+                        fujianLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        fujian_px = (temppx - 0) / 4;
+                        System.out.println("获得的大小" + fujian_px);
+                        new GridAdapter(context, bean.getPics(), fujianLayout).build();
+
+                    }
+                });
+            }else{
+
+                new GridAdapter(context, bean.getPics(), fujianLayout).build();
+            }
+
+
+
+
 //            GridLayout gridLayout=holder.itemView.findViewById(R.id.function_grid);
 //            gridLayout.removeAllViews();
 //            for (int i = 0; i <bean.getPics().size() ; i++) {
@@ -73,8 +113,6 @@ public class VDiscussAdapter extends DelegateAdapter.Adapter{
 //                Glide.with(context).load(RequestManager.mBaseUrl+bean.getPics().get(i)).apply(options).into(imageView);
 //
 //            }
-            NoScrollGridView gridView=holder.itemView.findViewById(R.id.function_grid);
-            gridView.setAdapter(new GridAdapter(context,bean.getPics()));
 
         }
     }
@@ -90,38 +128,71 @@ public class VDiscussAdapter extends DelegateAdapter.Adapter{
             super(itemView);
         }
     }
-    class GridAdapter extends BaseAdapter{
-        public GridAdapter(Context context, List<String> images) {
-            this.context = context;
-            this.images = images;
-        }
-
+    class GridAdapter {
         public Context context;
         private List<String> images;
+        private ViewGroup parent;
 
-        @Override
-        public int getCount() {
-            return images==null?0:images.size();
+        public GridAdapter(Context context, List<String> images, ViewGroup parent) {
+            this.context = context;
+            this.images = images;
+            this.parent = parent;
         }
 
-        @Override
+        public int getCount() {
+            return images == null ? 0 : images.size();
+        }
+
         public Object getItem(int position) {
             return images.get(position);
         }
 
-        @Override
         public long getItemId(int position) {
             return position;
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView=new ImageView(context);
+        public void build() {
+            parent.removeAllViews();
+
+//            LinearLayout layout = new LinearLayout(context);
+//            LinearLayout.LayoutParams LL_MW = new LinearLayout.LayoutParams
+//                    (fujian_px, fujian_px);
+//            layout.setOrientation(LinearLayout.VERTICAL);
+//            layout.setGravity(Gravity.CENTER);
+//            layout.setLayoutParams(LL_MW);
+//
+//            ImageView imageView = new ImageView(context);
+//            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//            LinearLayout.LayoutParams LL_IM = new LinearLayout.LayoutParams
+//                    (fujian_px - 10, fujian_px - 10);
+//            imageView.setLayoutParams(LL_IM);
+//            imageView.setImageResource(R.drawable.start_pot);
+//            layout.addView(imageView);
+//            parent.addView(layout);
+            for (int i = 0; i < getCount(); i++) {
+                parent.addView(getView(i));
+            }
+        }
+
+        public View getView(int position) {
+            System.out.println("进来");
+            LinearLayout layout = new LinearLayout(context);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams LL_MW = new LinearLayout.LayoutParams
+                    (fujian_px, fujian_px);
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            LinearLayout.LayoutParams LL_IM = new LinearLayout.LayoutParams
+                    (fujian_px - 10, fujian_px - 10);
+            imageView.setLayoutParams(LL_IM);
             RequestOptions options = new RequestOptions()
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+            String pic=images.get(position);
             Glide.with(context).load(images.get(position)).apply(options).into(imageView);
-            return imageView;
+            layout.addView(imageView);
+            return layout;
         }
     }
 

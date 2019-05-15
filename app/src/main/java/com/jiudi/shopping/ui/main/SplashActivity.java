@@ -53,14 +53,12 @@ public class SplashActivity extends BaseActivity {
             startActivity(new Intent(mActivity, GuideActivity.class));
             finish();
         } else {
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    startActivity(new Intent(mActivity, MainActivity.class));
-//                    finish();
-//                }
-//            }, 2000);
-            autoLogin();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    autoLogin();
+                }
+            }, 1000);
         }
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸

@@ -15,8 +15,9 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/head"
+            android:layout_width="100px"
+            android:layout_height="100px"
             android:src="@drawable/cart_head" />
 
 
@@ -51,6 +52,7 @@
             app:starMax="5" />
 
         <TextView
+            android:id="@+id/time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -64,19 +66,22 @@
         android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="上一个经常掉线，这个偶尔频率少了，能够接受，电子
-产品的稳定性还是差。不过服务总算不错，信任一个！"
+        android:text=""
         android:textColor="#ff333333"
         android:textSize="14sp" />
 
-    <com.jiudi.shopping.widget.NoScrollGridView
-        android:id="@+id/function_grid"
+    <GridLayout
+        android:id="@+id/fujian_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="4"
-        android:layout_marginBottom="@dimen/dp_6">
+        android:useDefaultMargins="false"
+        android:layout_marginLeft="0dp"
+        android:minHeight="2dp"
+        android:layout_marginRight="0dp"
+        android:columnCount="4"
+        android:padding="5dp">
 
-    </com.jiudi.shopping.widget.NoScrollGridView>
+    </GridLayout>
 
 
 </LinearLayout>

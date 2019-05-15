@@ -33,7 +33,6 @@
             android:background="@color/colorWhite"
             android:orientation="vertical">
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/userinfo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
@@ -46,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/dp_10"
                     android:gravity="center"
-                    android:text="个人信息"
+                    android:text="昵称"
                     android:textColor="@color/colorTitle"
                     android:textSize="@dimen/sp_14"/>
 
@@ -55,10 +54,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
 
-                <ImageView
+                <TextView
+                    android:id="@+id/usernick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/next_blue" />
+                    android:drawablePadding="@dimen/dp_10"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/sp_14"/>
             </LinearLayout>
             <View
                 style="@style/HorizontalLine"

@@ -70,11 +70,16 @@ public class TimeUtil {
 
 
     public static String formatLong(String longtime) {
-        long longs =Long.parseLong(longtime)*1000L;
-        Date date=new Date();
-        date.setTime(longs);
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-        return simpleDateFormat.format(date);
+        try {
+            long longs =Long.parseLong(longtime)*1000L;
+            Date date=new Date();
+            date.setTime(longs);
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+            return simpleDateFormat.format(date);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return longtime;
+        }
     }
 
     /**

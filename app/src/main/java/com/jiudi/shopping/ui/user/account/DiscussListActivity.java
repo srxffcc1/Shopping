@@ -2,14 +2,20 @@ package com.jiudi.shopping.ui.user.account;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,8 +39,10 @@ import com.jiudi.shopping.bean.TongZhi;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.DisplayUtil;
 import com.jiudi.shopping.util.SPUtil;
+import com.jiudi.shopping.util.TimeUtil;
 import com.jiudi.shopping.widget.DividerItemDecoration;
 import com.jiudi.shopping.widget.KRatingBar;
 import com.jiudi.shopping.widget.NoScrollGridView;
@@ -53,6 +61,9 @@ public class DiscussListActivity extends BaseActivity {
     private android.support.v7.widget.RecyclerView recycler;
     private List<Discuss> mCarChoiceList = new ArrayList<>();
     private RecyclerCommonAdapter<Discuss> mCarBeanAdapter;
+    private boolean stoploadmore=false;
+    private int page=0;
+    private int fujian_px=0;
 
     @Override
     protected int getContentViewId() {
@@ -72,14 +83,38 @@ public class DiscussListActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
 
+                if(recycler.canScrollVertically(1)){
+                }else {
+                    if(mCarBeanAdapter!=null &&!stoploadmore){//滑动到底部
+                        page=page+10;
+                        getList();
+                    }
+
+                }
+                if(recycler.canScrollVertically(-1)){
+
+                }else {
+                    //滑动到顶部
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
     private void getList() {
         Map<String, String> map = new HashMap<>();
         map.put("productId",getIntent().getStringExtra("productId"));
         map.put("limit","10");
         map.put("filter","all");
-        map.put("first",0+"");
+        map.put("first",page+"");
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getAllDiscuss(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
@@ -88,6 +123,7 @@ public class DiscussListActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
+
                         GsonBuilder builder = new GsonBuilder();
                         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                             public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -98,6 +134,9 @@ public class DiscussListActivity extends BaseActivity {
                         Type cartStatusType = new TypeToken<List<Discuss>>() {
                         }.getType();
                         mCarChoiceList=gson.fromJson(res.getJSONArray("data").toString(),cartStatusType);
+                        if(mCarChoiceList==null||mCarChoiceList.size()<0){
+                            stoploadmore=true;
+                        }
                         showCarChoiceRecycleView();
                     }
 
@@ -125,14 +164,41 @@ public class DiscussListActivity extends BaseActivity {
                     ratingBar.setRating(carChoiceBean.star);
                     ((TextView)holder.itemView.findViewById(R.id.comment)).setText(""+bean.comment);
                     ((TextView)holder.itemView.findViewById(R.id.nickname)).setText(bean.nickname);
-                    NoScrollGridView gridView=holder.itemView.findViewById(R.id.function_grid);
-                    gridView.setAdapter(new GridAdapter(mActivity,bean.getPics()));
+
+                    ImageView imageView=holder.itemView.findViewById(R.id.head);
+                    if(carChoiceBean.avatar!=null){
+                        RequestOptions options = new RequestOptions()
+                                .fitCenter()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+                        Glide.with(mActivity).load(carChoiceBean.avatar).apply(options).into(imageView);
+                    }
+
+                    ((TextView)holder.itemView.findViewById(R.id.time)).setText(""+ TimeUtil.formatLong(carChoiceBean.add_time));
+                    final GridLayout fujianLayout = (GridLayout) holder.itemView.findViewById(R.id.fujian_layout);
+
+                    ViewTreeObserver vto = fujianLayout.getViewTreeObserver();
+                    if(fujian_px==0){
+                        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                            @Override
+                            public void onGlobalLayout() {
+                                int temppx = fujianLayout.getWidth();
+                                fujianLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                fujian_px = (temppx - 0) / 4;
+                                System.out.println("获得的大小" + fujian_px);
+                                new GridAdapter(mActivity, carChoiceBean.getPics(), fujianLayout).build();
+
+                            }
+                        });
+                    }else{
+
+                        new GridAdapter(mActivity, carChoiceBean.getPics(), fujianLayout).build();
+                    }
                 }
 
             };
 
 
-            recycler.addItemDecoration(RecyclerViewDivider.with(this).color(Color.parseColor("#909090")).build());
+            recycler.addItemDecoration(RecyclerViewDivider.with(mActivity).size(10).color(Color.parseColor("#E9E8ED")).build());
             recycler.setAdapter(mCarBeanAdapter);
             recycler.setLayoutManager(new LinearLayoutManager(mActivity));
         } else {
@@ -141,38 +207,71 @@ public class DiscussListActivity extends BaseActivity {
         }
 
     }
-    class GridAdapter extends BaseAdapter {
-        public GridAdapter(Context context, List<String> images) {
-            this.context = context;
-            this.images = images;
-        }
-
+    class GridAdapter {
         public Context context;
         private List<String> images;
+        private ViewGroup parent;
 
-        @Override
-        public int getCount() {
-            return images==null?0:images.size();
+        public GridAdapter(Context context, List<String> images, ViewGroup parent) {
+            this.context = context;
+            this.images = images;
+            this.parent = parent;
         }
 
-        @Override
+        public int getCount() {
+            return images == null ? 0 : images.size();
+        }
+
         public Object getItem(int position) {
             return images.get(position);
         }
 
-        @Override
         public long getItemId(int position) {
             return position;
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView=new ImageView(context);
+        public void build() {
+            parent.removeAllViews();
+
+//            LinearLayout layout = new LinearLayout(context);
+//            LinearLayout.LayoutParams LL_MW = new LinearLayout.LayoutParams
+//                    (fujian_px, fujian_px);
+//            layout.setOrientation(LinearLayout.VERTICAL);
+//            layout.setGravity(Gravity.CENTER);
+//            layout.setLayoutParams(LL_MW);
+//
+//            ImageView imageView = new ImageView(context);
+//            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//            LinearLayout.LayoutParams LL_IM = new LinearLayout.LayoutParams
+//                    (fujian_px - 10, fujian_px - 10);
+//            imageView.setLayoutParams(LL_IM);
+//            imageView.setImageResource(R.drawable.start_pot);
+//            layout.addView(imageView);
+//            parent.addView(layout);
+            for (int i = 0; i < getCount(); i++) {
+                parent.addView(getView(i));
+            }
+        }
+
+        public View getView(int position) {
+            System.out.println("进来");
+            LinearLayout layout = new LinearLayout(context);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams LL_MW = new LinearLayout.LayoutParams
+                    (fujian_px, fujian_px);
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            LinearLayout.LayoutParams LL_IM = new LinearLayout.LayoutParams
+                    (fujian_px - 10, fujian_px - 10);
+            imageView.setLayoutParams(LL_IM);
             RequestOptions options = new RequestOptions()
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
             Glide.with(context).load(images.get(position)).apply(options).into(imageView);
-            return imageView;
+            layout.addView(imageView);
+            return layout;
         }
     }
+
 }

@@ -41,6 +41,8 @@
                 android:id="@+id/pinjiatext"
                 android:layout_width="match_parent"
                 android:gravity="left"
+                android:padding="5dp"
+                android:background="@drawable/text_boder"
                 android:layout_height="wrap_content"
                 android:minHeight="200dp"
                 android:text=""
@@ -48,19 +50,19 @@
                 android:hint="宝贝满足你的期待么？说说你的想法，分享给想买的他们吧~"
                 android:textSize="14sp"
                 />
-            <ImageView
-                android:id="@+id/addpot"
-                android:src="@drawable/start_pot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <com.jiudi.shopping.widget.NoScrollGridView
-                android:id="@+id/function_grid"
+
+            <GridLayout
+                android:id="@+id/fujian_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:numColumns="4"
-                android:layout_marginBottom="@dimen/dp_6">
+                android:useDefaultMargins="false"
+                android:layout_marginLeft="0dp"
+                android:minHeight="2dp"
+                android:layout_marginRight="0dp"
+                android:columnCount="4"
+                android:padding="5dp">
 
-            </com.jiudi.shopping.widget.NoScrollGridView>
+            </GridLayout>
             <LinearLayout
                 android:padding="10dp"
                 android:layout_width="match_parent"

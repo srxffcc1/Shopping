@@ -3,6 +3,7 @@ package com.jiudi.shopping.ui.fenxiao;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -42,6 +43,7 @@ public class FenXiaoMenuActivity extends BaseActivity {
     private android.widget.TextView yongjinmingxiv;
     private android.widget.TextView zhishuv;
     private android.widget.TextView tuanduiv;
+    private android.widget.LinearLayout yongjinmingxil;
 
     @Override
     protected int getContentViewId() {
@@ -69,6 +71,7 @@ public class FenXiaoMenuActivity extends BaseActivity {
         yongjinmingxiv = (TextView) findViewById(R.id.yongjinmingxiv);
         zhishuv = (TextView) findViewById(R.id.zhishuv);
         tuanduiv = (TextView) findViewById(R.id.tuanduiv);
+        yongjinmingxil = (LinearLayout) findViewById(R.id.yongjinmingxil);
     }
 
     @Override
@@ -81,12 +84,19 @@ public class FenXiaoMenuActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
-        yongjinmingxiv.setOnClickListener(new View.OnClickListener() {
+        yongjinmingxil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mActivity, AccountActivity.class));
             }
         });
+//        yongjinmingxi.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                startActivity(new Intent(mActivity, AccountActivity.class));
+//            }
+//        });
         tixian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

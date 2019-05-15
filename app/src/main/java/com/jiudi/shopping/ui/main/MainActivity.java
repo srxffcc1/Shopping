@@ -27,6 +27,7 @@ import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.event.CartEvent;
 import com.jiudi.shopping.event.FinishEvent;
 import com.jiudi.shopping.event.FlashEvent;
+import com.jiudi.shopping.event.PassCartEvent;
 import com.jiudi.shopping.event.UpdatePayStatusEvent;
 import com.jiudi.shopping.global.Constant;
 import com.jiudi.shopping.manager.RequestManager;
@@ -75,6 +76,9 @@ public class MainActivity extends BaseActivity {
     private KfStartHelper helper;
     private boolean iskefu=false;
 
+    public boolean isNoNeedLogin(){
+        return true;
+    }
     @Override
     public void onBackPressed() {
         exit();
@@ -121,6 +125,7 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         if(iskefu){
             mMainTL.getTabAt(0).select();
+            iskefu=false;
         }
         EventBus.getDefault().post(new FlashEvent());
     }
@@ -367,6 +372,11 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateCartEvent(CartEvent event) {
+        mMainTL.getTabAt(1).select();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void passCartEvent(PassCartEvent event) {
         mMainTL.getTabAt(1).select();
     }
     @Subscribe(threadMode = ThreadMode.MAIN)

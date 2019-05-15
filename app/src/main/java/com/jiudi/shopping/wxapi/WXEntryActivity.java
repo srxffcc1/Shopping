@@ -47,6 +47,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             finish();
 
         }
+        finish();
     }
 //    private void getAccessToken(String code) {
 //        //获取授权

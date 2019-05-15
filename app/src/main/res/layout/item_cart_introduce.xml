@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp">
-
+    android:paddingLeft="10px"
+    android:paddingRight="10px">
     <ImageView
+        android:scaleType="fitCenter"
         android:id="@+id/cart_introduce_img"
-        android:src="@drawable/cart_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

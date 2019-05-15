@@ -2,9 +2,11 @@ package com.jiudi.shopping.ui.user.account;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.NetworkUtil;
+import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.ToastUtil;
 
 import org.json.JSONException;
@@ -29,7 +32,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AboutUsActivity extends BaseActivity {
-//    private LinearLayout mBackLL;
+    private android.widget.ImageView image;
+    private TextView jiudizhixuan;
+    private TextView version;
+    private TextView guanyujiudi;
+    private TextView guanyuneirong;
+    private LinearLayout yingsi;
+    private TextView left;
+    private TextView right;
+    private TextView banquan;
+
+    //    private LinearLayout mBackLL;
 //    private TextView mTitleTV;
 //    private WebView mWebView;
 //    private static final String TAG = "AboutUsActivity";
@@ -52,16 +65,71 @@ public class AboutUsActivity extends BaseActivity {
 //        mBackLL = byId(R.id.ll_layout_top_back_bar_back);
 //        mTitleTV = byId(R.id.tv_layout_top_back_bar_title);
 //        mTitleTV.setText("关于我们");
+        image = (ImageView) findViewById(R.id.image);
+        jiudizhixuan = (TextView) findViewById(R.id.jiudizhixuan);
+        version = (TextView) findViewById(R.id.version);
+        guanyujiudi = (TextView) findViewById(R.id.guanyujiudi);
+        guanyuneirong = (TextView) findViewById(R.id.guanyuneirong);
+        yingsi = (LinearLayout) findViewById(R.id.yingsi);
+        left = (TextView) findViewById(R.id.left);
+        right = (TextView) findViewById(R.id.right);
+        banquan = (TextView) findViewById(R.id.banquan);
     }
 
     @Override
     public void initData() {
-
+        getUrl();
     }
 
     @Override
     public void initEvent() {
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity,TextActivity.class).putExtra("url","http://mall.jiudicar.com/api/Article/visit/id/1"));
+            }
+        });
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                startActivity(new Intent(mActivity,TextActivity.class).putExtra("url","http://mall.jiudicar.com/api/Article/visit/id/3"));
+            }
+        });
+//        guanyujiudi.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                startActivity(new Intent(mActivity,TextActivity.class).putExtra("url","http://mall.jiudicar.com/api/Article/visit/id/2"));
+//            }
+//        });
+    }
+    private void getUrl() {
+        Map<String, String> map = new HashMap<>();
+
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).auto(SPUtil.get("head", "").toString(),"http://mall.jiudicar.com/api/Article/visit/id/2",RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        String content=res.getJSONObject("data").getJSONObject("content").getString("content");
+                        guanyuneirong.setText(Html.fromHtml(content));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 
 //    @Override

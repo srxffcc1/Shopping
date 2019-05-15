@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -102,15 +103,13 @@ public class CartFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if("管理".equals(guanli.getText().toString())){
-                    guanli.setText("完成");
-                    topay.setText("删除");
-                    heji.setText("");
+                    changeWanCheng();
                 }else{
-                    guanli.setText("管理");
-                    sumMoney();
+                    changeGuanLi();
                 }
             }
         });
+
         topay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,8 +132,10 @@ public class CartFragment extends BaseFragment {
                     }
                     if(result.length()>1){
                         result=result.substring(0,result.length()-1);
+                        toPay(result);
+                    }else{
+                        Toast.makeText(mActivity,"请选择商品",Toast.LENGTH_SHORT).show();
                     }
-                    toPay(result);
                 }
 
             }
@@ -151,6 +152,18 @@ public class CartFragment extends BaseFragment {
             }
         });
     }
+
+    private void changeGuanLi() {
+        guanli.setText("管理");
+        sumMoney();
+    }
+
+    private void changeWanCheng() {
+        guanli.setText("完成");
+        topay.setText("删除");
+        heji.setText("");
+    }
+
     public void toPay(String cartId){
         startActivity(new Intent(mActivity, PayDingDanActivity.class).putExtra("cartId",cartId));
     }
@@ -202,7 +215,7 @@ public class CartFragment extends BaseFragment {
             for (int i = 0; i <mBeanList.size() ; i++) {
                 CartInfo carChoiceBean=mBeanList.get(i);
                 if(carChoiceBean.isIscheck()){
-                    sum+=Double.parseDouble(carChoiceBean.getProductInfo().getPrice())*carChoiceBean.getCart_num();
+                    sum+=Double.parseDouble(carChoiceBean.getTruePrice())*carChoiceBean.getCart_num();
                     selectnum++;
                 }
 
@@ -234,7 +247,7 @@ public class CartFragment extends BaseFragment {
                             sumMoney();
                         }
                     });
-                    holder.setText(R.id.money,"¥"+carChoiceBean.getProductInfo().getPrice());
+                    holder.setText(R.id.money,"¥"+carChoiceBean.getTruePrice());
                     holder.setText(R.id.count,carChoiceBean.getCart_num()+"");
                     RequestOptions options = new RequestOptions()
                             .fitCenter()
@@ -246,6 +259,7 @@ public class CartFragment extends BaseFragment {
 
                             carChoiceBean.setCart_num(carChoiceBean.getCart_num()+1);
                             holder.setText(R.id.count,carChoiceBean.getCart_num()+"");
+                            sumMoney();
                             sendChangeNum(carChoiceBean.getId(),carChoiceBean.getCart_num());
                         }
                     });
@@ -255,6 +269,7 @@ public class CartFragment extends BaseFragment {
                             if(carChoiceBean.getCart_num()!=1){
                                 carChoiceBean.setCart_num(carChoiceBean.getCart_num()-1);
                                 holder.setText(R.id.count,carChoiceBean.getCart_num()+"");
+                                sumMoney();
                                 sendChangeNum(carChoiceBean.getId(), carChoiceBean.getCart_num());
                             }
                         }
@@ -263,7 +278,7 @@ public class CartFragment extends BaseFragment {
 
             };
 
-            recycler.addItemDecoration(RecyclerViewDivider.with(getActivity()).color(Color.parseColor("#909090")).build());
+            recycler.addItemDecoration(RecyclerViewDivider.with(getActivity()).size(10).color(Color.parseColor("#E9E8ED")).build());
             recycler.setAdapter(myAdapter);
             recycler.setLayoutManager(new LinearLayoutManager(mActivity));
         }else{
@@ -316,6 +331,7 @@ public class CartFragment extends BaseFragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                changeGuanLi();
             }
 
             @Override

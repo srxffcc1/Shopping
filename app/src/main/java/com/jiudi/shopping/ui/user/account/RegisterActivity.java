@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
@@ -164,9 +165,9 @@ public class RegisterActivity extends BaseActivity {
 
                             JSONObject res = new JSONObject(response);
                             int code = res.getInt("code");
-                            String info = res.getString("info");
+                            String info = res.getString("data");
                             ToastUtil.showShort(mContext, info);
-                            if (code == 0) {
+                            if (code == 200) {
 //                                JSONObject data = res.getJSONObject("data");
 //                                AccountManager.sUserBean = new UserBean();
 //                                AccountManager.sUserBean.account=phone;
@@ -177,11 +178,15 @@ public class RegisterActivity extends BaseActivity {
 //                                AccountManager.sUserBean.setPassWord(password);
 //                                AccountManager.sUserBean.setNickName(data.getString("nicename"));
 //                                AccountManager.sUserBean.setHeadPortrait(data.getString("avatar"));
+
+                                Toast.makeText(mActivity,res.getString("data"),Toast.LENGTH_SHORT).show();
                                 String userBase64 = CommonUtil.objectToBase64(AccountManager.sUserBean);
                                 SPUtil.put(Constant.USER, userBase64);
                                 Intent intent = new Intent(mActivity, LoginActivity.class);
                                 startActivity(intent);
                                 finish();
+                            }else{
+                                Toast.makeText(mActivity,res.getString("data"),Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -11,8 +11,11 @@ import android.widget.TextView;
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
 import com.jiudi.shopping.R;
+import com.jiudi.shopping.bean.CartDiscussBean;
 import com.jiudi.shopping.bean.CartTitleBean;
 import com.jiudi.shopping.ui.user.account.DiscussListActivity;
+
+import java.util.List;
 
 /**
  * Created by admin on 2017/5/16.
@@ -22,11 +25,12 @@ public class VDiscussHeadAdapter extends DelegateAdapter.Adapter{
     public Context context;
     private LayoutHelper helper;
     private CartTitleBean mcarttitlebean;
-
-    public VDiscussHeadAdapter(Context context, LayoutHelper helper, CartTitleBean mcarttitlebean) {
+    List<CartDiscussBean> mcartdiscussbeanlist;
+    public VDiscussHeadAdapter(Context context, LayoutHelper helper, CartTitleBean mcarttitlebean, List<CartDiscussBean> mcartdiscussbeanlist) {
         this.context = context;
         this.helper = helper;
         this.mcarttitlebean = mcarttitlebean;
+        this.mcartdiscussbeanlist=mcartdiscussbeanlist;
     }
 
     @Override
@@ -43,12 +47,18 @@ public class VDiscussHeadAdapter extends DelegateAdapter.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, DiscussListActivity.class).putExtra("productId",mcarttitlebean.id));
-            }
-        });
+        if(mcartdiscussbeanlist!=null&&mcartdiscussbeanlist.size()>0){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, DiscussListActivity.class).putExtra("productId",mcarttitlebean.id));
+                }
+            });
+        }else{
+            holder.itemView.findViewById(R.id.zanwu).setVisibility(View.VISIBLE);
+            holder.itemView.findViewById(R.id.seeall).setVisibility(View.GONE);
+        }
+
     }
 
     @Override

@@ -102,7 +102,7 @@ public class TiXianActivity extends BaseActivity {
                         if(tiXian!=null){
                             name.setText(tiXian.real_name);
                             account.setText(tiXian.alipay_code);
-                            nowmoney.setText("余额:¥"+tiXian.balance);
+                            nowmoney.setText("余额:¥"+(tiXian.balance+"").replace("null","0"));
 
                         }
 

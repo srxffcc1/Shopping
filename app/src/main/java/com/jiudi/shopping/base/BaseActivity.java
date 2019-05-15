@@ -3,13 +3,16 @@ package com.jiudi.shopping.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.global.LocalApplication;
@@ -44,7 +47,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected LocalApplication mApp;
     protected ActivityUtil mActivityUtil;
     protected LayoutInflater mInflater;
-
+    public int px;
+    public int py;
     private Handler mHandler;
     public boolean isNoNeedLogin(){
         return false;
@@ -119,6 +123,18 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Point point = new Point();
+        WindowManager manager = (WindowManager)getApplication()
+                .getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        manager.getDefaultDisplay().getRealSize(point);
+        manager.getDefaultDisplay().getMetrics(dm);
+//		double dpi = dm.densityDpi;
+//		double x = Math.pow(point.x / dm.xdpi, 2);
+//		double y = Math.pow(point.y / dm.ydpi, 2);
+//		double screenInches = Math.sqrt(x + y);
+        px = point.x;
+        py = point.y;
 
         mContext = this;
         mActivity = this;
@@ -140,6 +156,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         initEvent();
         if(findViewById(R.id.ll_layout_top_back_bar_back)!=null){
             findViewById(R.id.ll_layout_top_back_bar_back).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+        if(findViewById(R.id.back)!=null){
+            findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();

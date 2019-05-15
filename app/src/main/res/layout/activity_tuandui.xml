@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="有效会员统计：3"
+            android:text="有效会员统计：0"
             android:textColor="#ff444444"
             android:textSize="15sp"
             />

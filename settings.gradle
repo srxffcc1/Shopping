@@ -1,1 +1,1 @@
-include ':app', ':imagepicker', ':convert', ':qimo', ':test'
+include ':app', ':imagepicker', ':convert', ':qimo', ':test','umlib'

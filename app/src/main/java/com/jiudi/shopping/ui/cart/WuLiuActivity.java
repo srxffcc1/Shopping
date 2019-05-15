@@ -3,6 +3,7 @@ package com.jiudi.shopping.ui.cart;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
@@ -96,6 +97,9 @@ public class WuLiuActivity extends BaseActivity {
                             beans.add(new LogisticsInfoBean(jsonObject.getString("time"), jsonObject.getString("status")));
                         }
                         adapter.notifyDataSetChanged();
+                    }else{
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                 } catch (JSONException e) {

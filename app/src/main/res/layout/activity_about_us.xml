@@ -1,82 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:padding="10dp"
+    android:paddingTop="@dimen/dp_23"
     android:orientation="vertical">
-    <ImageView
-        android:id="@+id/image"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/about_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/image"
-        android:id="@+id/jiudizhixuan"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="九弟智选"
-        android:textColor="#ff191919"
-        android:textSize="19sp"
-        />
-    <TextView
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_back" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/about_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/image"
+            android:id="@+id/jiudizhixuan"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="九弟智选"
+            android:textColor="#ff191919"
+            android:textSize="19sp"
+            />
+        <TextView
 
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/jiudizhixuan"
-        android:id="@+id/version"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Version 1.0.0"
-        android:textColor="#ff191919"
-        android:textSize="14sp"
-        />
-    <TextView
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/jiudizhixuan"
+            android:id="@+id/version"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Version 1.0.0"
+            android:textColor="#ff191919"
+            android:textSize="14sp"
+            />
+        <TextView
 
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/version"
-        android:id="@+id/guanyujiudi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="关于九弟智选"
-        android:textColor="#ffe95048"
-        android:textSize="16sp"
-        />
-    <TextView
-        android:layout_marginTop="20dp"
-        android:lineSpacingMultiplier="1.2"
-        android:layout_below="@+id/guanyujiudi"
-        android:id="@+id/guanyuneirong"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="九弟智选是苏州九弟物联网科技有限公司自主研发运营的云商城平台，自研并引入优质的车联网、智能家居、智能穿戴等特色智能产品，构建从产品智能化接入、电商接入到触达用户、控制分享的完整生态闭环\n。
-九弟智选专注于甄选智能高科技产品，与一流的第三方品牌进行合作，对其原料、生产、质检等各个环节进行严格把控。九弟智选始终致力于为追求生活品质的消费者提供高品质的智能产品和开启便捷舒适的智慧生活。\n
-公司始终坚持人才强企战略，通过引进一流科研人才、聘请专家顾问，建立起完善且资深的物联网研发体系，为企业的创新发展提供源源不断的动力。\n"
-        android:textColor="#ff191919"
-        android:textSize="12sp"
-        />
-    <TextView
-        android:id="@+id/yingsi"
-        android:layout_above="@+id/banquan"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="用户协议和隐私政策"
-        android:textColor="#ffea5048"
-        android:textSize="10sp"
-        />
-    <TextView
-        android:id="@+id/banquan"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="版权所有©2019-2021九弟物联网科技有限公司保留一切权利"
-        android:textColor="#ff737373"
-        android:textSize="10sp"
-        />
-</RelativeLayout>
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/version"
+            android:id="@+id/guanyujiudi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于九弟智选"
+            android:textColor="#ffe95048"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:layout_marginTop="20dp"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_below="@+id/guanyujiudi"
+            android:id="@+id/guanyuneirong"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#ff191919"
+            android:textSize="12sp"
+            />
+
+
+
+        <LinearLayout
+            android:layout_above="@+id/banquan"
+            android:id="@+id/yingsi"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/left"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户协议"
+                android:textColor="#ffea5048"
+                android:textSize="10sp"
+                />
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="和"
+                android:textColor="#000"
+                android:textSize="10sp"
+                />
+            <TextView
+                android:id="@+id/right"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="隐私政策"
+                android:textColor="#ffea5048"
+                android:textSize="10sp"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/banquan"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="版权所有©2019-2021九弟物联网科技有限公司保留一切权利"
+            android:textColor="#ff737373"
+            android:textSize="10sp"
+            />
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>
