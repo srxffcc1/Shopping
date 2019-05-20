@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +39,7 @@ import com.jiudi.shopping.ui.user.AllOrderActivity;
 import com.jiudi.shopping.ui.user.AllQuanActivity;
 import com.jiudi.shopping.ui.user.ShopSettingActivity;
 import com.jiudi.shopping.ui.user.account.AccountActivity;
+import com.jiudi.shopping.ui.user.account.FenXiaoAccountActivity;
 import com.jiudi.shopping.ui.user.account.LoginActivity;
 import com.jiudi.shopping.ui.user.account.ShouCangActivity;
 import com.jiudi.shopping.ui.user.account.TongZhiActivity;
@@ -66,6 +68,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import q.rorbin.badgeview.Badge;
+import q.rorbin.badgeview.QBadgeView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -104,6 +109,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public static final int REQUEST_CODE_CAMERA = 2;
     public static final int REQUEST_CODE_CROP = 3;
     public static final int PERMISSION_CODE_TAKE_PHOTO = 100;
+    private Badge noBuyb;
+    private Badge noPostageb;
+    private Badge noTakeb;
+    private Badge noReplyb;
 
     @Override
     protected int getInflateViewId() {
@@ -149,78 +158,100 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initData() {
-        StyledDialog.init(mActivity);
         EventBus.getDefault().register(this);
         getMineData();
     }
 
     private void getMineData() {
-        Map<String, String> map = new HashMap<>();
-        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getPersonalDate(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
-            @Override
-            public void onSuccess(String response) {
-                try {
-                    JSONObject res = new JSONObject(response);
-                    int code = res.getInt("code");
-                    String info = res.getString("msg");
-                    if (code == 200) {
-                        JSONObject jsonObject=res.getJSONObject("data").optJSONObject("user_info");
-                        if(jsonObject!=null){
-                            UserBean bean=new UserBean();
-                            bean.uid=jsonObject.optString("uid");
-                            bean.account=jsonObject.optString("account");
-                            bean.pwd=jsonObject.optString("pwd");
-                            bean.nickname=jsonObject.optString("nickname");
-                            bean.avatar=jsonObject.optString("avatar");
-                            bean.phone=jsonObject.optString("phone");
-                            bean.add_time=jsonObject.optString("add_time");
-                            bean.add_ip=jsonObject.optString("add_ip");
-                            bean.last_time=jsonObject.optString("last_time");
-                            bean.last_ip=jsonObject.optString("last_ip");
-                            bean.now_money=jsonObject.optString("now_money");
-                            bean.integral=jsonObject.optString("integral");
-                            bean.status=jsonObject.optString("status");
-                            bean.level=jsonObject.optString("level");
-                            bean.spread_uid=jsonObject.optString("spread_uid");
-                            bean.agent_id=jsonObject.optString("agent_id");
-                            bean.user_type=jsonObject.optString("user_type");
-                            bean.is_promoter=jsonObject.optString("is_promoter");
-                            bean.pay_count=jsonObject.optString("pay_count");
-                            bean.direct_num=jsonObject.optString("direct_num");
-                            bean.team_num=jsonObject.optString("team_num");
-                            bean.is_reward=jsonObject.optString("is_reward");
-                            bean.allowance_number=jsonObject.optString("allowance_number");
-                            try {
-                                JSONArray array=res.getJSONObject("data").getJSONArray("coupon_num");
-                                bean.coupon_num=array.length()+"";
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            AccountManager.sUserBean=bean;
-                            bindDataToView();
+        if("".equals(SPUtil.get("head", "").toString())){
 
+        }else{
+            Map<String, String> map = new HashMap<>();
+            RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getPersonalDate(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+                @Override
+                public void onSuccess(String response) {
+                    try {
+                        JSONObject res = new JSONObject(response);
+                        int code = res.getInt("code");
+                        String info = res.getString("msg");
+                        if (code == 200) {
+                            JSONObject jsonObject=res.getJSONObject("data").optJSONObject("user_info");
+                            if(jsonObject!=null){
+                                UserBean bean=new UserBean();
+                                bean.uid=jsonObject.optString("uid");
+                                bean.account=jsonObject.optString("account");
+                                bean.pwd=jsonObject.optString("pwd");
+                                bean.nickname=jsonObject.optString("nickname");
+                                bean.avatar=jsonObject.optString("avatar");
+                                bean.phone=jsonObject.optString("phone");
+                                bean.add_time=jsonObject.optString("add_time");
+                                bean.add_ip=jsonObject.optString("add_ip");
+                                bean.last_time=jsonObject.optString("last_time");
+                                bean.last_ip=jsonObject.optString("last_ip");
+                                bean.now_money=jsonObject.optString("now_money");
+                                bean.integral=jsonObject.optString("integral");
+                                bean.status=jsonObject.optString("status");
+                                bean.level=jsonObject.optString("level");
+                                bean.spread_uid=jsonObject.optString("spread_uid");
+                                bean.agent_id=jsonObject.optString("agent_id");
+                                bean.user_type=jsonObject.optString("user_type");
+                                bean.is_promoter=jsonObject.optString("is_promoter");
+                                bean.pay_count=jsonObject.optString("pay_count");
+                                bean.direct_num=jsonObject.optString("direct_num");
+                                bean.team_num=jsonObject.optString("team_num");
+                                bean.is_reward=jsonObject.optString("is_reward");
+                                bean.allowance_number=jsonObject.optString("allowance_number");
+                                try {
+                                    JSONArray array=res.getJSONObject("data").getJSONArray("coupon_num");
+                                    bean.coupon_num=array.length()+"";
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    JSONObject orderStatusNum=res.getJSONObject("data").getJSONObject("orderStatusNum");
+                                    bean.noBuy=orderStatusNum.optInt("noBuy");
+                                    bean.noPostage=orderStatusNum.optInt("noPostage");
+                                    bean.noTake=orderStatusNum.optInt("noTake");
+                                    bean.noReply=orderStatusNum.optInt("noReply");
+                                    bean.noPink=orderStatusNum.optInt("noPink");
+                                    bean.noBuy=orderStatusNum.optInt("noBuy");
+                                    bean.noPostage=orderStatusNum.optInt("noPostage");
+                                    bean.noTake=orderStatusNum.optInt("noTake");
+                                    bean.noReply=orderStatusNum.optInt("noReply");
+                                    bean.noPink=orderStatusNum.optInt("noPink");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                AccountManager.sUserBean=bean;
+                                bindDataToView();
+
+                            }else{
+                                AccountManager.sUserBean=null;
+                            }
                         }else{
                             AccountManager.sUserBean=null;
                         }
-                    }else{
+
+                    } catch (JSONException e) {
                         AccountManager.sUserBean=null;
+                        e.printStackTrace();
+                        Toast.makeText(mActivity,"获取用户数据失败请联系管理员",Toast.LENGTH_SHORT).show();
                     }
-
-                } catch (JSONException e) {
-                    AccountManager.sUserBean=null;
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onError(Throwable t) {
+                @Override
+                public void onError(Throwable t) {
 
-            }
-        });
+                    Toast.makeText(mActivity,"获取用户数据失败请联系管理员",Toast.LENGTH_SHORT).show();
+                    AccountManager.sUserBean=null;
+                }
+            });
+        }
+
     }
 
     private void bindDataToView() {
-        xingming.setText(AccountManager.sUserBean.nickname);
+        xingming.setText((AccountManager.sUserBean==null?"":AccountManager.sUserBean.nickname));
         long longs =Long.parseLong(AccountManager.sUserBean.add_time)*1000L;
         Date date=new Date();
         date.setTime(longs);
@@ -230,6 +261,33 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         myquanvalue.setText(AccountManager.sUserBean.coupon_num);
         RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.head_defuat_circle);
         Glide.with(mActivity).load((AccountManager.sUserBean.avatar.startsWith("http"))?AccountManager.sUserBean.avatar:"http://"+AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
+
+        noBuyb = new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(daifukuan).setBadgeText(AccountManager.sUserBean.noBuy+"");
+        noPostageb = new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(daifahuo).setBadgeText(AccountManager.sUserBean.noPostage+"");
+        noTakeb = new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(daishouhuo).setBadgeText(AccountManager.sUserBean.noTake+"");
+        noReplyb = new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(yiwancheng).setBadgeText(AccountManager.sUserBean.noReply+"");
+
+        if(AccountManager.sUserBean.noBuy==0){
+            noBuyb.hide(false);
+        }
+        if(AccountManager.sUserBean.noPostage==0){
+            noPostageb.hide(false);
+
+        }
+        if(AccountManager.sUserBean.noTake==0){
+            noTakeb.hide(false);
+
+        }
+        if(AccountManager.sUserBean.noReply==0){
+            noReplyb.hide(false);
+
+        }
+
+//        new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(daifukuan).setBadgeNumber(AccountManager.sUserBean.noBuy);
+//        new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(daifahuo).setBadgeNumber(AccountManager.sUserBean.noPostage);
+//        new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(daishouhuo).setBadgeNumber(AccountManager.sUserBean.noTake);
+//        new QBadgeView(mActivity).setBadgeGravity(Gravity.END | Gravity.TOP).bindTarget(yiwancheng).setBadgeNumber(AccountManager.sUserBean.noReply);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -300,7 +358,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mymoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mActivity, AccountActivity.class));
+                try {
+                    if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
+                        startActivity(new Intent(mActivity, FenXiaoAccountActivity.class));
+                    }else{
+                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -308,7 +375,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 try {
-                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
                         startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
                     }else{
                         startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
@@ -324,7 +391,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 try {
-                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
                         startActivity(new Intent(mActivity, TuanDuiActivity.class));
                     }else{
                         startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
@@ -338,16 +405,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mylessmoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    if("1".equals(AccountManager.sUserBean.is_promoter)){
-                        startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
-                    }else{
-                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
+
+                startActivity(new Intent(mActivity, AccountActivity.class));
             }
         });
         myzxing.setOnClickListener(new View.OnClickListener() {
@@ -405,6 +464,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
      * 更换头像弹窗
      */
     private void changeUserHeadPopwindow() {
+
+        StyledDialog.init(mActivity);
         List<String> list=new ArrayList<>();
         list.add("拍照");
         list.add("从相册选");
@@ -533,6 +594,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             if (data != null && requestCode == REQUEST_CODE_IMAGE) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 DialogUtil.showProgress(mActivity, getString(R.string.prompt_open_modify_head));
+//                cutPhoto(mPhotoPath);
                 uploadAvatar(images.get(0).path);
             }
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
@@ -560,8 +622,26 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                     try {
                         JSONObject jsonObject=new JSONObject(result);
                         String url=jsonObject.optString("src");
-                        updateAvatar(url);
+                        System.out.println("开始解析:"+url);
+                        if("".equals(url)){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    Toast.makeText(mActivity,"上传头像解析失败,请选择其他头像",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else{
+                            updateAvatar(url);
+                        }
                     } catch (JSONException e) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                Toast.makeText(mActivity,"上传头像解析失败,请选择其他头像",Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         e.printStackTrace();
                     }
                 } catch (IOException e) {

@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.alibaba.idst.nls.internal.utils.Base64Encoder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,6 +27,7 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.cart.CartDetailActivity;
+import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.widget.SimpleBottomView;
 import com.jiudi.shopping.widget.SimpleLoadView;
@@ -32,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +54,7 @@ public class SearchShopActivity extends BaseActivity {
     private int limit=20;
     private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
     private boolean stoploadmore=false;
+    InputMethodManager manager;//输入法管理器
 
     @Override
     protected int getContentViewId() {
@@ -66,6 +73,8 @@ public class SearchShopActivity extends BaseActivity {
 
     @Override
     public void initData() {
+
+        manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 //        getList("移动");
         simpleRefresh.setScrollEnable(true);
         simpleRefresh.setPullUpEnable(true);
@@ -83,8 +92,32 @@ public class SearchShopActivity extends BaseActivity {
                 if("".equals(searchTag.getText().toString())||"null".equals(searchTag.getText().toString())){
                     Toast.makeText(mActivity,"请输入搜索条件",Toast.LENGTH_SHORT).show();
                 }else{
+                    page=0;
+                    mCarChoiceList.clear();
                     getList();
                 }
+            }
+        });
+        searchTag.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    //先隐藏键盘
+                    if (manager.isActive()) {
+                        manager.hideSoftInputFromWindow(searchTag.getApplicationWindowToken(), 0);
+                    }
+                    //自己需要的操作
+                    if("".equals(searchTag.getText().toString())||"null".equals(searchTag.getText().toString())){
+                        Toast.makeText(mActivity,"请输入搜索条件",Toast.LENGTH_SHORT).show();
+                    }else{
+
+                        page=0;
+                        mCarChoiceList.clear();
+                        getList();
+                    }
+                }
+                //记得返回false
+                return false;
             }
         });
         simpleRefresh.setOnSimpleRefreshListener(new SimpleRefreshLayout.OnSimpleRefreshListener() {
@@ -124,9 +157,18 @@ public class SearchShopActivity extends BaseActivity {
     }
     private void getList() {
         Map<String, String> map = new HashMap<>();
-        map.put("keyword",searchTag.getText().toString());
+        try {
+            map.put("keyword", new String(Base64Encoder.encode(searchTag.getText().toString().getBytes("utf-8"))));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         map.put("first", page + "");
         map.put("limit", limit+"");
+        map.put("cId", "0");
+        map.put("sId", "0");
+        map.put("priceOrder", "0");
+        map.put("salesOrder", "0");
+        map.put("news", "0");
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).searchShop(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
@@ -136,7 +178,7 @@ public class SearchShopActivity extends BaseActivity {
                     String info = res.getString("msg");
                     if (code == 200) {
                         JSONArray jsonArray = res.getJSONArray("data");
-                        if(jsonArray.length()>1){
+                        if(jsonArray.length()>0){
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 MainGodsBean bean = new MainGodsBean();
@@ -152,6 +194,7 @@ public class SearchShopActivity extends BaseActivity {
                             }
                             showCarChoiceRecycleView();
                         }else{
+                            Toast.makeText(mActivity,"没有更多商品",Toast.LENGTH_SHORT).show();
                             stoploadmore=true;
                         }
 

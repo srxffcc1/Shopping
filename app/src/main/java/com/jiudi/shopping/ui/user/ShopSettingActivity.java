@@ -3,6 +3,7 @@ package com.jiudi.shopping.ui.user;
 import android.app.Dialog;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.event.FinishEvent;
+import com.jiudi.shopping.event.FlashEvent;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
@@ -38,6 +40,9 @@ public class ShopSettingActivity extends BaseActivity {
     private TextView usernick;
     private Dialog dialogchosetext;
     private String chosetext;
+    private android.widget.ImageView back;
+    private LinearLayout userphonel;
+    private TextView userphone;
 
     @Override
     protected int getContentViewId() {
@@ -54,16 +59,20 @@ public class ShopSettingActivity extends BaseActivity {
         logout = (TextView) findViewById(R.id.logout);
         userspace = (TextView) findViewById(R.id.userspace);
         usernick = (TextView) findViewById(R.id.usernick);
+        back = (ImageView) findViewById(R.id.back);
+        userphonel = (LinearLayout) findViewById(R.id.userphonel);
+        userphone = (TextView) findViewById(R.id.userphone);
     }
 
     @Override
     public void initData() {
         try {
-            userspace.setText(DataCleanManager.getTotalCacheSize(this)+"M");
+            userspace.setText(DataCleanManager.getTotalCacheSize(this)+"");
         } catch (Exception e) {
             e.printStackTrace();
         }
         usernick.setText(AccountManager.sUserBean.nickname);
+        userphone.setText(AccountManager.sUserBean.account);
     }
 
     public boolean isNoNeedLogin(){
@@ -88,7 +97,7 @@ public class ShopSettingActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 SPUtil.put("head","");
-                EventBus.getDefault().post(new FinishEvent());
+                EventBus.getDefault().post(new FlashEvent());
                 startActivity(new Intent(mActivity, LoginActivity.class));
                 finish();
             }
@@ -100,19 +109,13 @@ public class ShopSettingActivity extends BaseActivity {
                 userspace.setText("0.0M");
                 Toast.makeText(mActivity,"清除缓存成功",Toast.LENGTH_SHORT).show();
 
-                SPUtil.put("head","");
-                EventBus.getDefault().post(new FinishEvent());
-                AccountManager.sUserBean=null;
-                startActivity(new Intent(mActivity, LoginActivity.class));
-                finish();
-
             }
         });
         userinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StyledDialog.init(mActivity);
-                dialogchosetext = StyledDialog.buildNormalInput("个人信息", "输入昵称", "",
+                dialogchosetext = StyledDialog.buildNormalInput("个人信息修改", "输入昵称", "",
                         "确定", "取消",  new MyDialogListener() {
                             @Override
                             public void onFirst() {

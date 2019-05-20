@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
@@ -24,8 +23,6 @@ import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
 import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
 import com.jiudi.shopping.base.BaseActivity;
-import com.jiudi.shopping.bean.TongZhi;
-import com.jiudi.shopping.bean.XianJin;
 import com.jiudi.shopping.bean.YongJin;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
@@ -49,36 +46,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AccountActivity extends BaseActivity {
-    private android.support.v7.widget.RecyclerView recycler;
-    private List<XianJin> mCarChoiceList = new ArrayList<>();
-    private RecyclerCommonAdapter<XianJin> mCarBeanAdapter;
-    private android.widget.ImageView back;
-    private TextView yue;
+public class FenXiaoAccountActivity extends BaseActivity {
+    private TextView yongjinbiaoti;
+    private TextView money;
+    private RecyclerView recycler;
+    private List<YongJin> mCarChoiceList = new ArrayList<>();
+    private RecyclerCommonAdapter<YongJin> mCarBeanAdapter;
     private int page=0;
     private int limit=20;
-    private boolean stoploadmore=false;
-    private android.support.v4.widget.NestedScrollView nest;
+    private android.widget.ImageView back;
     private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
+    private android.support.v4.widget.NestedScrollView nest;
+    private boolean stoploadmore=false;
 
     @Override
     protected int getContentViewId() {
-        return R.layout.activity_user_account;
+        return R.layout.activity_fenxiaouser_account;
     }
 
     @Override
     public void initView() {
 
+        yongjinbiaoti = (TextView) findViewById(R.id.yongjinbiaoti);
+        money = (TextView) findViewById(R.id.money);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         back = (ImageView) findViewById(R.id.back);
-        yue = (TextView) findViewById(R.id.yue);
-        nest = (NestedScrollView) findViewById(R.id.nest);
         simpleRefresh = (SimpleRefreshLayout) findViewById(R.id.simple_refresh);
+        nest = (NestedScrollView) findViewById(R.id.nest);
     }
 
     @Override
     public void initData() {
-        yue.setText(AccountManager.sUserBean.integral);
+        money.setText(AccountManager.sUserBean.now_money);
         getList();
         simpleRefresh.setScrollEnable(true);
         simpleRefresh.setPullUpEnable(true);
@@ -129,7 +128,7 @@ public class AccountActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("first", page + "");
         map.put("limit", limit+"");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getXianJinList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getYongJinList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -144,10 +143,9 @@ public class AccountActivity extends BaseActivity {
                             }
                         });
                         Gson gson = builder.create();
-                        Type cartStatusType = new TypeToken<List<XianJin>>() {
+                        Type cartStatusType = new TypeToken<List<YongJin>>() {
                         }.getType();
-                        mCarChoiceList.addAll((Collection<? extends XianJin>) gson.fromJson(res.getJSONArray("data").toString(),cartStatusType));
-
+                        mCarChoiceList.addAll((Collection<? extends YongJin>) gson.fromJson(res.getJSONArray("data").toString(),cartStatusType));
                         showCarChoiceRecycleView();
                     }else{
                         Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
@@ -155,6 +153,7 @@ public class AccountActivity extends BaseActivity {
                     if(mCarChoiceList.size()<1){
                         stoploadmore=true;
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -170,10 +169,10 @@ public class AccountActivity extends BaseActivity {
         if (mCarBeanAdapter == null) {
 
 
-            mCarBeanAdapter = new RecyclerCommonAdapter<XianJin>(mActivity, R.layout.item_yongjin, mCarChoiceList) {
+            mCarBeanAdapter = new RecyclerCommonAdapter<YongJin>(mActivity, R.layout.item_yongjin, mCarChoiceList) {
 
                 @Override
-                protected void convert(ViewHolder holder, final XianJin carChoiceBean, int position) {
+                protected void convert(ViewHolder holder, final YongJin carChoiceBean, int position) {
                     holder.setText(R.id.content,carChoiceBean.mark);
                     holder.setText(R.id.time,carChoiceBean.add_time);
                     holder.setText(R.id.money,("1".equals(carChoiceBean.pm)?"+":"-")+carChoiceBean.number+"元");
@@ -183,7 +182,7 @@ public class AccountActivity extends BaseActivity {
             };
 
             recycler.addItemDecoration(RecyclerViewDivider.with(mActivity).size(2).color(Color.parseColor("#E9E8ED")).build());
-            recycler.setAdapter(mCarBeanAdapter);
+             recycler.setAdapter(mCarBeanAdapter);
             recycler.setLayoutManager(new LinearLayoutManager(mActivity));
         } else {
 

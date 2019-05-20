@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="添加配送地址"
+                    android:text="选择配送地址"
                     android:id="@+id/add_adress"
                     android:drawableLeft="@drawable/add_address"
                     android:layout_centerInParent="true"

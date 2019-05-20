@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -47,6 +48,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import q.rorbin.badgeview.QBadgeView;
 
 /**
  * 购物车
@@ -167,6 +170,10 @@ public class CartFragment extends BaseFragment {
     public void toPay(String cartId){
         startActivity(new Intent(mActivity, PayDingDanActivity.class).putExtra("cartId",cartId));
     }
+
+
+
+
     private void getShopList() {
         mBeanList.clear();
         Map<String, String> map = new HashMap<>();

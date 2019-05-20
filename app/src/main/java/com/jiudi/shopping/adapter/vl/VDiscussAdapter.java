@@ -1,6 +1,7 @@
 package com.jiudi.shopping.adapter.vl;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.bean.CartDiscussBean;
 import com.jiudi.shopping.manager.RequestManager;
+import com.jiudi.shopping.net.RetrofitManager;
+import com.jiudi.shopping.ui.user.ShowImageActivity;
 import com.jiudi.shopping.util.TimeUtil;
 import com.jiudi.shopping.widget.KRatingBar;
 import com.jiudi.shopping.widget.NoScrollGridView;
@@ -68,8 +71,9 @@ public class VDiscussAdapter extends DelegateAdapter.Adapter{
             if(bean.getAvatar()!=null){
                 RequestOptions options = new RequestOptions()
                         .fitCenter()
+                        .error(R.drawable.cart_head)
                         .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
-                Glide.with(context).load(bean.getAvatar()).apply(options).into(imageView);
+                Glide.with(context).load(bean.getAvatar().startsWith("http")?bean.getAvatar(): RequestManager.mBaseUrl3+bean.getAvatar()).apply(options).into(imageView);
             }
 
             ((TextView)holder.itemView.findViewById(R.id.time)).setText(""+bean.getAdd_time());
@@ -174,13 +178,14 @@ public class VDiscussAdapter extends DelegateAdapter.Adapter{
             }
         }
 
-        public View getView(int position) {
+        public View getView(final int position) {
             System.out.println("进来");
             LinearLayout layout = new LinearLayout(context);
             layout.setOrientation(LinearLayout.VERTICAL);
             layout.setGravity(Gravity.CENTER);
             LinearLayout.LayoutParams LL_MW = new LinearLayout.LayoutParams
                     (fujian_px, fujian_px);
+            layout.setLayoutParams(LL_MW);
             ImageView imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             LinearLayout.LayoutParams LL_IM = new LinearLayout.LayoutParams
@@ -191,6 +196,12 @@ public class VDiscussAdapter extends DelegateAdapter.Adapter{
                     .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
             String pic=images.get(position);
             Glide.with(context).load(images.get(position)).apply(options).into(imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, ShowImageActivity.class).putExtra("URL",images.get(position)));
+                }
+            });
             layout.addView(imageView);
             return layout;
         }

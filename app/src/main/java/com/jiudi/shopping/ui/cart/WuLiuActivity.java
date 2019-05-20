@@ -92,6 +92,10 @@ public class WuLiuActivity extends BaseActivity {
                         tvOfficialPhone.setText(wuliu.getString("expPhone"));
 
                         JSONArray jsonArray=wuliu.getJSONArray("list");
+                        if(jsonArray.length()<1){
+                            Toast.makeText(mActivity,"没有物流信息",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
                         for (int i = 0; i <jsonArray.length() ; i++) {
                             JSONObject jsonObject=jsonArray.getJSONObject(i);
                             beans.add(new LogisticsInfoBean(jsonObject.getString("time"), jsonObject.getString("status")));

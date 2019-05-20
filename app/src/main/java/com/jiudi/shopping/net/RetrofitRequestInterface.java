@@ -151,6 +151,12 @@ public interface RetrofitRequestInterface {
     Call<String> getYongJinList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
+    /*获得现金列表*/
+    @FormUrlEncoded
+    @POST("api/auth_api/user_integral_list")
+    Call<String> getXianJinList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
     /*获得全部评价*/
     @FormUrlEncoded
     @POST("api/auth_api/product_reply_list")

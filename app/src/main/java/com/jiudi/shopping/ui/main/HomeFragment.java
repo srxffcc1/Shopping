@@ -24,6 +24,7 @@ import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
 import com.jiudi.shopping.base.BaseFragment;
 import com.jiudi.shopping.bean.BannerBean;
 import com.jiudi.shopping.bean.MainGodsBean;
+import com.jiudi.shopping.event.FlashEvent;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
@@ -48,6 +49,9 @@ import com.jiudi.shopping.widget.SimpleLoadView;
 import com.jiudi.shopping.widget.SimpleRefreshView;
 
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,11 +91,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private LinearLayout center4;
     private RecyclerView recycler;
     private BannerLayout blFragmentHome;
-    private int page=0;
+
     private NestedScrollView nest;
     private boolean stoploadmore=false;
     private double oldTime=0;
     private com.jiudi.shopping.widget.SimpleLoadView loadmoreview;
+    private int page=0;
     private int limit=20;
     private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
 
@@ -125,8 +130,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initData() {
+        EventBus.getDefault().register(this);
+        mCarChoiceList.clear();
+        mCarChoiceList.clear();
+        page=0;
+        getGodsList();
         getHomeBanner();
-        getGods();
         simpleRefresh.setScrollEnable(true);
         simpleRefresh.setPullUpEnable(true);
         simpleRefresh.setPullDownEnable(true);
@@ -183,7 +192,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 try {
-                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    if(AccountManager.sUserBean==null){
+
+                        Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
                     startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
                     }else{
                         startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
@@ -198,13 +212,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 try {
-                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    if(AccountManager.sUserBean==null){
+
+                        Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
                         startActivity(new Intent(mActivity, TuanDuiActivity.class));
                     }else{
                         startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
                     }
                 } catch (Exception e) {
-                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }
@@ -213,7 +231,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 try {
-                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+                    if(AccountManager.sUserBean==null){
+
+                        Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
                         startActivity(new Intent(mActivity, TuiGuangActivity.class));
                     }else{
                         startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
@@ -231,21 +254,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(mActivity, SearchShopActivity.class));
             }
         });
-        nest.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-
-            }
-        });
     }
 
-    private void getGods() {
-//        mCarChoiceList.clear();
-//        MainGodsBean beanCarChoice = new MainGodsBean();
-//        mCarChoiceList.add(beanCarChoice);
-//        showCarChoiceRecycleView();
-        getGodsList();
-    }
+//    private void getGods() {
+////        mCarChoiceList.clear();
+////        MainGodsBean beanCarChoice = new MainGodsBean();
+////        mCarChoiceList.add(beanCarChoice);
+////        showCarChoiceRecycleView();
+//        getGodsList();
+//    }
 
 
     private void getGodsList() {
@@ -265,7 +282,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     String info = res.getString("msg");
                     if (code == 200) {
                         JSONArray jsonArray = res.getJSONArray("data");
-                        if(jsonArray.length()>1){
+                        if(jsonArray.length()>0){
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 MainGodsBean bean = new MainGodsBean();
@@ -321,7 +338,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     });
                     holder.setText(R.id.title,carChoiceBean.store_name);
                     holder.setText(R.id.second_title,carChoiceBean.keyword);
-                    holder.setText(R.id.show_price,"¥"+("1".equals(AccountManager.sUserBean.is_promoter)?carChoiceBean.vip_price:carChoiceBean.price));
+                    holder.setText(R.id.show_price,"¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?carChoiceBean.vip_price:carChoiceBean.price));
                     RequestOptions options = new RequestOptions()
                             .fitCenter()
                             .placeholder(R.drawable.tmp_gods)
@@ -415,10 +432,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
 
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFlashEvent(FlashEvent wechatPayEvent) {
+        getHomeBanner();
+        mCarChoiceList.clear();
+        page=0;
+        getGodsList();
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
 }

@@ -11,7 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.aykj.mustinsert.MustInsert;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.bean.UserBean;
@@ -63,7 +65,7 @@ public class LoginActivity extends BaseActivity {
     private ImageView weixinlogin;
     private EditText pwd;
     private LinearLayout pwdL;
-    private int loginflag=1;//1-》手机密码 2-》手机验证码 3-》第三方
+    private int loginflag=2;//1-》手机密码 2-》手机验证码 3-》第三方
     private boolean mShowPwd = false;
     private String wx_code="";
     private CountDownTimer mTimer;
@@ -146,6 +148,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
+
+
+
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,7 +185,19 @@ public class LoginActivity extends BaseActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                if(loginflag==1){
+                    if(MustInsert.checkAllText(mActivity,phone,pwd)){
+
+                        login();
+                    }
+                }
+                if(loginflag==2){
+                    if(MustInsert.checkAllText(mActivity,phone,yanzhengma)){
+
+                        login();
+                    }
+                }
+
             }
         });
         weixinlogin.setOnClickListener(new View.OnClickListener() {
@@ -280,6 +297,8 @@ public class LoginActivity extends BaseActivity {
                         ToastUtil.showShort(mContext, "登录成功");
                         startActivity(new Intent(mActivity, MainActivity.class));
                         finish();
+                    }else{
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {

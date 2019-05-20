@@ -39,6 +39,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
@@ -50,6 +51,7 @@ import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.ui.user.ShowImageActivity;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.DisplayUtil;
 import com.jiudi.shopping.util.HttpUrlConnectUtil;
@@ -174,7 +176,16 @@ public class AddDiscussActivity extends BaseActivity {
         imagePicker.setOutPutX(1000); //保存文件的宽度。单位像素
         imagePicker.setOutPutY(1000); //保存文件的高度。单位像素
     }
-
+    /**
+     * 上传图片
+     *
+     * @param avatarPath
+     */
+    private void uploadAvatar(final List<ImageItem> avatarPath) {
+        for (int i = 0; i <avatarPath.size() ; i++) {
+            uploadAvatar(avatarPath.get(i).path);
+        }
+    }
     /**
      * 上传图片
      *
@@ -218,7 +229,12 @@ public class AddDiscussActivity extends BaseActivity {
             if (data != null && requestCode == REQUEST_CODE_IMAGE) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 DialogUtil.showProgress(mActivity, "提交图片");
-                uploadAvatar(images.get(0).path);
+                if(images!=null&&images.size()>3){
+
+                    Toast.makeText(mActivity, "最多上传三张图片", Toast.LENGTH_SHORT);
+                    return;
+                }
+                uploadAvatar(images);
             }
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
             cutPhoto(mPhotoPath);
@@ -272,7 +288,7 @@ public class AddDiscussActivity extends BaseActivity {
         map.put("comment", pinjiatext.getText().toString());
         String picss = "";
         for (int i = 0; i < pics.size(); i++) {
-            map.put("pics["+i+"]", pics.get(i));
+            map.put("pics[" + i + "]", pics.get(i));
         }
         map.put("product_score", ratingbar1.getRating() + "");
         map.put("service_score", ratingbar2.getRating() + "");
@@ -285,6 +301,8 @@ public class AddDiscussActivity extends BaseActivity {
                     String info = res.getString("msg");
                     if (code == 200) {
                         finish();
+                    }else{
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -433,11 +451,11 @@ public class AddDiscussActivity extends BaseActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(images.size()<=3){
+                    if (images.size() <= 3) {
 
                         changeUserHeadPopwindow();
-                    }else{
-                        Toast.makeText(context,"这可上传三张图片",Toast.LENGTH_SHORT);
+                    } else {
+                        Toast.makeText(context, "最多上传三张图片", Toast.LENGTH_SHORT);
                     }
                 }
             });
@@ -448,13 +466,18 @@ public class AddDiscussActivity extends BaseActivity {
             }
         }
 
-        public View getView(int position) {
+        public View getView(final int position) {
             System.out.println("进来");
             LinearLayout layout = new LinearLayout(context);
             layout.setOrientation(LinearLayout.VERTICAL);
             layout.setGravity(Gravity.CENTER);
+            layout.setPadding(5,
+                    5,
+                    5,
+                    5);
             LinearLayout.LayoutParams LL_MW = new LinearLayout.LayoutParams
                     (fujian_px, fujian_px);
+            layout.setLayoutParams(LL_MW);
             ImageView imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             LinearLayout.LayoutParams LL_IM = new LinearLayout.LayoutParams
@@ -464,6 +487,47 @@ public class AddDiscussActivity extends BaseActivity {
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
             Glide.with(context).load(images.get(position)).apply(options).into(imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, ShowImageActivity.class).putExtra("URL", images.get(position)));
+                }
+            });
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    StyledDialog.init(mActivity);
+                    StyledDialog.buildIosAlert("长按操作", "是否确认删除该图片", new MyDialogListener() {
+                        @Override
+                        public void onFirst() {
+                            pics.remove(position);
+                            picst.remove(position);
+                            build();
+                        }
+
+                        @Override
+                        public void onSecond() {
+
+                        }
+
+                        @Override
+                        public void onThird() {
+
+                        }
+
+
+                    })
+                            //.setBtnText("sure","cancle","hhhh")
+                            .setBtnText("确定", "取消")
+                            .setBtnColor(R.color.dialogutil_text_black, R.color.colorPrimaryDark, 0)
+
+                            //.setForceWidthPercent(0.99f)
+                            //.setForceHeightPercent(0.88f)
+                            //.setBgRes(R.drawable.leak_canary_icon)
+                            .show();
+                    return true;
+                }
+            });
             layout.addView(imageView);
             return layout;
         }

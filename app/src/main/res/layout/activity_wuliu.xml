@@ -64,7 +64,7 @@
                             android:id="@+id/tv_deliver_company"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="圆通快递"
+                            android:text=""
                             android:textColor="#333333"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -87,7 +87,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="889718435885784298"
+                            android:text=""
                             android:textColor="#333333"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -108,7 +108,7 @@
                             android:id="@+id/tv_official_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="10086"
+                            android:text=""
                             android:textColor="#333333"
                             android:textSize="14sp" />
                     </LinearLayout>

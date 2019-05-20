@@ -19,11 +19,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.dengzq.simplerefreshlayout.SimpleRefreshLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -55,6 +57,9 @@ import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.ToastUtil;
 import com.jiudi.shopping.util.WechatUtil;
+import com.jiudi.shopping.widget.SimpleBottomView;
+import com.jiudi.shopping.widget.SimpleLoadView;
+import com.jiudi.shopping.widget.SimpleRefreshView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -99,6 +104,7 @@ public class OrderFragment extends BaseFragment {
 
     private static final int ZHIFUBAO_SDK_PAY_FLAG = 100;
     public String uni;
+    private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
 
     @Override
     protected int getInflateViewId() {
@@ -109,13 +115,21 @@ public class OrderFragment extends BaseFragment {
     public void initView() {
 
         rvFragmentHomeAll = (RecyclerView) findViewById(R.id.rv_fragment_home_all);
+        simpleRefresh = (SimpleRefreshLayout) findViewById(R.id.simple_refresh);
     }
 
     @Override
     public void initData() {
 
         EventBus.getDefault().register(this);
-        getOrderList(0);
+//        mBeanList.clear();
+//        getOrderList(0);
+        simpleRefresh.setScrollEnable(true);
+        simpleRefresh.setPullUpEnable(true);
+        simpleRefresh.setPullDownEnable(true);
+        simpleRefresh.setHeaderView(new SimpleRefreshView(mActivity));
+        simpleRefresh.setFooterView(new SimpleLoadView(mActivity));
+        simpleRefresh.setBottomView(new SimpleBottomView(mActivity));
     }
 
     private void getTestList(int page) {
@@ -144,16 +158,19 @@ public class OrderFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshEvent(OrderEvent wechatPayEvent) {
+        mBeanList.clear();
         getOrderList(0);
         DialogUtil.hideProgress();
     }
-
+    private int page=0;
+    private int limit=20;
+    private boolean stoploadmore=false;
     private void getOrderList(int page) {
         Map<String, String> map = new HashMap<>();
-//        map.put("customer_id", AccountManager.sUserBean.getId());
-        map.put("first", page + "");
         map.put("type", getArguments().getString("type"));
-        map.put("limit", "10");
+        map.put("first", page + "");
+        map.put("limit", limit+"");
+
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGoodOrder(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
@@ -161,9 +178,11 @@ public class OrderFragment extends BaseFragment {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
                     String info = res.getString("msg");
-                    mBeanList.clear();
                     if (code == 200) {
                         JSONArray jsonArray = res.getJSONArray("data");
+                        if(jsonArray==null||jsonArray.length()<1){
+                            stoploadmore=true;
+                        }
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             Order bean = new Order();
@@ -276,6 +295,40 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public void initEvent() {
+        simpleRefresh.setOnSimpleRefreshListener(new SimpleRefreshLayout.OnSimpleRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        simpleRefresh.onRefreshComplete();
+                        simpleRefresh.onLoadMoreComplete();
+                    }
+                },500);
+                mBeanList.clear();
+                page=0;
+                getOrderList(page);
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        simpleRefresh.onRefreshComplete();
+                        simpleRefresh.onLoadMoreComplete();
+                    }
+                },500);
+                if(stoploadmore){
+
+                    Toast.makeText(mActivity,"没有更多",Toast.LENGTH_SHORT).show();
+                }else{
+                    page=page+limit;
+                    getOrderList(page);
+                }
+
+            }
+        });
     }
 
     private void showRecycleView() {
@@ -402,8 +455,14 @@ public class OrderFragment extends BaseFragment {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
+                        if (!res.getJSONObject("data").getJSONObject("result").has("jsConfig")) {//说明有余额
+                            Toast.makeText(mActivity, info, Toast.LENGTH_SHORT).show();
+                        } else {
+                            toWePay(res);
+                        }
+                    }else{
 
-                        toWePay(res);
+                        Toast.makeText(mActivity, info, Toast.LENGTH_SHORT).show();
                     }
                     DialogUtil.hideProgress();
                 } catch (JSONException e) {

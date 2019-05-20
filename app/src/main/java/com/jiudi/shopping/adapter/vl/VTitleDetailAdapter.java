@@ -43,7 +43,7 @@ public class VTitleDetailAdapter extends DelegateAdapter.Adapter{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(mcarttitlebean!=null){
-            ((TextView)holder.itemView.findViewById(R.id.money)).setText("¥"+("1".equals(AccountManager.sUserBean.is_promoter)?mcarttitlebean.vip_price:mcarttitlebean.price));
+            ((TextView)holder.itemView.findViewById(R.id.money)).setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcarttitlebean.vip_price:mcarttitlebean.price));
             ((TextView)holder.itemView.findViewById(R.id.sum)).setText("库存："+mcarttitlebean.stock+mcarttitlebean.unit_name);
             ((TextView)holder.itemView.findViewById(R.id.sales)).setText("销量："+mcarttitlebean.sales+mcarttitlebean.unit_name);
             ((TextView)holder.itemView.findViewById(R.id.title)).setText(mcarttitlebean.store_name);

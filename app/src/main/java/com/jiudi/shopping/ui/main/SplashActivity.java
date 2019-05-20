@@ -124,27 +124,47 @@ public class SplashActivity extends BaseActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            try {
+                                JSONObject orderStatusNum=res.getJSONObject("data").getJSONObject("orderStatusNum");
+                                bean.noBuy=orderStatusNum.optInt("noBuy");
+                                bean.noPostage=orderStatusNum.optInt("noPostage");
+                                bean.noTake=orderStatusNum.optInt("noTake");
+                                bean.noReply=orderStatusNum.optInt("noReply");
+                                bean.noPink=orderStatusNum.optInt("noPink");
+                                bean.noBuy=orderStatusNum.optInt("noBuy");
+                                bean.noPostage=orderStatusNum.optInt("noPostage");
+                                bean.noTake=orderStatusNum.optInt("noTake");
+                                bean.noReply=orderStatusNum.optInt("noReply");
+                                bean.noPink=orderStatusNum.optInt("noPink");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             AccountManager.sUserBean=bean;
                             startActivity(new Intent(mActivity, MainActivity.class));
                             finish();
                         }else{
+
+                            AccountManager.sUserBean=null;
                             startActivity(new Intent(mActivity, MainActivity.class));
                             finish();
                         }
                     }else{
+                        AccountManager.sUserBean=null;
                         startActivity(new Intent(mActivity, MainActivity.class));
                         finish();
                     }
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                    AccountManager.sUserBean=null;
                     startActivity(new Intent(mActivity, MainActivity.class));
                     finish();
-                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onError(Throwable t) {
+                AccountManager.sUserBean=null;
                 startActivity(new Intent(mActivity, MainActivity.class));
                 finish();
             }

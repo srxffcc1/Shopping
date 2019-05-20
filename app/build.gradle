@@ -6,7 +6,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 26
         versionCode 19
-        versionName "1.0.1.9"
+        versionName "1.0.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -76,7 +76,7 @@ dependencies {
     compile 'com.umeng.sdk:shareboard-widget:6.9.1'
 
 
-
+    implementation 'com.aykj.mustinsert:mustinsert:1.1.7'
     compile 'com.dengzq.widget:simplerefreshlayout:0.8.0'
     compile 'com.hyman:flowlayout-lib:1.1.2'
     compile 'q.rorbin:badgeview:1.1.3'

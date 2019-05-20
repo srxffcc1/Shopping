@@ -186,20 +186,21 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void startActivity(Intent intent) {
-        if (AccountManager.sUserBean == null&&!isNoNeedLogin()) {
+        if (AccountManager.sUserBean == null&&!isNoNeedLogin()&&!".ui.cart.CartDetailActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.MainActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.SearchShopActivity".equals(intent.getComponent().getShortClassName())) {
             super.startActivity(new Intent(mActivity, LoginActivity.class));
-            return;
+        }else{
+
+            super.startActivity(intent);
         }
-        super.startActivity(intent);
     }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-        if (AccountManager.sUserBean == null&&!isNoNeedLogin()) {
+        if (AccountManager.sUserBean == null&&!isNoNeedLogin()&&!".ui.cart.CartDetailActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.MainActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.SearchShopActivity".equals(intent.getComponent().getShortClassName())) {
             super.startActivity(new Intent(mActivity, LoginActivity.class));
-            return;
+        }else{
+            super.startActivityForResult(intent, requestCode);
         }
-        super.startActivityForResult(intent, requestCode);
     }
 
     @Override

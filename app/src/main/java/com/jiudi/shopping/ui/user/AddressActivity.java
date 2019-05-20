@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.aykj.mustinsert.MustInsert;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
@@ -172,7 +173,10 @@ public class AddressActivity extends BaseActivity {
         tvLayoutTopBackBarEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveAddress();
+                if(MustInsert.checkAllText(mActivity,edshouhuoren,edphone,edaddressdetail)){
+
+                    saveAddress();
+                }
             }
         });
     }

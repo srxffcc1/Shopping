@@ -5,22 +5,11 @@ import java.util.regex.Pattern;
 
 public class MyClass {
     public static void main(String[] args) {
-        String org="                \"id\": 13,\n" +
-                "                \"cid\": 5,\n" +
-                "                \"uid\": 3,\n" +
-                "                \"coupon_title\": \"会员购买400\",\n" +
-                "                \"coupon_price\": 400,\n" +
-                "                \"use_min_price\": 800,\n" +
-                "                \"add_time\": 1555671131,\n" +
-                "                \"end_time\": 1571223131,\n" +
-                "                \"use_time\": 1555927505,\n" +
-                "                \"type\": \"get\",\n" +
-                "                \"status\": 1,\n" +
-                "                \"is_fail\": 0,\n" +
-                "                \"_add_time\": \"2019/04/19\",\n" +
-                "                \"_end_time\": \"2019/10/16\",\n" +
-                "                \"_type\": 0,\n" +
-                "                \"_msg\": \"已使用\"";
+        String org="      \"noBuy\": 0,\n" +
+                "      \"noPostage\": \"0\",\n" +
+                "      \"noTake\": 0,\n" +
+                "      \"noReply\": 0,\n" +
+                "      \"noPink\": 0";
         //parm参数
         Pattern pattern=null;
         Matcher matcher=null;

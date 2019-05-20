@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hss01248.dialog.StyledDialog;
 import com.jiudi.shopping.global.LocalApplication;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
@@ -110,20 +111,22 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void startActivity(Intent intent) {
-        if (AccountManager.sUserBean == null) {
+        if (AccountManager.sUserBean == null&&!".ui.cart.CartDetailActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.MainActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.SearchShopActivity".equals(intent.getComponent().getShortClassName())) {
             super.startActivity(new Intent(mActivity, LoginActivity.class));
-            return;
+        }else{
+
+            super.startActivity(intent);
         }
-        super.startActivity(intent);
     }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-        if (AccountManager.sUserBean == null) {
+        if (AccountManager.sUserBean == null&&!".ui.cart.CartDetailActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.MainActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.SearchShopActivity".equals(intent.getComponent().getShortClassName())) {
             super.startActivity(new Intent(mActivity, LoginActivity.class));
-            return;
+        }else{
+
+            super.startActivityForResult(intent, requestCode);
         }
-        super.startActivityForResult(intent, requestCode);
     }
 
     @Nullable

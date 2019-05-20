@@ -333,7 +333,6 @@ public class HttpUrlConnectUtil {
             if (paramMap.get(key) != null) {
                 if (paramMap.get(key) instanceof File) {
                     File file = (File) paramMap.get(key);
-                    System.out.println(file.getAbsoluteFile());
                     sb.append(prefix);
                     sb.append(boundry);
                     sb.append(end);
@@ -379,11 +378,9 @@ public class HttpUrlConnectUtil {
         dos.write(endData);
         dos.flush();
         String result = "";
-        System.out.println(conn.getResponseCode());
         if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             result = getRespone(conn);
         }
-        System.out.println(result);
         return result;
 
     }

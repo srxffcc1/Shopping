@@ -55,6 +55,9 @@ public class RegisterActivity extends BaseActivity {
     private TextView register;
     private CountDownTimer mTimer;
     private boolean mShowPwd = false;
+    private LinearLayout ycodeL;
+    private EditText ycode;
+
     @Override
     public boolean isNoNeedLogin() {
         return true;
@@ -77,6 +80,8 @@ public class RegisterActivity extends BaseActivity {
         pwd = (EditText) findViewById(R.id.pwd);
         pwdI = (ImageView) findViewById(R.id.pwd_i);
         register = (TextView) findViewById(R.id.register);
+        ycodeL = (LinearLayout) findViewById(R.id.ycode_l);
+        ycode = (EditText) findViewById(R.id.ycode);
     }
     @Override
     public void initEvent() {
@@ -130,6 +135,7 @@ public class RegisterActivity extends BaseActivity {
             }
         });
 
+
     }
     @Override
     public void initData() {
@@ -149,6 +155,7 @@ public class RegisterActivity extends BaseActivity {
     }
     private void regsiter(final String phone, final String code, final String password) {
         Map<String, String> map = new HashMap<>();
+        map.put("invite_code",ycode.getText().toString());
         map.put("phone", phone);
         map.put("code", code);
         map.put("pwd", password);
@@ -186,7 +193,7 @@ public class RegisterActivity extends BaseActivity {
                                 startActivity(intent);
                                 finish();
                             }else{
-                                Toast.makeText(mActivity,res.getString("data"),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

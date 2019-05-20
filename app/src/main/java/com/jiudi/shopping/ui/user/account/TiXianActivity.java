@@ -102,7 +102,8 @@ public class TiXianActivity extends BaseActivity {
                         if(tiXian!=null){
                             name.setText(tiXian.real_name);
                             account.setText(tiXian.alipay_code);
-                            nowmoney.setText("余额:¥"+(tiXian.balance+"").replace("null","0"));
+                            nowmoney.setText("余额:¥"+(AccountManager.sUserBean.now_money+"").replace("null","0"));
+                            money.setHint("请输入提现金额-"+"不得低于"+minExtractPrice+"元");
 
                         }
 
@@ -121,6 +122,7 @@ public class TiXianActivity extends BaseActivity {
     }
     private void tixian() {
         Map<String, String> map = new HashMap<>();
+        map.put("type", "alipay");
         map.put("real_name", name.getText().toString());
         map.put("alipay_code", account.getText().toString());
         map.put("price", money.getText().toString());
@@ -132,7 +134,10 @@ public class TiXianActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-                        Toast.makeText(mActivity,"提现申请提交成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
+                        gettixian();
+                    }else{
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {

@@ -1,5 +1,6 @@
 package com.jiudi.shopping.ui.cart;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -67,6 +68,9 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
@@ -85,6 +89,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -139,6 +144,7 @@ public class CartDetailActivity extends BaseActivity {
     private ImageView fenxiangim;
     private String urlShare;
     private Dialog dialog;
+    private Map<String, String> destmap=new HashMap<>();
 
 
     @Override
@@ -668,9 +674,14 @@ public InputStream getImageStream(String path) throws Exception {
                         mcarttitlebean.userCollect = "true";
                         shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_star), null, null);
                         Toast.makeText(mActivity, "收藏成功", Toast.LENGTH_SHORT).show();
+                    }else{
+
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
+
+                    Toast.makeText(mActivity,"未登录",Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }
@@ -678,6 +689,7 @@ public InputStream getImageStream(String path) throws Exception {
             @Override
             public void onError(Throwable t) {
 
+                Toast.makeText(mActivity,"未登录",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -696,6 +708,10 @@ public InputStream getImageStream(String path) throws Exception {
                         mcarttitlebean.userCollect = "false";
                         shoucangnum.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.cart_nostar), null, null);
                         Toast.makeText(mActivity, "取消收藏", Toast.LENGTH_SHORT).show();
+                    }else{
+
+
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -706,6 +722,7 @@ public InputStream getImageStream(String path) throws Exception {
             @Override
             public void onError(Throwable t) {
 
+                Toast.makeText(mActivity,"未登录",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -748,8 +765,8 @@ public InputStream getImageStream(String path) throws Exception {
             @Override
             public void onClick(View v) {
                 try {
-                    productId = mcartattrvaluelist.get(0).getProduct_id();
-                    uniqueId = mcartattrvaluelist.get(0).getUnique();
+                    productId = mcartattrvaluelist.get(checkWhichChose()).getProduct_id();
+                    uniqueId = mcartattrvaluelist.get(checkWhichChose()).getUnique();
                 } catch (Exception e) {
                     productId = mcarttitlebean.id;
                     uniqueId = "0";
@@ -765,8 +782,8 @@ public InputStream getImageStream(String path) throws Exception {
             @Override
             public void onClick(View v) {
                 try {
-                    productId = mcartattrvaluelist.get(0).getProduct_id();
-                    uniqueId = mcartattrvaluelist.get(0).getUnique();
+                    productId = mcartattrvaluelist.get(checkWhichChose()).getProduct_id();
+                    uniqueId = mcartattrvaluelist.get(checkWhichChose()).getUnique();
                 } catch (Exception e) {
                     productId = mcarttitlebean.id;
                     uniqueId = "0";
@@ -781,7 +798,7 @@ public InputStream getImageStream(String path) throws Exception {
             dialog_gouwuche.setVisibility(View.INVISIBLE);
         }
         TextView money = customView2.findViewById(R.id.money);
-        money.setText("¥"+("1".equals(AccountManager.sUserBean.is_promoter)?mcarttitlebean.vip_price:mcarttitlebean.price));
+        money.setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcarttitlebean.vip_price:mcarttitlebean.price));
         TextView allcount = customView2.findViewById(R.id.allcount);
         allcount.setText("库存：" + mcarttitlebean.stock + mcarttitlebean.unit_name);
         ImageView close = customView2.findViewById(R.id.close);
@@ -792,13 +809,57 @@ public InputStream getImageStream(String path) throws Exception {
             }
         });
         LinearLayout sukall = customView2.findViewById(R.id.sukall);
-//        for (int i = 0; i < ; i++) {
-//
-//        }
+        for (int i = 0; i <mcartattrlist.size() ; i++) {
+            CartAttr cartAttr=mcartattrlist.get(i);
+            sukall.addView(buildTagParent(mActivity, destmap,cartAttr));
+        }
+
+    }
+
+    private int checkWhichChose() {
+        for (int i = 0; i <mcartattrvaluelist.size() ; i++) {
+            String suk=mcartattrvaluelist.get(i).getSuk();//得到精准规格
+            boolean check=true;
+            for (Map.Entry<String, String> entry : destmap.entrySet()) {//迭代规格选择
+                check=check&suk.contains(entry.getValue());
+                if(!check){
+                    break;
+                }
+            }
+            if(check){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private View buildTagParent(final Activity mActivity, final Map<String, String> destmap, final CartAttr cartAttr) {
+
+        LinearLayout tagparent = (LinearLayout) View.inflate(mActivity, R.layout.item_carchoiceflow, null);
+        TextView textView=tagparent.findViewById(R.id.title);
+        textView.setText(cartAttr.getAttr_name());
+        TagFlowLayout tagFlowLayout=(TagFlowLayout) tagparent.findViewById(R.id.id_flowlayout);
+        tagFlowLayout.setAdapter( new TagAdapter<String>(cartAttr.getAttr_values()){
+
+            @Override
+            public View getView(FlowLayout parent, int position, String s) {
+                TextView tv = new TextView(mActivity);
+                tv.setText(s);
+                return tv;
+            }
+        });
+        tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                destmap.put(cartAttr.getAttr_name(),cartAttr.getAttr_values().get(position));
+                return true;
+            }
+        });
+        return tagparent;
     }
 
     private void addGouWu() {
-        if ("1".equals(mcarttitlebean.is_special) && "1".equals(AccountManager.sUserBean.is_promoter)) {
+        if ("1".equals(mcarttitlebean.is_special) && "1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))) {
             Toast.makeText(mActivity, "已经是会员不可重复购买", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -820,6 +881,8 @@ public InputStream getImageStream(String path) throws Exception {
 //                        String cartId=res.getJSONObject("data").getString("cartId");
 //                        startActivity(new Intent(mActivity, PayDingDanActivity.class).putExtra("cartId",cartId));
                         getCartNum();
+                    }else{
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -830,12 +893,13 @@ public InputStream getImageStream(String path) throws Exception {
             @Override
             public void onError(Throwable t) {
 
+                Toast.makeText(mActivity,"未登录",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void lijiGouWu() {
-        if ("1".equals(mcarttitlebean.is_special) && "1".equals(AccountManager.sUserBean.is_promoter)) {
+        if ("1".equals(mcarttitlebean.is_special) && "1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))) {
             Toast.makeText(mActivity, "已经是会员不可重复购买", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -855,6 +919,8 @@ public InputStream getImageStream(String path) throws Exception {
                     if (code == 200) {
                         String cartId = res.getJSONObject("data").getString("cartId");
                         startActivity(new Intent(mActivity, PayDingDanActivity.class).putExtra("cartId", cartId));
+                    }else{
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -864,7 +930,7 @@ public InputStream getImageStream(String path) throws Exception {
 
             @Override
             public void onError(Throwable t) {
-
+                Toast.makeText(mActivity,"未登录",Toast.LENGTH_SHORT).show();
             }
         });
     }

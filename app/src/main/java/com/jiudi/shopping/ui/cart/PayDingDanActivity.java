@@ -44,6 +44,7 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.user.AddressListActivity;
+import com.jiudi.shopping.ui.user.AllOrderActivity;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.SPUtil;
@@ -220,6 +221,7 @@ public class PayDingDanActivity extends BaseActivity {
         lijigoumai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 toPay();
             }
         });
@@ -358,6 +360,8 @@ public class PayDingDanActivity extends BaseActivity {
     private void unsetUpon() {
         couponId = "";
         keyongyouhuiquan.setText("点选使用优惠券");
+        cartGroup.setText("共" + sum_cart + "件商品 小计:" + (orgxiaoji) + "元");
+        needpaymoney.setText("应付:¥" + (orgxiaoji) + "");
     }
 
     private void toPay() {
@@ -404,21 +408,25 @@ public class PayDingDanActivity extends BaseActivity {
                     String info = res.getString("msg");
                     if (code == 200) {
                         if (mPayMethod == TYPE_PAY_WECHAT) {
-                            if (info.contains("余额") || !res.getJSONObject("data").getJSONObject("result").has("jsConfig")) {
-                                Toast.makeText(mActivity, "支付成功", Toast.LENGTH_SHORT).show();
+                            if (yuecheck.isChecked()&& !res.getJSONObject("data").getJSONObject("result").has("jsConfig")) {//说明有余额
+                                Toast.makeText(mActivity, info, Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(mActivity, AllOrderActivity.class));
                                 finish();
                             } else {
                                 toWePay(res);
                             }
                         }
                         if (mPayMethod == TYPE_PAY_YUE) {
-                            Toast.makeText(mActivity, "支付成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity, info, Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(mActivity, AllOrderActivity.class));
                             finish();
                         }
                         if (mPayMethod == TYPE_PAY_ALIPAY) {
                             toAliPay(res);
-
                         }
+
+                    }else{
+                        Toast.makeText(mActivity, info+"", Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -483,6 +491,7 @@ public class PayDingDanActivity extends BaseActivity {
                         yuetexts = data.getJSONObject("userInfo").getString("integral");
                         xianjint = data.getJSONObject("userInfo").getString("now_money");
                         nowmoneys.setText("可用现金" + xianjint);
+
 
                     }
 
@@ -608,6 +617,8 @@ public class PayDingDanActivity extends BaseActivity {
         switch (result) {
             case 0:
                 ToastUtil.showShort(mActivity, "支付成功");
+
+                startActivity(new Intent(mActivity, AllOrderActivity.class));
                 finish();
 //                PayCompleteActivity.open(mActivity,mUnid);
                 break;
@@ -618,6 +629,7 @@ public class PayDingDanActivity extends BaseActivity {
                 break;
             case -2:
                 ToastUtil.showShort(mActivity, "取消了支付,请重新购买或去未支付订单结算");
+                startActivity(new Intent(mActivity, AllOrderActivity.class));
                 finish();
                 break;
         }

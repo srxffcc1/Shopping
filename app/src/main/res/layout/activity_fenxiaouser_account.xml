@@ -24,43 +24,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="我的余额"
+            android:text="我的账户"
             android:textColor="#ff232326"
             android:textSize="17sp" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/xianjinbg"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:background="@drawable/yongjinback"
         android:padding="10dp">
+
         <TextView
+            android:id="@+id/yongjinbiaoti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的余额"
+            android:layout_marginTop="20dp"
+            android:text="当前现金（元）"
             android:textColor="#ffffffff"
-            android:textSize="13sp"
-            />
+            android:textSize="12sp" />
+
         <TextView
-            android:id="@+id/yue"
+            android:id="@+id/money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="500"
+            android:layout_below="@+id/yongjinbiaoti"
+            android:layout_marginTop="10dp"
+            android:text="25.80"
             android:textColor="#ffffffff"
-            android:textSize="48sp"
-            />
-    </LinearLayout>
+            android:textSize="44sp" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/shouzhi"
-        android:gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:drawableLeft="@drawable/yongjinleft"
         android:padding="10dp"
-        android:text="收支明细"
+        android:gravity="center_vertical"
+        android:text="现金明细"
         android:textColor="#ff333333"
         android:textSize="12sp" />
 
@@ -85,9 +88,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
 
     </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.NestedScrollView>
