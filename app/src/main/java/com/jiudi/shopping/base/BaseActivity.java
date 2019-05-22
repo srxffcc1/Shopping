@@ -24,6 +24,7 @@ import com.jiudi.shopping.ui.user.account.LoginActivity;
 import com.jiudi.shopping.util.ActivityUtil;
 import com.jiudi.shopping.util.OSUtil;
 import com.jiudi.shopping.util.StatusBarUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -176,11 +177,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 

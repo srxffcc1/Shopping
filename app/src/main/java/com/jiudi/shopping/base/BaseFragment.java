@@ -18,6 +18,7 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.user.account.LoginActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -192,4 +193,16 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         return this;
     }
 
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        MobclickAgent.onPause(getActivity());
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        MobclickAgent.onResume(getActivity());
+//
+//    }
 }

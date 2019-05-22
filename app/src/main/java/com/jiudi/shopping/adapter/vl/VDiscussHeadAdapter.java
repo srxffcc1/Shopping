@@ -14,6 +14,7 @@ import com.jiudi.shopping.R;
 import com.jiudi.shopping.bean.CartDiscussBean;
 import com.jiudi.shopping.bean.CartTitleBean;
 import com.jiudi.shopping.ui.user.account.DiscussListActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -51,6 +52,8 @@ public class VDiscussHeadAdapter extends DelegateAdapter.Adapter{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    MobclickAgent.onEvent(context,"B_goods_pingjia");
                     context.startActivity(new Intent(context, DiscussListActivity.class).putExtra("productId",mcarttitlebean.id));
                 }
             });

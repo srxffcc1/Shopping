@@ -19,6 +19,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <!-- 高德地图 -->
     <!-- 允许程序打开网络套接字 -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -172,6 +178,7 @@
         <activity android:name=".ui.user.account.TextActivity" />
         <activity android:name=".ui.user.account.FenXiaoAccountActivity" />
         <activity android:name=".ui.user.ShowImageActivity" />
+        <activity android:name=".ui.main.SearchShopBeforeActivity" />
 
 
     </application>

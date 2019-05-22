@@ -40,6 +40,7 @@ import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.NetworkUtil;
 import com.jiudi.shopping.util.ToastUtil;
 import com.m7.imkfsdk.KfStartHelper;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -177,6 +178,22 @@ public class MainActivity extends BaseActivity {
                 if(tab.getPosition()==2){//说明按到了
                     iskefu = true;
                     helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",REQUEST_CODE_OPENCHAT);//陈辰正式
+                }
+                if(tab.getPosition()==0){
+
+                    MobclickAgent.onEvent(mActivity,"A_bottom_index");
+                }
+                if(tab.getPosition()==1){
+
+                    MobclickAgent.onEvent(mActivity,"A_bottom_buy");
+                }
+                if(tab.getPosition()==2){
+
+                    MobclickAgent.onEvent(mActivity,"A_bottom_ask");
+                }
+                if(tab.getPosition()==3){
+
+                    MobclickAgent.onEvent(mActivity,"A_bottom_my");
                 }
             }
 

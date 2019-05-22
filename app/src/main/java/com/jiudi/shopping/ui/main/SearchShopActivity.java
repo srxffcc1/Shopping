@@ -82,44 +82,56 @@ public class SearchShopActivity extends BaseActivity {
         simpleRefresh.setHeaderView(new SimpleRefreshView(mActivity));
         simpleRefresh.setFooterView(new SimpleLoadView(mActivity));
         simpleRefresh.setBottomView(new SimpleBottomView(mActivity));
+        searchTag.setText(getIntent().getStringExtra("keyword"));
+        getList();
     }
 
     @Override
     public void initEvent() {
-        searchPass.setOnClickListener(new View.OnClickListener() {
+        searchTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if("".equals(searchTag.getText().toString())||"null".equals(searchTag.getText().toString())){
-                    Toast.makeText(mActivity,"请输入搜索条件",Toast.LENGTH_SHORT).show();
-                }else{
-                    page=0;
-                    mCarChoiceList.clear();
-                    getList();
-                }
+                startActivity(new Intent(mActivity, SearchShopBeforeActivity.class));
+                finish();
             }
         });
-        searchTag.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    //先隐藏键盘
-                    if (manager.isActive()) {
-                        manager.hideSoftInputFromWindow(searchTag.getApplicationWindowToken(), 0);
-                    }
-                    //自己需要的操作
-                    if("".equals(searchTag.getText().toString())||"null".equals(searchTag.getText().toString())){
-                        Toast.makeText(mActivity,"请输入搜索条件",Toast.LENGTH_SHORT).show();
-                    }else{
-
-                        page=0;
-                        mCarChoiceList.clear();
-                        getList();
-                    }
-                }
-                //记得返回false
-                return false;
-            }
-        });
+//        searchPass.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if("".equals(searchTag.getText().toString())||"null".equals(searchTag.getText().toString())){
+//                    Toast.makeText(mActivity,"请输入搜索条件",Toast.LENGTH_SHORT).show();
+//                }else{
+//                    if (manager.isActive()) {
+//                        manager.hideSoftInputFromWindow(searchTag.getApplicationWindowToken(), 0);
+//                    }
+//                    page=0;
+//                    mCarChoiceList.clear();
+//                    getList();
+//                }
+//            }
+//        });
+//        searchTag.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+//                    //先隐藏键盘
+//                    if (manager.isActive()) {
+//                        manager.hideSoftInputFromWindow(searchTag.getApplicationWindowToken(), 0);
+//                    }
+//                    //自己需要的操作
+//                    if("".equals(searchTag.getText().toString())||"null".equals(searchTag.getText().toString())){
+//                        Toast.makeText(mActivity,"请输入搜索条件",Toast.LENGTH_SHORT).show();
+//                    }else{
+//
+//                        page=0;
+//                        mCarChoiceList.clear();
+//                        getList();
+//                    }
+//                }
+//                //记得返回false
+//                return false;
+//            }
+//        });
         simpleRefresh.setOnSimpleRefreshListener(new SimpleRefreshLayout.OnSimpleRefreshListener() {
             @Override
             public void onRefresh() {
@@ -157,8 +169,13 @@ public class SearchShopActivity extends BaseActivity {
     }
     private void getList() {
         Map<String, String> map = new HashMap<>();
+        String keyword=getIntent().getStringExtra("keyword");
+        String oldhistory=SPUtil.get("seach", "").toString();
+        oldhistory=oldhistory.replace(keyword,"");
+        oldhistory=oldhistory+keyword+",";
+        SPUtil.put("seach",oldhistory);
         try {
-            map.put("keyword", new String(Base64Encoder.encode(searchTag.getText().toString().getBytes("utf-8"))));
+            map.put("keyword", new String(Base64Encoder.encode(keyword.getBytes("utf-8"))));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

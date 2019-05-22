@@ -43,7 +43,7 @@
                 />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="10dp"></LinearLayout>
+                android:layout_height="10px"></LinearLayout>
 
             <LinearLayout
 
@@ -127,7 +127,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="10dp"></LinearLayout>
+                android:layout_height="10px"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

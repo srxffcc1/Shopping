@@ -315,7 +315,13 @@ public class LoginActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWechatLoginEvent(WechatLoginEvent wechatPayEvent) {
         wx_code=wechatPayEvent.getResult();
-        System.out.println(wx_code);
-        login();
+        if(wx_code==null){
+            loginflag=2;
+            buildView();
+        }else{
+
+            login();
+        }
+
     }
 }

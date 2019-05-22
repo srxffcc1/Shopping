@@ -33,6 +33,7 @@ public class CartTitleBean {
     public String cost;
     public String is_seckill;
     public String is_bargain;
+    public String is_integral;
     public String ficti;
     public String browse;
     public String code_path;

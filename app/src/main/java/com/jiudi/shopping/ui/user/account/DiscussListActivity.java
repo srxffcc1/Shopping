@@ -240,7 +240,7 @@ public class DiscussListActivity extends BaseActivity {
                                 int temppx = fujianLayout.getWidth();
                                 fujianLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                                 fujian_px = (temppx - 0) / 4;
-                                System.out.println("获得的大小" + fujian_px);
+//                                System.out.println("获得的大小" + fujian_px);
                                 new GridAdapter(mActivity, carChoiceBean.getPics(), fujianLayout).build();
 
                             }

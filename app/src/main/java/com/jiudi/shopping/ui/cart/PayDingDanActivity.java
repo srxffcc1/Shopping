@@ -252,7 +252,7 @@ public class PayDingDanActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     keyongyouhuiquan.setText("不可使用优惠券");
-                    yuetext.setText("抵扣金额：" + yuetexts);
+                    yuetext.setText("抵扣元宝：" + yuetexts);
 
                     cartGroup.setText("共" + sum_cart + "件商品 小计:" + (orgxiaoji - Double.parseDouble(yuetexts)) + "元");
                     needpaymoney.setText("应付:¥" + (orgxiaoji - Double.parseDouble(yuetexts)) + "");
@@ -261,7 +261,7 @@ public class PayDingDanActivity extends BaseActivity {
                     needpaymoney.setText("应付:¥" + (orgxiaoji) + "");
                     couponId = "";
                     keyongyouhuiquan.setText("点选使用优惠券");
-                    yuetext.setText("余额抵扣");
+                    yuetext.setText("元宝抵扣");
                 }
             }
         });

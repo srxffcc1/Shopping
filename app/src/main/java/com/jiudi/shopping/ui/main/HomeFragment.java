@@ -8,8 +8,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocationClient;
@@ -47,6 +49,7 @@ import com.jiudi.shopping.widget.GlideImageLoader;
 import com.jiudi.shopping.widget.SimpleBottomView;
 import com.jiudi.shopping.widget.SimpleLoadView;
 import com.jiudi.shopping.widget.SimpleRefreshView;
+import com.umeng.analytics.MobclickAgent;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -81,6 +84,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public AMapLocationClientOption mLocationOption = null;
     private static final int PERMISSION_REQUEST_CODE_LOCATION = 1001;
     private AMapLocationClient mLocationClient = null;
+    private int fujian_px=0;
     /**
      * 是否拿到当前定位信息
      */
@@ -191,6 +195,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         center1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"A_index_menu_fx");
                 try {
                     if(AccountManager.sUserBean==null){
 
@@ -211,6 +217,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         center2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"A_index_menu_td");
                 try {
                     if(AccountManager.sUserBean==null){
 
@@ -230,6 +238,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         center3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"A_index_menu_tgm");
                 try {
                     if(AccountManager.sUserBean==null){
 
@@ -251,7 +261,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(mActivity, SearchShopActivity.class));
+                MobclickAgent.onEvent(mActivity,"A_index_menu_search");
+                startActivity(new Intent(mActivity, SearchShopBeforeActivity.class));
             }
         });
     }
@@ -329,22 +340,55 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             mCarBeanAdapter = new RecyclerCommonAdapter<MainGodsBean>(mActivity, R.layout.item_carchoice, mCarChoiceList) {
 
                 @Override
-                protected void convert(ViewHolder holder, final MainGodsBean carChoiceBean, int position) {
+                protected void convert(final ViewHolder holder, final MainGodsBean carChoiceBean, final int position) {
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if(position==0){
+
+                                MobclickAgent.onEvent(mActivity,"A_index_menu_vip");
+                            }else{
+
+                                MobclickAgent.onEvent(mActivity,"A_index_menu_goods");
+                            }
                             startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",carChoiceBean.id));
                         }
                     });
                     holder.setText(R.id.title,carChoiceBean.store_name);
                     holder.setText(R.id.second_title,carChoiceBean.keyword);
+                    final  ImageView imageView=(ImageView) holder.getView(R.id.picture);
                     holder.setText(R.id.show_price,"¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?carChoiceBean.vip_price:carChoiceBean.price));
-                    RequestOptions options = new RequestOptions()
-                            .fitCenter()
-                            .placeholder(R.drawable.tmp_gods)
-                            .error(R.drawable.tmp_gods)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
-                    Glide.with(mActivity).load(carChoiceBean.image).apply(options).into((ImageView) holder.getView(R.id.picture));
+                    ViewTreeObserver vto = holder.itemView.getViewTreeObserver();
+                    if(fujian_px==0){
+                        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                            @Override
+                            public void onGlobalLayout() {
+                                int temppx = holder.itemView.getWidth();
+                                holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                fujian_px = (temppx - 20);
+//                                System.out.println("获得的大小" + fujian_px);
+                                imageView.setLayoutParams(new LinearLayout.LayoutParams(fujian_px,fujian_px));
+                                RequestOptions options = new RequestOptions()
+                                        .fitCenter()
+                                        .placeholder(R.drawable.tmp_gods)
+                                        .error(R.drawable.tmp_gods)
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+                                Glide.with(mActivity).load(carChoiceBean.image).apply(options).into(imageView);
+
+                            }
+                        });
+                    }else{
+                        imageView.setLayoutParams(new LinearLayout.LayoutParams(fujian_px,fujian_px));
+                        RequestOptions options = new RequestOptions()
+                                .fitCenter()
+                                .placeholder(R.drawable.tmp_gods)
+                                .error(R.drawable.tmp_gods)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+                        Glide.with(mActivity).load(carChoiceBean.image).apply(options).into((ImageView) holder.getView(R.id.picture));
+                    }
+
+
+
 //                    AccountManager.setBestGood(carChoiceBean.id);
 //                    new GlideImageLoader().displayImage(mActivity,carChoiceBean.picture, (ImageView) holder.getView(R.id.picture));
                 }
@@ -425,6 +469,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             blFragmentHome.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
+                    MobclickAgent.onEvent(mActivity,"A_index_banner_1");
                     final BannerBean bannerBean = mBannerList.get(position);
                     startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",bannerBean.url.replace("/wap/store/detail/id/","")));
                 }

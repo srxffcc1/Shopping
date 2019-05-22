@@ -61,6 +61,7 @@ import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.WechatUtil;
 import com.m7.imkfsdk.KfStartHelper;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -377,6 +378,7 @@ public class CartDetailActivity extends BaseActivity {
                         mcarttitlebean.cost = storeInfo.optString("cost");
                         mcarttitlebean.is_seckill = storeInfo.optString("is_seckill");
                         mcarttitlebean.is_bargain = storeInfo.optString("is_bargain");
+                        mcarttitlebean.is_integral = storeInfo.optString("is_integral");
                         mcarttitlebean.ficti = storeInfo.optString("ficti");
                         mcarttitlebean.browse = storeInfo.optString("browse");
                         mcarttitlebean.code_path = storeInfo.optString("code_path");
@@ -435,7 +437,7 @@ public class CartDetailActivity extends BaseActivity {
 
 
                         buildRecyclerView();
-                        if ("1".equals(mcarttitlebean.is_special)) {
+                        if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
                             togouwu.setVisibility(View.GONE);
                         }
                     }else{
@@ -537,6 +539,7 @@ public InputStream getImageStream(String path) throws Exception {
             @Override
             public void onClick(View v) {
 
+                MobclickAgent.onEvent(mActivity,"B_goods_right_top");
                 new ShareAction(mActivity).setDisplayList(
                         SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setShareboardclickCallback(new ShareBoardlistener() {
@@ -568,12 +571,16 @@ public InputStream getImageStream(String path) throws Exception {
         backIm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"B_goods_left_top");
                 finish();
             }
         });
         shoucangnum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"B_goods_bottom_sc");
                 if ("true".equals(mcarttitlebean.userCollect)) {
                     unshoucang();
                 } else {
@@ -584,6 +591,8 @@ public InputStream getImageStream(String path) throws Exception {
         gouwuchenum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"B_goods_bottom_buy");
                 startActivity(new Intent(mActivity, MainActivity.class));
                 EventBus.getDefault().post(new CartEvent());
                 EventBus.getDefault().post(new PassCartEvent());
@@ -592,6 +601,8 @@ public InputStream getImageStream(String path) throws Exception {
         kefunum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"B_goods_kf");
                 helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789", 60);//陈辰正式
             }
         });
@@ -640,20 +651,23 @@ public InputStream getImageStream(String path) throws Exception {
         topay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("1".equals(mcarttitlebean.is_special)) {
+                if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
                     productId = mcarttitlebean.id;
                     uniqueId = "0";
                     lijiGouWu();
                 } else {
 
-                    popChose();
+                    MobclickAgent.onEvent(mActivity,"B_goods_bottom_ljgm");
+                    popChose(2);
                 }
             }
         });
         togouwu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popChose();
+
+                MobclickAgent.onEvent(mActivity,"B_goods_bottom_jrgwc");
+                popChose(1);
             }
         });
 
@@ -729,7 +743,7 @@ public InputStream getImageStream(String path) throws Exception {
 
     public int cartNum = 1;
 
-    public void popChose() {
+    public void popChose(final int flag) {
 
         StyledDialog.init(this);
         cartNum = 1;
@@ -789,12 +803,16 @@ public InputStream getImageStream(String path) throws Exception {
                     uniqueId = "0";
                     e.printStackTrace();
                 }
-                lijiGouWu();
+                if(flag==2){
+                    lijiGouWu();
+                }else{
+                    addGouWu();
+                }
                 dialog.dismiss();
 
             }
         });
-        if ("1".equals(mcarttitlebean.is_special)) {
+        if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
             dialog_gouwuche.setVisibility(View.INVISIBLE);
         }
         TextView money = customView2.findViewById(R.id.money);
@@ -843,11 +861,17 @@ public InputStream getImageStream(String path) throws Exception {
 
             @Override
             public View getView(FlowLayout parent, int position, String s) {
-                TextView tv = new TextView(mActivity);
+                TextView tv = (TextView) mInflater.inflate(R.layout.tv_tag, parent, false);
                 tv.setText(s);
                 return tv;
             }
+            @Override
+            public boolean setSelected(int position, String s)
+            {
+                return position==0;
+            }
         });
+        destmap.put(cartAttr.getAttr_name(),cartAttr.getAttr_values().get(0));
         tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {

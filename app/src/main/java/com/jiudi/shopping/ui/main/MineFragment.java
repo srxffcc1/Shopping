@@ -52,6 +52,7 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -300,6 +301,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
+                MobclickAgent.onEvent(mActivity,"C_personal_coupon_head");
                 startActivity(new Intent(mActivity, AllQuanActivity.class));
             }
         });
@@ -312,30 +314,35 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         allOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(mActivity,"C_personal_o_goods");
                 startActivity(new Intent(v.getContext(), AllOrderActivity.class));
             }
         });
         daifukuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(mActivity,"C_personal_o_goods");
                 startActivity(new Intent(v.getContext(), AllOrderActivity.class).putExtra("type",1));
             }
         });
         daifahuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(mActivity,"C_personal_o_goods");
                 startActivity(new Intent(v.getContext(), AllOrderActivity.class).putExtra("type",2));
             }
         });
         daishouhuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(mActivity,"C_personal_o_goods");
                 startActivity(new Intent(v.getContext(), AllOrderActivity.class).putExtra("type",3));
             }
         });
         yiwancheng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(mActivity,"C_personal_o_goods");
                 startActivity(new Intent(v.getContext(), AllOrderActivity.class).putExtra("type",4));
             }
         });
@@ -352,12 +359,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mycollet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(mActivity,"C_personal_collect");
                 startActivity(new Intent(mActivity, ShouCangActivity.class));
             }
         });
         mymoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"C_personal_money");
                 try {
                     if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
                         startActivity(new Intent(mActivity, FenXiaoAccountActivity.class));
@@ -374,6 +384,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         myunder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"C_personal_fxzx");
                 try {
                     if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
                         startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
@@ -406,12 +418,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
+                MobclickAgent.onEvent(mActivity,"C_personal_balance_head");
                 startActivity(new Intent(mActivity, AccountActivity.class));
             }
         });
         myzxing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"C_personal_tgm");
                 try {
                     if("1".equals(AccountManager.sUserBean.is_promoter)){
                         startActivity(new Intent(mActivity, TuiGuangActivity.class));
@@ -433,12 +448,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         passtongzhi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"C_personal_coupon_head");
                 startActivity(new Intent(mActivity, TongZhiActivity.class));
             }
         });
         mysetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MobclickAgent.onEvent(mActivity,"C_personal_set");
                 startActivity(new Intent(mActivity, ShopSettingActivity.class));
             }
         });

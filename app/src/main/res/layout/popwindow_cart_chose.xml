@@ -116,6 +116,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/dialog_gouwuche"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -137,7 +138,7 @@
             android:gravity="center"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
-            android:text="立即购买"
+            android:text="确定"
             android:textColor="#ffffffff"
             android:textSize="14sp" />
     </LinearLayout>
