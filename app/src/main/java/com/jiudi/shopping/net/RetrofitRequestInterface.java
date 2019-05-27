@@ -58,6 +58,11 @@ public interface RetrofitRequestInterface {
     @POST("index.php?g=app&m=telephone&a=telephone_note")
     Call<String> getCanPhonePay(@FieldMap Map<String, String> params);
 
+    /*热门关键字*/
+    @FormUrlEncoded
+    @POST("api/auth_api/hotkeyword")
+    Call<String> getHotList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
 
     /*商品查询*/
     @FormUrlEncoded

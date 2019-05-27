@@ -78,6 +78,41 @@ public class SearchShopBeforeActivity extends BaseActivity {
 
     @Override
     public void initData() {
+
+
+        manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        getHotList();
+    }
+    private void getHotList() {
+        Map<String, String> map = new HashMap<>();
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getHotList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        JSONArray jsonArray=res.getJSONArray("data");
+                        for (int i = 0; i <jsonArray.length() ; i++) {
+                            hotseach.add(jsonArray.get(i).toString());
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                buildDataToView2();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+
+    private void buildDataToView2() {
         String oldhistory=SPUtil.get("seach", "").toString();
         String[] oldarray=oldhistory.split(",");
         if(oldarray!=null){
@@ -88,11 +123,6 @@ public class SearchShopBeforeActivity extends BaseActivity {
                 }
             }
         }
-
-        hotseach.add("智能保温杯");
-        hotseach.add("保温杯");
-
-        manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         buildDataToView();
     }
 
