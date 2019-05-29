@@ -221,7 +221,7 @@ public class PayAllActivity extends BaseActivity {
 //        map.put("unid", mUnid);
             map.put(getIntent().getStringExtra("paytypekey"), type + "");//兼容不一样的请求体
             LogUtil.e(TAG, map.toString());
-            RequestManager.mRetrofitManager3
+            RequestManager.mRetrofitManager
                     .createRequest(RetrofitRequestInterface.class)
                     .checkPayDy(getIntent().getStringExtra("url"), RequestManager.encryptParams(map))
                     .enqueue(new RetrofitCallBack() {
@@ -341,7 +341,7 @@ public class PayAllActivity extends BaseActivity {
             }
             map.put(getIntent().getStringExtra("paytypekey"), typePay + "");//兼容不一样的请求体
             LogUtil.e(TAG, map.toString());
-            RequestManager.mRetrofitManager3
+            RequestManager.mRetrofitManager
                     .createRequest(RetrofitRequestInterface.class)
                     .checkPayDy(getIntent().getStringExtra("url"), RequestManager.encryptParams(map))
                     .enqueue(new RetrofitCallBack() {

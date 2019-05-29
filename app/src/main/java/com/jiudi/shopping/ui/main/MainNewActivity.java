@@ -66,6 +66,8 @@ public class MainNewActivity extends BaseActivity {
     private android.widget.FrameLayout activityMaterialDesign;
     private com.jiudi.shopping.widget.NoTouchViewPager viewPager;
     private me.majiajie.pagerbottomtabstrip.PageNavigationView tab;
+    private VpFragmentAdapter mMainAdapter;
+    private List<Fragment> mFragmentList = new ArrayList<>();
 
     @Override
     protected int getContentViewId() {
@@ -89,6 +91,14 @@ public class MainNewActivity extends BaseActivity {
                 .addItem(newItem(R.drawable.gouwuchehui,R.drawable.gouwuchehong,"购物车"))
                 .addItem(newItem(R.drawable.wodehui,R.drawable.wodehong,"我的"))
                 .build();
+        mFragmentList.add(new HomeVLFragment());
+        mFragmentList.add(new CartFragment());
+        mFragmentList.add(new ChatFragment());
+        mFragmentList.add(new MineFragment());
+        mFragmentList.add(new CartFragment());
+        mMainAdapter = new VpFragmentAdapter(getSupportFragmentManager(), mFragmentList);
+        navigationController.setupWithViewPager(viewPager);
+        viewPager.setAdapter(mMainAdapter);
     }
 
     @Override

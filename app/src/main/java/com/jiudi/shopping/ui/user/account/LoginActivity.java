@@ -1,8 +1,10 @@
 package com.jiudi.shopping.ui.user.account;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -17,19 +19,15 @@ import com.aykj.mustinsert.MustInsert;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.bean.UserBean;
-import com.jiudi.shopping.event.UpdateLoginStateEvent;
 import com.jiudi.shopping.event.WechatLoginEvent;
-import com.jiudi.shopping.event.WechatPayEvent;
-import com.jiudi.shopping.global.Constant;
 import com.jiudi.shopping.global.LocalApplication;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
-import com.jiudi.shopping.ui.main.MainActivity;
+import com.jiudi.shopping.ui.main.MainNewOldActivity;
 import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
-import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.MD5Util;
 import com.jiudi.shopping.util.NetworkUtil;
 import com.jiudi.shopping.util.SPUtil;
@@ -54,10 +52,10 @@ public class LoginActivity extends BaseActivity {
 
     private ImageView back;
     private TextView register;
-    private android.widget.LinearLayout phoneL;
+    private LinearLayout phoneL;
     private EditText phone;
     private ImageView pwdI;
-    private android.widget.LinearLayout yanzhengmaL;
+    private LinearLayout yanzhengmaL;
     private EditText yanzhengma;
     private TextView yanzhengmaT;
     private TextView pwdT;
@@ -65,10 +63,11 @@ public class LoginActivity extends BaseActivity {
     private ImageView weixinlogin;
     private EditText pwd;
     private LinearLayout pwdL;
-    private int loginflag=2;//1-》手机密码 2-》手机验证码 3-》第三方
+    private int loginflag = 2;//1-》手机密码 2-》手机验证码 3-》第三方
     private boolean mShowPwd = false;
-    private String wx_code="";
+    private String wx_code = "";
     private CountDownTimer mTimer;
+    private TextView weixinloginb;
 
 
     @Override
@@ -98,6 +97,7 @@ public class LoginActivity extends BaseActivity {
         weixinlogin = (ImageView) findViewById(R.id.weixinlogin);
         pwd = (EditText) findViewById(R.id.pwd);
         pwdL = (LinearLayout) findViewById(R.id.pwd_l);
+        weixinloginb = (TextView) findViewById(R.id.weixinloginb);
     }
 
     @Override
@@ -118,26 +118,28 @@ public class LoginActivity extends BaseActivity {
         buildView();
     }
 
-    public void buildView(){
-        if(loginflag==1){
+    public void buildView() {
+        if (loginflag == 1) {
             pwdL.setVisibility(View.VISIBLE);
             yanzhengmaL.setVisibility(View.GONE);
             pwdT.setText("使用手机验证码登录");
         }
-        if(loginflag==2){
+        if (loginflag == 2) {
             pwdL.setVisibility(View.GONE);
             yanzhengmaL.setVisibility(View.VISIBLE);
             pwdT.setText("使用密码登录");
 
         }
-        if(loginflag==3){
+        if (loginflag == 3) {
 
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        initView();
     }
 
     @Override
@@ -150,20 +152,19 @@ public class LoginActivity extends BaseActivity {
     public void initEvent() {
 
 
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity,RegisterActivity.class));
-            }
-        });
+//        register.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(mActivity, RegisterActivity.class));
+//            }
+//        });
         pwdT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(loginflag==1){
-                    loginflag=2;
-                }else{
-                    loginflag=1;
+                if (loginflag == 1) {
+                    loginflag = 2;
+                } else {
+                    loginflag = 1;
                 }
                 buildView();
             }
@@ -185,14 +186,14 @@ public class LoginActivity extends BaseActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(loginflag==1){
-                    if(MustInsert.checkAllText(mActivity,phone,pwd)){
+                if (loginflag == 1) {
+                    if (MustInsert.checkAllText(mActivity, phone, pwd)) {
 
                         login();
                     }
                 }
-                if(loginflag==2){
-                    if(MustInsert.checkAllText(mActivity,phone,yanzhengma)){
+                if (loginflag == 2) {
+                    if (MustInsert.checkAllText(mActivity, phone, yanzhengma)) {
 
                         login();
                     }
@@ -200,10 +201,17 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
+        weixinloginb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginflag = 3;
+                WechatUtil.wechatLogin(LocalApplication.mIWXApi);
+            }
+        });
         weixinlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginflag=3;
+                loginflag = 3;
                 WechatUtil.wechatLogin(LocalApplication.mIWXApi);
             }
         });
@@ -222,11 +230,12 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
+
     private void getCode(final String phone) {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         map.put("type", "login");
-        RequestManager.mRetrofitManager3
+        RequestManager.mRetrofitManager
                 .createRequest(RetrofitRequestInterface.class)
                 .getCode(RequestManager.encryptParams(map))
                 .enqueue(new RetrofitCallBack() {
@@ -238,20 +247,19 @@ public class LoginActivity extends BaseActivity {
                             int code = res.getInt("code");
                             String info = res.getString("data");
 
-                            if (code == 0) {
+                            String msg = res.get("msg").toString();
+
+                            if (code == 200) {
                                 ToastUtil.showShort(mContext, info);
 
-                            } else if (code == 1) {
-                                ToastUtil.showShort(mContext, info);
-                            } else if (code == 2) {
-                                ToastUtil.showShort(mContext, info);
                             } else {
-                                ToastUtil.showShort(mContext, info);
+                                ToastUtil.showShort(mContext, msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Throwable t) {
                         DialogUtil.hideProgress();
@@ -266,20 +274,20 @@ public class LoginActivity extends BaseActivity {
 
     private void login() {
         Map<String, String> map = new HashMap<>();
-        if(loginflag==1){
+        if (loginflag == 1) {
             map.put("account", phone.getText().toString());
             map.put("passwd", MD5Util.getMD5Str(pwd.getText().toString()));
         }
-        if(loginflag==2){
+        if (loginflag == 2) {
             map.put("tel", phone.getText().toString());
             map.put("code", yanzhengma.getText().toString());
         }
-        if(loginflag==3){
+        if (loginflag == 3) {
 
-            map.put("wx_code",wx_code);
+            map.put("wx_code", wx_code);
         }
-        map.put("flag", loginflag+"");
-        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).login(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        map.put("flag", loginflag + "");
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).login(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -287,18 +295,31 @@ public class LoginActivity extends BaseActivity {
                     int code = res.getInt("code");
                     String info = res.getString("msg");
                     if (code == 200) {
-                        String data=res.optString("data");
+                        JSONObject data = res.getJSONObject("data");
                         AccountManager.sUserBean = new UserBean();
-//                        AccountManager.sUserBean.account=phone.getText().toString();
-//                        AccountManager.sUserBean.passwd=pwd.getText().toString();
-                        AccountManager.sUserBean.head=data;
+                        AccountManager.sUserBean.head = data.getString("token");
+                        AccountManager.sUserBean.phone = phone.getText().toString();
+                        AccountManager.sUserBean.passwd = pwd.getText().toString();
                         System.out.println(data);
-                        SPUtil.put("head",data);
-                        ToastUtil.showShort(mContext, "登录成功");
-                        startActivity(new Intent(mActivity, MainActivity.class));
-                        finish();
-                    }else{
-                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
+                        int first=data.optInt("first");
+                        String token=data.getString("token");
+                        System.out.println("临时Token："+token);
+                        if(first==1){
+                            ToastUtil.showShort(mContext, "需要完善信息");
+                            SPUtil.put("head2", token);
+                            startActivityForResult(new Intent(mActivity, RegisterActivity.class).putExtra("type",loginflag),100);
+                        }else{
+                            ToastUtil.showShort(mContext, "登录成功");
+                            SPUtil.put("head", token);
+                            startActivity(new Intent(mActivity, MainNewOldActivity.class));
+                            finish();
+                        }
+                    } else {
+                        Toast.makeText(mActivity, info, Toast.LENGTH_SHORT).show();
+                        if(info.contains("不存在")){
+                            startActivity(new Intent(mActivity, RegisterActivity.class).putExtra("type",loginflag));
+                        }
+
                     }
 
                 } catch (JSONException e) {
@@ -312,15 +333,38 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWechatLoginEvent(WechatLoginEvent wechatPayEvent) {
-        wx_code=wechatPayEvent.getResult();
-        if(wx_code==null){
-            loginflag=2;
+        wx_code = wechatPayEvent.getResult();
+        if (wx_code == null) {
+            loginflag = 2;
             buildView();
-        }else{
+        } else {
 
             login();
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        SPUtil.put("head", "");
+//        if(AccountManager.sUserBean!=null){
+//            AccountManager.sUserBean.head=null;
+//        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100){
+            if(resultCode== Activity.RESULT_OK){
+                Intent intent = new Intent(mActivity, MainNewOldActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
 
     }

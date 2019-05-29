@@ -84,7 +84,7 @@ public class AddressListActivity extends BaseActivity {
     }
     private void getAddressList() {
         Map<String, String> map = new HashMap<>();
-        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getAddressList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getAddressList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {

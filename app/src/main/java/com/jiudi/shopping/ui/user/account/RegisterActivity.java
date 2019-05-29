@@ -1,5 +1,6 @@
 package com.jiudi.shopping.ui.user.account;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +26,7 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.main.MainActivity;
+import com.jiudi.shopping.ui.main.MainNewOldActivity;
 import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.LogUtil;
@@ -57,6 +59,7 @@ public class RegisterActivity extends BaseActivity {
     private boolean mShowPwd = false;
     private LinearLayout ycodeL;
     private EditText ycode;
+    private int type=0;//1账号密码注册2验证码登录注册3微信信息绑定
 
     @Override
     public boolean isNoNeedLogin() {
@@ -152,29 +155,47 @@ public class RegisterActivity extends BaseActivity {
                 yanzhengmaT.setText(R.string.get_verify_code);
             }
         };
+        type=getIntent().getIntExtra("type",0);
+        if(type==1){
+            phone.setText(AccountManager.sUserBean.phone);
+            pwdL.setVisibility(View.VISIBLE);
+        }
+        if(type==2){
+            phone.setText(AccountManager.sUserBean.phone);
+        }
+
     }
     private void regsiter(final String phone, final String code, final String password) {
         Map<String, String> map = new HashMap<>();
-        map.put("invite_code",ycode.getText().toString());
-        map.put("phone", phone);
-        map.put("code", code);
-        map.put("pwd", password);
-//        map.put("invite_code", "1");//客户端类别 android为1，ios为2
-        RequestManager.mRetrofitManager3
-                .createRequest(RetrofitRequestInterface.class)
-                .register(RequestManager.encryptParams(map))
-                .enqueue(new RetrofitCallBack() {
 
-                    @Override
-                    public void onSuccess(String response) {
-                        DialogUtil.hideProgress();
-                        try {
+        if(type==1){
+            map.put("invite_code",ycode.getText().toString());
+            map.put("phone", phone);
+            map.put("code", code);
+            map.put("pwd", password);
+        }else{
+            map.put("invite_code",ycode.getText().toString());
+            map.put("phone", phone);
+            map.put("code", code);
+            map.put("passwd", password);
+            map.put("type",type+"");
+        }
+        if(type==1){
+            RequestManager.mRetrofitManager
+                    .createRequest(RetrofitRequestInterface.class)
+                    .register(RequestManager.encryptParams(map))
+                    .enqueue(new RetrofitCallBack() {
 
-                            JSONObject res = new JSONObject(response);
-                            int code = res.getInt("code");
-                            String info = res.getString("data");
-                            ToastUtil.showShort(mContext, info);
-                            if (code == 200) {
+                        @Override
+                        public void onSuccess(String response) {
+                            DialogUtil.hideProgress();
+                            try {
+
+                                JSONObject res = new JSONObject(response);
+                                int code = res.getInt("code");
+                                String info = res.getString("data");
+                                ToastUtil.showShort(mContext, info);
+                                if (code == 200) {
 //                                JSONObject data = res.getJSONObject("data");
 //                                AccountManager.sUserBean = new UserBean();
 //                                AccountManager.sUserBean.account=phone;
@@ -186,36 +207,92 @@ public class RegisterActivity extends BaseActivity {
 //                                AccountManager.sUserBean.setNickName(data.getString("nicename"));
 //                                AccountManager.sUserBean.setHeadPortrait(data.getString("avatar"));
 
-                                Toast.makeText(mActivity,res.getString("data"),Toast.LENGTH_SHORT).show();
-                                String userBase64 = CommonUtil.objectToBase64(AccountManager.sUserBean);
-                                SPUtil.put(Constant.USER, userBase64);
-                                Intent intent = new Intent(mActivity, LoginActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }else{
-                                Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mActivity,res.getString("data"),Toast.LENGTH_SHORT).show();
+                                    String userBase64 = CommonUtil.objectToBase64(AccountManager.sUserBean);
+                                    SPUtil.put(Constant.USER, userBase64);
+                                    Intent intent = new Intent(mActivity, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }else{
+                                    Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        if (!NetworkUtil.isConnected()) {
-                            ToastUtil.showShort(mActivity, getString(R.string.net_error));
-                        } else {
-                            ToastUtil.showShort(mActivity, getString(R.string.network_error));
+                        @Override
+                        public void onError(Throwable t) {
+                            if (!NetworkUtil.isConnected()) {
+                                ToastUtil.showShort(mActivity, getString(R.string.net_error));
+                            } else {
+                                ToastUtil.showShort(mActivity, getString(R.string.network_error));
+                            }
                         }
-                    }
-                });
+                    });
+        }else{
+            RequestManager.mRetrofitManager
+                    .createRequest(RetrofitRequestInterface.class)
+                    .savePhone(SPUtil.get("head2", "").toString(),RequestManager.encryptParams(map))
+                    .enqueue(new RetrofitCallBack() {
+
+                        @Override
+                        public void onSuccess(String response) {
+                            DialogUtil.hideProgress();
+                            try {
+
+                                JSONObject res = new JSONObject(response);
+                                int code = res.getInt("code");
+                                String info = res.getString("data");
+                                ToastUtil.showShort(mContext, info);
+                                if (code == 200) {
+//                                JSONObject data = res.getJSONObject("data");
+//                                AccountManager.sUserBean = new UserBean();
+//                                AccountManager.sUserBean.account=phone;
+//                                AccountManager.sUserBean.passwd=password;
+
+//                                AccountManager.sUserBean.setId(data.getString("id"));
+//                                AccountManager.sUserBean.setTelNumber(phone);
+//                                AccountManager.sUserBean.setPassWord(password);
+//                                AccountManager.sUserBean.setNickName(data.getString("nicename"));
+//                                AccountManager.sUserBean.setHeadPortrait(data.getString("avatar"));
+
+                                    Toast.makeText(mActivity,res.getString("data"),Toast.LENGTH_SHORT).show();
+                                    String userBase64 = CommonUtil.objectToBase64(AccountManager.sUserBean);
+                                    SPUtil.put(Constant.USER, userBase64);
+                                    SPUtil.put("head", SPUtil.get("head2", "").toString());
+                                    setResult(Activity.RESULT_OK);
+                                    finish();
+                                }else{
+                                    Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            if (!NetworkUtil.isConnected()) {
+                                ToastUtil.showShort(mActivity, getString(R.string.net_error));
+                            } else {
+                                ToastUtil.showShort(mActivity, getString(R.string.network_error));
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void getCode(final String phone) {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
-        map.put("type", "reg");
-        RequestManager.mRetrofitManager3
+        if(type==1){
+            map.put("type", "reg");
+        }else{
+            map.put("type", "invite");
+        }
+        RequestManager.mRetrofitManager
                 .createRequest(RetrofitRequestInterface.class)
                 .getCode(RequestManager.encryptParams(map))
                 .enqueue(new RetrofitCallBack() {
@@ -226,16 +303,13 @@ public class RegisterActivity extends BaseActivity {
                             JSONObject res = new JSONObject(response);
                             int code = res.getInt("code");
                             String info = res.getString("data");
+                            String msg = res.get("msg").toString();
 
-                            if (code == 0) {
+                            if (code == 200) {
                                 ToastUtil.showShort(mContext, info);
 
-                            } else if (code == 1) {
-                                ToastUtil.showShort(mContext, info);
-                            } else if (code == 2) {
-                                ToastUtil.showShort(mContext, info);
                             } else {
-                                ToastUtil.showShort(mContext, info);
+                                ToastUtil.showShort(mContext, msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -253,5 +327,10 @@ public class RegisterActivity extends BaseActivity {
                 });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        SPUtil.put("head", "");
+//        AccountManager.sUserBean.head=null;
+    }
 }

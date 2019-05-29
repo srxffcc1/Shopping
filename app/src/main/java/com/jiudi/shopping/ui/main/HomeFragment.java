@@ -280,7 +280,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         Map<String, String> map = new HashMap<>();
         map.put("first", page + "");
         map.put("limit", limit+"");
-        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getGodsList(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGodsList(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
 
@@ -412,7 +412,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 ////            map.put("customer_id", AccountManager.sUserBean.getId());
 //        }
 //        map.put("pid", "2");
-        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getFlash(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getFlash(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 LogUtil.e(TAG, response);

@@ -5,11 +5,9 @@ import java.util.regex.Pattern;
 
 public class MyClass {
     public static void main(String[] args) {
-        String org="      \"noBuy\": 0,\n" +
-                "      \"noPostage\": \"0\",\n" +
-                "      \"noTake\": 0,\n" +
-                "      \"noReply\": 0,\n" +
-                "      \"noPink\": 0";
+        String org="            \"id\": 19,\n" +
+                "            \"cate_name\": \"办公设备\",\n" +
+                "            \"child\": [";
         //parm参数
         Pattern pattern=null;
         Matcher matcher=null;

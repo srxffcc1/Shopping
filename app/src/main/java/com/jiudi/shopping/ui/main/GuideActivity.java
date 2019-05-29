@@ -10,6 +10,7 @@ import android.view.View;
 import com.chezi008.libguide.BaseGuideActivity;
 import com.chezi008.libguide.BezierBannerDot;
 import com.jiudi.shopping.R;
+import com.jiudi.shopping.ui.user.account.LoginActivity;
 
 public class GuideActivity extends BaseGuideActivity {
 
@@ -28,7 +29,7 @@ public class GuideActivity extends BaseGuideActivity {
     public void passapp(View view){
         SharedPreferences sp=getSharedPreferences("config", Context.MODE_PRIVATE);
         sp.edit().putBoolean("isfirstinstall",false).commit();
-        startActivity(new Intent(view.getContext(),MainActivity.class));
+        startActivity(new Intent(view.getContext(), LoginActivity.class));
         finish();
     }
 }

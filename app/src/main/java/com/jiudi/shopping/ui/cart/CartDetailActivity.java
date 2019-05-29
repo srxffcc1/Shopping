@@ -57,6 +57,7 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.main.MainActivity;
+import com.jiudi.shopping.ui.main.MainNewOldActivity;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.WechatUtil;
 import com.m7.imkfsdk.KfStartHelper;
@@ -593,7 +594,7 @@ public InputStream getImageStream(String path) throws Exception {
             public void onClick(View v) {
 
                 MobclickAgent.onEvent(mActivity,"B_goods_bottom_buy");
-                startActivity(new Intent(mActivity, MainActivity.class));
+                startActivity(new Intent(mActivity, MainNewOldActivity.class));
                 EventBus.getDefault().post(new CartEvent());
                 EventBus.getDefault().post(new PassCartEvent());
             }

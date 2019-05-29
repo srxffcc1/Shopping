@@ -85,12 +85,12 @@ public class LocalApplication extends ZApplication {
         RequestManager.mRetrofitManager = new RetrofitManager.Builder()
                 .baseUrl(RequestManager.mBaseUrl)
                 .build();
-        RequestManager.mRetrofitManager2 = new RetrofitManager.Builder()
-                .baseUrl(RequestManager.mBaseUrl2)
-                .build();
-        RequestManager.mRetrofitManager3 = new RetrofitManager.Builder()
-                .baseUrl(RequestManager.mBaseUrl3)
-                .build();
+//        RequestManager.mRetrofitManager2 = new RetrofitManager.Builder()
+//                .baseUrl(RequestManager.mBaseUrl2)
+//                .build();
+//        RequestManager.mRetrofitManager = new RetrofitManager.Builder()
+//                .baseUrl(RequestManager.mBaseUrl3)
+//                .build();
     }
     /**
      * 注册到微信

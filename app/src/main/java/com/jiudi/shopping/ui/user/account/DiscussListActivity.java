@@ -226,7 +226,7 @@ public class DiscussListActivity extends BaseActivity {
                         RequestOptions options = new RequestOptions()
                                 .fitCenter()
                                 .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
-                        Glide.with(mActivity).load(carChoiceBean.avatar.startsWith("http")?carChoiceBean.avatar:RequestManager.mBaseUrl3+carChoiceBean.avatar).apply(options).into(imageView);
+                        Glide.with(mActivity).load(carChoiceBean.avatar.startsWith("http")?carChoiceBean.avatar:RequestManager.mBaseUrl+carChoiceBean.avatar).apply(options).into(imageView);
                     }
 
                     ((TextView)holder.itemView.findViewById(R.id.time)).setText(""+ TimeUtil.formatLong(carChoiceBean.add_time));

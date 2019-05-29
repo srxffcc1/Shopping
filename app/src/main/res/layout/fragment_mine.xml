@@ -269,6 +269,7 @@
                     android:src="@drawable/next_blue" />
             </LinearLayout>
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/mymoney"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
@@ -310,7 +311,7 @@
                     android:drawableLeft="@drawable/fenxiaozhongxin"
                     android:drawablePadding="@dimen/dp_10"
                     android:gravity="center"
-                    android:text="分销中心"
+                    android:text="店主权益"
                     android:textColor="@color/colorTitle"
                     android:textSize="@dimen/sp_14"/>
 
@@ -326,6 +327,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/myup"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 android:gravity="center_vertical"

@@ -77,14 +77,14 @@ public class SplashActivity extends BaseActivity {
             Log.v("Head",SPUtil.get("head", "").toString());
             autoLogin(true);
         } else {
-            startActivity(new Intent(mActivity, MainActivity.class));
+            startActivity(new Intent(mActivity, LoginActivity.class));
             finish();
         }
     }
 
     private void autoLogin(boolean b) {
         Map<String, String> map = new HashMap<>();
-        RequestManager.mRetrofitManager3.createRequest(RetrofitRequestInterface.class).getPersonalDate(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getPersonalDate(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
@@ -140,24 +140,23 @@ public class SplashActivity extends BaseActivity {
                                 e.printStackTrace();
                             }
                             AccountManager.sUserBean=bean;
-                            startActivity(new Intent(mActivity, MainActivity.class));
+                            startActivity(new Intent(mActivity, MainNewOldActivity.class));
                             finish();
                         }else{
-
                             AccountManager.sUserBean=null;
-                            startActivity(new Intent(mActivity, MainActivity.class));
+                            startActivity(new Intent(mActivity, LoginActivity.class));
                             finish();
                         }
                     }else{
                         AccountManager.sUserBean=null;
-                        startActivity(new Intent(mActivity, MainActivity.class));
+                        startActivity(new Intent(mActivity, LoginActivity.class));
                         finish();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     AccountManager.sUserBean=null;
-                    startActivity(new Intent(mActivity, MainActivity.class));
+                    startActivity(new Intent(mActivity, LoginActivity.class));
                     finish();
                 }
             }
@@ -165,7 +164,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onError(Throwable t) {
                 AccountManager.sUserBean=null;
-                startActivity(new Intent(mActivity, MainActivity.class));
+                startActivity(new Intent(mActivity, LoginActivity.class));
                 finish();
             }
         });

@@ -67,7 +67,11 @@
         android:theme="@style/MyTheme">
 
         <activity android:name="com.jiudi.shopping.ui.main.SplashActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <!-- tools:replace="android:value" -->
         <activity android:name="com.jiudi.shopping.ui.main.MainActivity" android:launchMode="singleTask">
@@ -176,12 +180,9 @@
         <activity android:name=".ui.user.ShowImageActivity" />
         <activity android:name=".ui.main.SearchShopBeforeActivity" />
         <activity android:name=".ui.main.MainNewActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
+        <activity android:name=".ui.main.MainNewOldActivity" />
 
 
     </application>

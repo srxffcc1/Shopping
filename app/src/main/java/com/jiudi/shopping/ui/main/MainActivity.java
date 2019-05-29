@@ -159,8 +159,8 @@ public class MainActivity extends BaseActivity {
             mMainTL.addTab(tab);
         }
         mFragmentList.add(new HomeFragment());
+        mFragmentList.add(new TypeFragment());
         mFragmentList.add(new CartFragment());
-        mFragmentList.add(new ChatFragment());
         mFragmentList.add(new MineFragment());
         mMainAdapter = new VpFragmentAdapter(getSupportFragmentManager(), mFragmentList);
 
@@ -175,10 +175,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mMainVP.setCurrentItem(tab.getPosition(), false);
-                if(tab.getPosition()==2){//说明按到了
-                    iskefu = true;
-                    helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",REQUEST_CODE_OPENCHAT);//陈辰正式
-                }
+//                if(tab.getPosition()==2){//说明按到了
+//                    iskefu = true;
+//                    helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",REQUEST_CODE_OPENCHAT);//陈辰正式
+//                }
                 if(tab.getPosition()==0){
 
                     MobclickAgent.onEvent(mActivity,"A_bottom_index");
@@ -204,9 +204,9 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                if(tab.getPosition()==2){//说明按到了
-                    helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",REQUEST_CODE_OPENCHAT);//陈辰正式
-                }
+//                if(tab.getPosition()==2){//说明按到了
+//                    helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",REQUEST_CODE_OPENCHAT);//陈辰正式
+//                }
             }
         });
         mMainVP.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mMainTL));

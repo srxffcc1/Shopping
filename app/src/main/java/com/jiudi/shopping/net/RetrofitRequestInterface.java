@@ -64,6 +64,12 @@ public interface RetrofitRequestInterface {
     Call<String> getHotList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
+    /*商品类别*/
+    @FormUrlEncoded
+    @POST("api/auth_api/get_product_category")
+    Call<String> getTypeList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
     /*商品查询*/
     @FormUrlEncoded
     @POST("api/auth_api/get_product_list")
@@ -273,7 +279,7 @@ public interface RetrofitRequestInterface {
 
     /*支付检查*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "CheckPay")
+//    @POST(RequestManager.mInterfacePrefix + "CheckPay")
     Call<String> checkPay(@FieldMap Map<String, String> params);
 
     /*支付检查动态设置url*/
@@ -300,6 +306,11 @@ public interface RetrofitRequestInterface {
     @POST("api/login/regist")
     Call<String> register(@FieldMap Map<String, String> params);
 
+    /*用户完善信息          页面还有问题需要修改*/
+    @FormUrlEncoded
+    @POST("api/login/savephone")
+    Call<String> savePhone(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
 
     /*用户登录*/
     @FormUrlEncoded
@@ -309,17 +320,17 @@ public interface RetrofitRequestInterface {
 
     /*发送修改密码验证码，并验证号码是否正确*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "GetCode2")
+//    @POST(RequestManager.mInterfacePrefix + "GetCode2")
     Call<String> sendUpdatePasswordCode(@FieldMap Map<String, String> params);
 
     /*修改用户密码*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "ChangePwd")
+//    @POST(RequestManager.mInterfacePrefix + "ChangePwd")
     Call<String> updatePassword(@FieldMap Map<String, String> params);
 
     /*修改用户密码*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "OverLookPass")
+//    @POST(RequestManager.mInterfacePrefix + "OverLookPass")
     Call<String> forgetPassword(@FieldMap Map<String, String> params);
 
     /*上传用户头像*/
@@ -329,31 +340,31 @@ public interface RetrofitRequestInterface {
 
     /*问题列表*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "GetHelpList")
+//    @POST(RequestManager.mInterfacePrefix + "GetHelpList")
     Call<String> questionList(@FieldMap Map<String, String> params);
 
 
     /*切换省市区1*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "ChooseCity")
+//    @POST(RequestManager.mInterfacePrefix + "ChooseCity")
     Call<String> getChooseCity(@FieldMap Map<String, String> params);
 
 
     /*关于我们bug*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + " ")
+//    @POST(RequestManager.mInterfacePrefix + " ")
     Call<String> showAboutUs(@FieldMap Map<String, String> params);
 
     /*提交意见反馈*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + " ")
+//    @POST(RequestManager.mInterfacePrefix + " ")
     Call<String> addOpinion(@FieldMap Map<String, String> params);
 
 
 
     /*个人信息修改bug*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "usercapital/changePersonalDate.do")
+//    @POST(RequestManager.mInterfacePrefix + "usercapital/changePersonalDate.do")
     Call<String> changePersonalDate(@FieldMap Map<String, String> params);
 
     /*个人信息*/
@@ -364,19 +375,19 @@ public interface RetrofitRequestInterface {
 
     /*获取全部省市区信息*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "china/showAllChina.do")
+//    @POST(RequestManager.mInterfacePrefix + "china/showAllChina.do")
     Call<String> showAllChina(@FieldMap Map<String, String> params);
 
 
     /*我们的信息*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + " ")
+//    @POST(RequestManager.mInterfacePrefix + " ")
     Call<String> helpCenter(@FieldMap Map<String, String> params);
 
 
     /*判断系统版本*/
     @FormUrlEncoded
-    @POST(RequestManager.mInterfacePrefix + "CheckVersionforios")
+//    @POST(RequestManager.mInterfacePrefix + "CheckVersionforios")
     Call<String> getVersion(@FieldMap Map<String, String> params);
 
 

@@ -73,7 +73,7 @@ public class VDiscussAdapter extends DelegateAdapter.Adapter{
                         .fitCenter()
                         .error(R.drawable.cart_head)
                         .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
-                Glide.with(context).load(bean.getAvatar().startsWith("http")?bean.getAvatar(): RequestManager.mBaseUrl3+bean.getAvatar()).apply(options).into(imageView);
+                Glide.with(context).load(bean.getAvatar().startsWith("http")?bean.getAvatar(): RequestManager.mBaseUrl+bean.getAvatar()).apply(options).into(imageView);
             }
 
             ((TextView)holder.itemView.findViewById(R.id.time)).setText(""+bean.getAdd_time());

@@ -94,7 +94,7 @@ public class ChooseCityActivity extends BaseActivity {
     }
     public void initCity(){
         Map<String, String> map = new HashMap<>();
-        RequestManager.mRetrofitManager3
+        RequestManager.mRetrofitManager
                 .createRequest(RetrofitRequestInterface.class)
                 .getAllCityDy(getIntent().getStringExtra("url"), RequestManager.encryptParams(map))
                 .enqueue(new RetrofitCallBack() {
