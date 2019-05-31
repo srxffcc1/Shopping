@@ -97,7 +97,11 @@ public class CartFragment extends BaseFragment {
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFlashEvent(FlashEvent wechatPayEvent) {
-        getShopList();
+        try {
+            getShopList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

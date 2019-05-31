@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/yindao_bg"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/pass"
+            android:layout_centerInParent="true"
+            android:src="@drawable/yindao_pass1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/button"
+            android:layout_below="@id/pass"
+            android:layout_marginTop="-80dp"
+            android:src="@drawable/yindao_kai1"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_above="@id/pass"
+            android:padding="10dp"
+            android:id="@+id/close"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/yindao_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</LinearLayout>

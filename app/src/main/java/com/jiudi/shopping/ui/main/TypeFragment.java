@@ -116,7 +116,7 @@ public class TypeFragment extends BaseFragment {
             need.addView(buildTagParent(godTypeP.cate_name,godTypeP.child,false));
         }
     }
-    private View buildTagParent(String title, final List<GodTypeC> needshow, boolean candelete) {
+    private View buildTagParent(final String title, final List<GodTypeC> needshow, boolean candelete) {
 
         LinearLayout tagparent = (LinearLayout) View.inflate(mActivity, R.layout.item_carchoiceflowpass, null);
         TextView textView=tagparent.findViewById(R.id.title);
@@ -131,6 +131,12 @@ public class TypeFragment extends BaseFragment {
             });
         }
         textView.setText(title);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity,SearchShopActivity.class).putExtra("keyword",title));
+            }
+        });
         TagFlowLayout tagFlowLayout=(TagFlowLayout) tagparent.findViewById(R.id.id_flowlayout);
         tagFlowLayout.setAdapter( new TagAdapter<GodTypeC>(needshow){
 
@@ -149,7 +155,11 @@ public class TypeFragment extends BaseFragment {
         tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-
+                try {
+                    startActivity(new Intent(mActivity,SearchShopActivity.class).putExtra("keyword",needshow.get(position).cate_name));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -169,6 +179,12 @@ public class TypeFragment extends BaseFragment {
                 }
             });
         }
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity,SearchShopActivity.class).putExtra("keyword",""));
+            }
+        });
         textView.setText(title);
         return tagparent;
     }

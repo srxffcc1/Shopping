@@ -2,15 +2,21 @@ package com.jiudi.shopping.ui.user.account;
 
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dengzq.simplerefreshlayout.SimpleRefreshLayout;
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,11 +29,14 @@ import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
 import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.bean.OrderEvent;
+import com.jiudi.shopping.bean.TabEntity;
 import com.jiudi.shopping.bean.YongJin;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.ui.user.OrderFragment;
 import com.jiudi.shopping.util.DisplayUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.widget.DividerItemDecoration;
@@ -35,6 +44,7 @@ import com.jiudi.shopping.widget.SimpleBottomView;
 import com.jiudi.shopping.widget.SimpleLoadView;
 import com.jiudi.shopping.widget.SimpleRefreshView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,146 +57,60 @@ import java.util.List;
 import java.util.Map;
 
 public class FenXiaoAccountActivity extends BaseActivity {
-    private TextView yongjinbiaoti;
-    private TextView money;
-    private RecyclerView recycler;
-    private List<YongJin> mCarChoiceList = new ArrayList<>();
-    private RecyclerCommonAdapter<YongJin> mCarBeanAdapter;
-    private int page=0;
-    private int limit=20;
-    private android.widget.ImageView back;
-    private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
-    private android.support.v4.widget.NestedScrollView nest;
-    private boolean stoploadmore=false;
+    private android.widget.RelativeLayout rlLayoutTopBackBar;
+    private android.widget.LinearLayout llLayoutTopBackBarBack;
+    private android.widget.TextView tvLayoutTopBackBarTitle;
+    private android.widget.TextView tvLayoutTopBackBarEnd;
+    private android.widget.TextView tvLayoutBackTopBarOperate;
+    private com.flyco.tablayout.CommonTabLayout tl;
+    private String[] mTitles = {"全部", "商品激励", "粉丝激励"};
+    private ArrayList<Fragment> mFragments = new ArrayList<>();
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+    private android.widget.FrameLayout flChange;
 
     @Override
     protected int getContentViewId() {
-        return R.layout.activity_fenxiaouser_account;
+        return R.layout.activity_ordergood;
     }
 
     @Override
     public void initView() {
 
-        yongjinbiaoti = (TextView) findViewById(R.id.yongjinbiaoti);
-        money = (TextView) findViewById(R.id.money);
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-        back = (ImageView) findViewById(R.id.back);
-        simpleRefresh = (SimpleRefreshLayout) findViewById(R.id.simple_refresh);
-        nest = (NestedScrollView) findViewById(R.id.nest);
+        rlLayoutTopBackBar = (RelativeLayout) findViewById(R.id.rl_layout_top_back_bar);
+        llLayoutTopBackBarBack = (LinearLayout) findViewById(R.id.ll_layout_top_back_bar_back);
+        tvLayoutTopBackBarTitle = (TextView) findViewById(R.id.tv_layout_top_back_bar_title);
+        tvLayoutTopBackBarEnd = (TextView) findViewById(R.id.tv_layout_top_back_bar_end);
+        tvLayoutBackTopBarOperate = (TextView) findViewById(R.id.tv_layout_back_top_bar_operate);
+        tl = (CommonTabLayout) findViewById(R.id.tl);
+        flChange = (FrameLayout) findViewById(R.id.fl_change);
+        tvLayoutTopBackBarTitle.setText("收入明细");
     }
 
     @Override
     public void initData() {
-        money.setText(AccountManager.sUserBean.now_money);
-        getList();
-        simpleRefresh.setScrollEnable(true);
-        simpleRefresh.setPullUpEnable(true);
-        simpleRefresh.setPullDownEnable(true);
-        simpleRefresh.setHeaderView(new SimpleRefreshView(mActivity));
-        simpleRefresh.setFooterView(new SimpleLoadView(mActivity));
-        simpleRefresh.setBottomView(new SimpleBottomView(mActivity));
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new TabEntity(mTitles[i]));
+        }
+        mFragments.add(new FenXiaoAccountFragment().setArgumentz("type","0"));
+        mFragments.add(new FenXiaoAccountFragment().setArgumentz("type","1"));
+        mFragments.add(new FenXiaoAccountFragment().setArgumentz("type","2"));
+        tl.setTabData(mTabEntities,this,R.id.fl_change,mFragments);
+        tl.setCurrentTab(getIntent().getIntExtra("type",0));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().post(new OrderEvent());
     }
 
     @Override
     public void initEvent() {
-        simpleRefresh.setOnSimpleRefreshListener(new SimpleRefreshLayout.OnSimpleRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        simpleRefresh.onRefreshComplete();
-                        simpleRefresh.onLoadMoreComplete();
-                    }
-                },500);
-                mCarChoiceList.clear();
-                page=0;
-                getList();
-            }
+        if (AccountManager.sUserBean != null) {
 
-            @Override
-            public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        simpleRefresh.onRefreshComplete();
-                        simpleRefresh.onLoadMoreComplete();
-                    }
-                },500);
-                if(stoploadmore){
-
-                    Toast.makeText(mActivity,"没有更多",Toast.LENGTH_SHORT).show();
-                }else{
-                    page=page+limit;
-                    getList();
-                }
-
-            }
-        });
-    }
-    private void getList() {
-        Map<String, String> map = new HashMap<>();
-        map.put("first", page + "");
-        map.put("limit", limit+"");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getYongJinList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
-            @Override
-            public void onSuccess(String response) {
-                try {
-                    JSONObject res = new JSONObject(response);
-                    int code = res.getInt("code");
-                    String info = res.getString("msg");
-                    if (code == 200) {
-                        GsonBuilder builder = new GsonBuilder();
-                        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-                            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                                return new Date(json.getAsJsonPrimitive().getAsLong());
-                            }
-                        });
-                        Gson gson = builder.create();
-                        Type cartStatusType = new TypeToken<List<YongJin>>() {
-                        }.getType();
-                        mCarChoiceList.addAll((Collection<? extends YongJin>) gson.fromJson(res.getJSONArray("data").toString(),cartStatusType));
-                        showCarChoiceRecycleView();
-                    }else{
-                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
-                    }
-                    if(mCarChoiceList.size()<1){
-                        stoploadmore=true;
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-            }
-        });
-    }
-    private void showCarChoiceRecycleView() {
-        if (mCarBeanAdapter == null) {
-
-
-            mCarBeanAdapter = new RecyclerCommonAdapter<YongJin>(mActivity, R.layout.item_yongjin, mCarChoiceList) {
-
-                @Override
-                protected void convert(ViewHolder holder, final YongJin carChoiceBean, int position) {
-                    holder.setText(R.id.content,carChoiceBean.mark);
-                    holder.setText(R.id.time,carChoiceBean.add_time);
-                    holder.setText(R.id.money,("1".equals(carChoiceBean.pm)?"+":"-")+carChoiceBean.number+"元");
-                    holder.setTextColor(R.id.money,"1".equals(carChoiceBean.pm)? Color.parseColor("#1e8f00") :Color.parseColor("#E9391C"));
-                }
-
-            };
-
-            recycler.addItemDecoration(RecyclerViewDivider.with(mActivity).size(2).color(Color.parseColor("#E9E8ED")).build());
-             recycler.setAdapter(mCarBeanAdapter);
-            recycler.setLayoutManager(new LinearLayoutManager(mActivity));
-        } else {
-
-            mCarBeanAdapter.notifyDataSetChanged();
+        }else{
+            finish();
         }
 
     }

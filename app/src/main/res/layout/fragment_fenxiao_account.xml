@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgcolorGray"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/title_case"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="您的粉丝中有0位成为了店主，为您分成累计0元"
+            android:textColor="#ff727272"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <com.dengzq.simplerefreshlayout.SimpleRefreshLayout
+        android:id="@+id/simple_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F8F9">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_fragment_home_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </com.dengzq.simplerefreshlayout.SimpleRefreshLayout>
+</LinearLayout>

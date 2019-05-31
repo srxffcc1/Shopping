@@ -40,16 +40,17 @@ public class FenXiaoNoActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id","4"));
+        finish();
     }
 
     @Override
     public void initEvent() {
-        passlibao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id","4"));
-            }
-        });
+//        passlibao.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id","4"));
+//            }
+//        });
     }
 }

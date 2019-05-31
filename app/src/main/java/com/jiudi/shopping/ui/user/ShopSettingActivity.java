@@ -12,6 +12,7 @@ import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.event.CloseMainEvent;
 import com.jiudi.shopping.event.FinishEvent;
 import com.jiudi.shopping.event.FlashEvent;
 import com.jiudi.shopping.manager.AccountManager;
@@ -97,7 +98,8 @@ public class ShopSettingActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 SPUtil.put("head","");
-                EventBus.getDefault().post(new FlashEvent());
+//                EventBus.getDefault().post(new FlashEvent());
+                EventBus.getDefault().post(new CloseMainEvent());
                 startActivity(new Intent(mActivity, LoginActivity.class));
                 finish();
             }

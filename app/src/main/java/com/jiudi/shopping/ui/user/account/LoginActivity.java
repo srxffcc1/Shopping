@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity {
     private boolean mShowPwd = false;
     private String wx_code = "";
     private CountDownTimer mTimer;
-    private TextView weixinloginb;
+    private View weixinloginb;
 
 
     @Override
@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity {
         weixinlogin = (ImageView) findViewById(R.id.weixinlogin);
         pwd = (EditText) findViewById(R.id.pwd);
         pwdL = (LinearLayout) findViewById(R.id.pwd_l);
-        weixinloginb = (TextView) findViewById(R.id.weixinloginb);
+        weixinloginb = (View) findViewById(R.id.weixinloginb);
     }
 
     @Override
@@ -139,7 +139,6 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        initView();
     }
 
     @Override
@@ -300,6 +299,7 @@ public class LoginActivity extends BaseActivity {
                         AccountManager.sUserBean.head = data.getString("token");
                         AccountManager.sUserBean.phone = phone.getText().toString();
                         AccountManager.sUserBean.passwd = pwd.getText().toString();
+                        AccountManager.sUserBean.needshowdialog=false;
                         System.out.println(data);
                         int first=data.optInt("first");
                         String token=data.getString("token");
@@ -307,6 +307,7 @@ public class LoginActivity extends BaseActivity {
                         if(first==1){
                             ToastUtil.showShort(mContext, "需要完善信息");
                             SPUtil.put("head2", token);
+                            AccountManager.sUserBean.needshowdialog=true;
                             startActivityForResult(new Intent(mActivity, RegisterActivity.class).putExtra("type",loginflag),100);
                         }else{
                             ToastUtil.showShort(mContext, "登录成功");
@@ -317,6 +318,9 @@ public class LoginActivity extends BaseActivity {
                     } else {
                         Toast.makeText(mActivity, info, Toast.LENGTH_SHORT).show();
                         if(info.contains("不存在")){
+                            AccountManager.sUserBean = new UserBean();
+                            AccountManager.sUserBean.phone = phone.getText().toString();
+                            AccountManager.sUserBean.passwd = pwd.getText().toString();
                             startActivity(new Intent(mActivity, RegisterActivity.class).putExtra("type",loginflag));
                         }
 
@@ -341,7 +345,6 @@ public class LoginActivity extends BaseActivity {
             loginflag = 2;
             buildView();
         } else {
-
             login();
         }
 

@@ -78,7 +78,7 @@ public class TiXianActivity extends BaseActivity {
         });
     }
     private void gettixian() {
-        Map<String, String> map = new HashMap<>();
+        final Map<String, String> map = new HashMap<>();
 //        map.put("customer_id", AccountManager.sUserBean.getId());
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).gettixian(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
@@ -107,6 +107,8 @@ public class TiXianActivity extends BaseActivity {
 
                         }
 
+                    }else{
+                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {

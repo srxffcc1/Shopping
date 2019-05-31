@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.jiudi.shopping.BuildConfig;
+import com.jiudi.shopping.base.CrashHelp;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 import com.jiudi.shopping.bean.UserBean;
@@ -59,6 +60,7 @@ public class LocalApplication extends ZApplication {
 
         UMConfigure.setProcessEvent(true);//支持多进程打点
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        CrashHelp.instance(this,null,"75bada20c9");
     }
 
     @Override

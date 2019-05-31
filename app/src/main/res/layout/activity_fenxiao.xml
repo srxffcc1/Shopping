@@ -43,7 +43,7 @@
             android:src="@drawable/fenxiao_head_icon" />
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/head"
@@ -54,22 +54,22 @@
             android:textColor="#ffffffff"
             android:textSize="15sp" />
         <TextView
-            android:id="@+id/code"
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
+            android:layout_below="@id/level"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/head"
             android:text=""
             android:textColor="#ffffffff"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/level"
+            android:id="@+id/code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/code"
+            android:layout_below="@id/name"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/head"
@@ -95,7 +95,7 @@
             android:id="@+id/moneyt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="可提现佣金"
+            android:text="我的现金"
             android:textColor="#ffffffff"
             android:textSize="17sp" />
 
@@ -142,7 +142,7 @@
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
                 android:padding="15dp"
-                android:text="我的佣金（7天后可提现）"
+                android:text="我的收益（7天后可提现）"
                 android:textColor="#ff6c6c6c"
                 android:textSize="13sp" />
 
@@ -155,7 +155,7 @@
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
                 android:padding="15dp"
-                android:text="累计获得佣金"
+                android:text="累计获得收益"
                 android:textColor="#ff6c6c6c"
                 android:textSize="13sp" />
 
@@ -168,7 +168,7 @@
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
                 android:padding="15dp"
-                android:text="累计已提佣金"
+                android:text="累计已提收益"
                 android:textColor="#ff6c6c6c"
                 android:textSize="13sp" />
             <LinearLayout
@@ -186,7 +186,7 @@
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:padding="15dp"
-                    android:text="佣金明细"
+                    android:text="收入明细"
                     android:textColor="#ff6c6c6c"
                     android:textSize="13sp" />
                 <TextView
@@ -207,6 +207,73 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_below="@+id/yongjinmingxil"
+                android:id="@+id/tuanduil"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tuandui"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/yaoqingrenl"
+                    android:drawableLeft="@drawable/kehuguanli"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="客户管理"
+                    android:textColor="#ff6c6c6c"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/tuanduiv"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tuandui"
+                    android:gravity="right|center_vertical"
+                    android:layout_alignParentRight="true"
+                    android:drawablePadding="10dp"
+                    android:padding="15dp"
+                    android:text=">"
+                    android:textColor="@color/colorRed"
+                    android:textSize="13sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_below="@+id/tuanduil"
+                android:id="@+id/haohuol"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/haohuo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/yaoqingrenl"
+                    android:drawableLeft="@drawable/haohuo2"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="我有好货"
+                    android:textColor="#ff6c6c6c"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/haohuov"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tuandui"
+                    android:gravity="right|center_vertical"
+                    android:layout_alignParentRight="true"
+                    android:drawablePadding="10dp"
+                    android:padding="15dp"
+                    android:text="商务联系>"
+                    android:textColor="@color/colorRed"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_below="@+id/haohuol"
                 android:id="@+id/yaoqingrenl"
                 android:layout_width="match_parent"
 
@@ -236,31 +303,24 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/zhishu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/yaoqingrenl"
-                android:drawableLeft="@drawable/zhishu"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:padding="15dp"
-                android:text="直属"
-                android:textColor="#ff6c6c6c"
-                android:textSize="13sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/zhishu"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/yaoqingrenl"-->
+                <!--android:drawableLeft="@drawable/zhishu"-->
+                <!--android:drawablePadding="10dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="15dp"-->
+                <!--android:text="直属"-->
+                <!--android:textColor="#ff6c6c6c"-->
+                <!--android:textSize="13sp" />-->
 
-            <TextView
-                android:id="@+id/tuandui"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/zhishu"
-                android:drawableLeft="@drawable/tuandui2"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:padding="15dp"
-                android:text="团队"
-                android:textColor="#ff6c6c6c"
-                android:textSize="13sp" />
+
+
+
+
+
 
             <TextView
                 android:id="@+id/weidaozhangyongjinv"
@@ -304,31 +364,20 @@
 
 
 
-            <TextView
-                android:id="@+id/zhishuv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/zhishu"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:padding="15dp"
-                android:text=""
-                android:textColor="@color/colorRed"
-                android:textSize="13sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/zhishuv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignTop="@+id/zhishu"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:drawablePadding="10dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="15dp"-->
+                <!--android:text=""-->
+                <!--android:textColor="@color/colorRed"-->
+                <!--android:textSize="13sp" />-->
 
-            <TextView
-                android:id="@+id/tuanduiv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tuandui"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:padding="15dp"
-                android:text=""
-                android:textColor="@color/colorRed"
-                android:textSize="13sp" />
+
         </RelativeLayout>
     </ScrollView>
 

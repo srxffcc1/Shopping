@@ -30,6 +30,7 @@ import com.jiudi.shopping.ui.main.MainNewOldActivity;
 import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.LogUtil;
+import com.jiudi.shopping.util.MD5Util;
 import com.jiudi.shopping.util.NetworkUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.ToastUtil;
@@ -172,12 +173,12 @@ public class RegisterActivity extends BaseActivity {
             map.put("invite_code",ycode.getText().toString());
             map.put("phone", phone);
             map.put("code", code);
-            map.put("pwd", password);
+            map.put("pwd",  MD5Util.getMD5Str(password));
         }else{
             map.put("invite_code",ycode.getText().toString());
             map.put("phone", phone);
             map.put("code", code);
-            map.put("passwd", password);
+            map.put("passwd", MD5Util.getMD5Str(password));
             map.put("type",type+"");
         }
         if(type==1){
@@ -193,7 +194,7 @@ public class RegisterActivity extends BaseActivity {
 
                                 JSONObject res = new JSONObject(response);
                                 int code = res.getInt("code");
-                                String info = res.getString("data");
+                                String info = res.getString("msg");
                                 ToastUtil.showShort(mContext, info);
                                 if (code == 200) {
 //                                JSONObject data = res.getJSONObject("data");
@@ -210,9 +211,10 @@ public class RegisterActivity extends BaseActivity {
                                     Toast.makeText(mActivity,res.getString("data"),Toast.LENGTH_SHORT).show();
                                     String userBase64 = CommonUtil.objectToBase64(AccountManager.sUserBean);
                                     SPUtil.put(Constant.USER, userBase64);
-                                    Intent intent = new Intent(mActivity, LoginActivity.class);
-                                    startActivity(intent);
-                                    finish();
+//                                    Intent intent = new Intent(mActivity, LoginActivity.class);
+////                                    startActivity(intent);
+//                                    finish();
+                                    login();
                                 }else{
                                     Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                                 }
@@ -243,7 +245,7 @@ public class RegisterActivity extends BaseActivity {
 
                                 JSONObject res = new JSONObject(response);
                                 int code = res.getInt("code");
-                                String info = res.getString("data");
+                                String info = res.getString("msg");
                                 ToastUtil.showShort(mContext, info);
                                 if (code == 200) {
 //                                JSONObject data = res.getJSONObject("data");
@@ -282,6 +284,67 @@ public class RegisterActivity extends BaseActivity {
                     });
         }
 
+    }
+    private void login() {
+        Map<String, String> map = new HashMap<>();
+            map.put("account", phone.getText().toString());
+            map.put("passwd", MD5Util.getMD5Str(pwd.getText().toString()));
+        map.put("flag", 1 + "");
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).login(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        JSONObject data = res.getJSONObject("data");
+                        AccountManager.sUserBean = new UserBean();
+                        AccountManager.sUserBean.head = data.getString("token");
+                        AccountManager.sUserBean.phone = phone.getText().toString();
+                        AccountManager.sUserBean.passwd = pwd.getText().toString();
+                        AccountManager.sUserBean.needshowdialog=false;
+                        System.out.println(data);
+                        int first=data.optInt("first");
+                        String token=data.getString("token");
+                        System.out.println("临时Token："+token);
+//                        if(first==1){
+//                            ToastUtil.showShort(mContext, "需要完善信息");
+//                            SPUtil.put("head2", token);
+//                            AccountManager.sUserBean.needshowdialog=true;
+//                            startActivityForResult(new Intent(mActivity, RegisterActivity.class).putExtra("type",loginflag),100);
+//                        }else{
+//                            ToastUtil.showShort(mContext, "登录成功");
+//                            SPUtil.put("head", token);
+//                            startActivity(new Intent(mActivity, MainNewOldActivity.class));
+//                            finish();
+//                        }
+                        ToastUtil.showShort(mContext, "登录成功");
+                            SPUtil.put("head", token);
+                            startActivity(new Intent(mActivity, MainNewOldActivity.class));
+                        setResult(Activity.RESULT_OK);
+                        finish();
+                    } else {
+                        Toast.makeText(mActivity, info, Toast.LENGTH_SHORT).show();
+//                        if(info.contains("不存在")){
+//                            AccountManager.sUserBean = new UserBean();
+//                            AccountManager.sUserBean.phone = phone.getText().toString();
+//                            AccountManager.sUserBean.passwd = pwd.getText().toString();
+//                            startActivity(new Intent(mActivity, RegisterActivity.class).putExtra("type",loginflag));
+//                        }
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 
     private void getCode(final String phone) {

@@ -9,31 +9,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/back"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
             android:padding="10dp"
             android:src="@drawable/ic_back" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="分享二维码"
+            android:text="推广下载码"
             android:textColor="#ff232326"
             android:textSize="17sp" />
     </RelativeLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:background="#E83A31"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#E83A31">
+
         <ImageView
             android:layout_width="match_parent"
-            android:src="@drawable/fenxiang"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:src="@drawable/fenxiang" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -42,33 +47,72 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="370"></LinearLayout>
+                android:orientation="vertical"
+                android:layout_weight="370">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:text="九弟智选"
+                    android:textColor="#ffffffff"
+                    android:textSize="36sp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="您身边的智能购物专家\n急速注册开店赚红利"
+                    android:textColor="#ffffffff"
+                    android:textSize="24sp"
+                    />
+                <TextView
+                    android:paddingTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="下载安装九弟智选APP\n逛街购物拿红利"
+                    android:textColor="#ffffffff"
+                    android:textSize="15sp"
+                    />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="510">
+
                 <ImageView
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/zxing_test"
                     android:id="@+id/zxing_image"
+                    android:layout_width="600px"
+                    android:layout_height="600px"
+                    android:layout_centerInParent="true"
                     android:scaleType="fitXY"
-                    android:layout_width="500px"
-                    android:layout_height="500px" />
+                    android:src="@drawable/zxing_test" />
+
                 <ImageView
-                    android:scaleType="fitStart"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/zxing_image"
                     android:id="@+id/yingyin"
-                    android:src="@drawable/yingyin"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/zxing_image"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/yingyin" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="220"></LinearLayout>
+                android:layout_weight="220">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="邀请粉丝或店主得奖励"
+                    android:textColor="#ffffffff"
+                    android:textSize="15sp"
+                    />
+            </LinearLayout>
         </LinearLayout>
 
     </FrameLayout>

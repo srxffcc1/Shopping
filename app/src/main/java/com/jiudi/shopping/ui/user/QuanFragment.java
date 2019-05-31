@@ -75,36 +75,6 @@ public class QuanFragment extends BaseFragment {
         getOrderList();
     }
 
-    private void getTestList(int page) {
-//        Map<String, String> map = new HashMap<>();
-//        if (AccountManager.sUserBean != null) {
-////            map.put("customer_id", AccountManager.sUserBean.getId());
-//            map.put("page", page + "");
-//            map.put("order_status", getArguments().getString("order_status"));
-//            map.put("limit", "10");
-//            RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getGoodOrder(RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
-//                @Override
-//                public void onSuccess(String response) {
-//
-//                }
-//
-//                @Override
-//                public void onError(Throwable t) {
-//
-//                }
-//            });
-//        } else {
-//
-//        }
-
-    }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onRefreshEvent(OrderEvent wechatPayEvent) {
-//        getOrderList(0);
-//        DialogUtil.hideProgress();
-//    }
-
     private void getOrderList() {
         Map<String, String> map = new HashMap<>();
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getQuan(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {

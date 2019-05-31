@@ -49,6 +49,12 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void initData() {
         SharedPreferences sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                autoLogin();
+//            }
+//        }, 1000);
         if (sp.getBoolean("isfirstinstall", true)) {
             startActivity(new Intent(mActivity, GuideActivity.class));
             finish();
@@ -73,6 +79,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void autoLogin() {
+//        SPUtil.put("head","eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp3dFNlcnZpY2UifQ.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTU1OTE4NjAzMSwiZXhwIjoxNTYwOTYzMjMxLCJuYmYiOjE1NTkxODYwMzEsInN1YiI6ImxvY2FsaG9zdCIsImp0aSI6IjFkNzc2ODkwMGVmZWQ3ZmI5YzIwOTViMTQ1NzJhOGFkIiwidXNlcmlkIjo2fQ._a1vB58xx6PVY2KGrB7hK3C7cEU7NWZC3rwGxqBcSB0");
         if (!"".equals(SPUtil.get("head", ""))) {
             Log.v("Head",SPUtil.get("head", "").toString());
             autoLogin(true);

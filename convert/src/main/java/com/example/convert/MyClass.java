@@ -5,9 +5,30 @@ import java.util.regex.Pattern;
 
 public class MyClass {
     public static void main(String[] args) {
-        String org="            \"id\": 19,\n" +
-                "            \"cate_name\": \"办公设备\",\n" +
-                "            \"child\": [";
+        String org="        \"uid\": 15,\n" +
+                "        \"account\": \"wx151555392310\",\n" +
+                "        \"pwd\": \"e10adc3949ba59abbe56e057f20f883e\",\n" +
+                "        \"nickname\": \"\\u68a6\\u56de\\u6c5f\\u5357\\u591c\\u4e36\",\n" +
+                "        \"avatar\": \"http:\\/\\/thirdwx.qlogo.cn\\/mmopen\\/3ywYCFwUvZmQLw3w9qrwf29WLpibe8kNXFm9TpibK4VOAKtp7Xsd8fM5bZkrt0Rorplgb8udNLdwES3ZAIbuazL7sVweFQodBK\\/132\",\n" +
+                "        \"phone\": null,\n" +
+                "        \"add_time\": \"19\\/04\\/16\",\n" +
+                "        \"add_ip\": \"140.207.54.80\",\n" +
+                "        \"last_time\": 1555638578,\n" +
+                "        \"last_ip\": \"117.80.132.11\",\n" +
+                "        \"now_money\": \"0.00\",\n" +
+                "        \"integral\": \"1.00\",\n" +
+                "        \"status\": 1,\n" +
+                "        \"level\": 0,\n" +
+                "        \"spread_uid\": 6,\n" +
+                "        \"agent_id\": 1,\n" +
+                "        \"user_type\": \"wechat\",\n" +
+                "        \"is_promoter\": 1,\n" +
+                "        \"pay_count\": 0,\n" +
+                "        \"direct_num\": 0,\n" +
+                "        \"team_num\": 0,\n" +
+                "        \"is_reward\": 0,\n" +
+                "        \"allowance_number\": 0,\n" +
+                "        \"money\": 0";
         //parm参数
         Pattern pattern=null;
         Matcher matcher=null;

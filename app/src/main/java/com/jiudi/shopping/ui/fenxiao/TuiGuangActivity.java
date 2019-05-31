@@ -25,9 +25,9 @@ public class TuiGuangActivity extends BaseActivity {
 
         zxingImage = (ImageView) findViewById(R.id.zxing_image);
         yingyin = (ImageView) findViewById(R.id.yingyin);
-        erwei="http://mall.jiudicar.com/wap/store/detail/id/4/spuid/"+ AccountManager.sUserBean.uid +".html";
-        Bitmap mBitmap = CodeUtils.createImage(erwei, 800, 800, null);
-        zxingImage.setImageBitmap(mBitmap);
+//        erwei="http://mall.jiudicar.com/wap/store/detail/id/4/spuid/"+ AccountManager.sUserBean.uid +".html";
+//        Bitmap mBitmap = CodeUtils.createImage(erwei, 800, 800, null);
+//        zxingImage.setImageBitmap(mBitmap);
     }
 
     @Override

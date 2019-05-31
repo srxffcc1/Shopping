@@ -358,7 +358,7 @@ public class DingDanActivity extends BaseActivity {
         lianxikefu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new KfStartHelper(mActivity).initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "测试", "123456789",60);//陈辰正式
+                new KfStartHelper(mActivity).initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "咨询", AccountManager.sUserBean.uid,60);//陈辰正式
             }
         });
         fanhui.setOnClickListener(new View.OnClickListener() {

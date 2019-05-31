@@ -1,22 +1,46 @@
 package com.jiudi.shopping.ui.main;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.hss01248.dialog.StyledDialog;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.vp.VpFragmentAdapter;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.bean.UserBean;
+import com.jiudi.shopping.event.CloseMainEvent;
+import com.jiudi.shopping.event.FinishEvent;
 import com.jiudi.shopping.manager.AccountManager;
+import com.jiudi.shopping.manager.RequestManager;
+import com.jiudi.shopping.net.RetrofitCallBack;
+import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.fenxiao.FenXiaoMenuActivity;
 import com.jiudi.shopping.ui.fenxiao.FenXiaoNoActivity;
+import com.jiudi.shopping.ui.user.account.LoginActivity;
+import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.widget.NoTouchViewPager;
 import com.jiudi.shopping.widget.SpecialTab;
 import com.jiudi.shopping.widget.SpecialTabRound;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.PageNavigationView;
@@ -33,6 +57,8 @@ public class MainNewOldActivity extends BaseActivity {
     private boolean isdianzhu=false;
     private NavigationController navigationController;
     private int oldindex=0;
+    private Dialog dialog;
+
 
     @Override
     protected int getContentViewId() {
@@ -42,13 +68,105 @@ public class MainNewOldActivity extends BaseActivity {
     @Override
     public void initView() {
 
+        EventBus.getDefault().register(mActivity);
         activityMaterialDesign = (FrameLayout) findViewById(R.id.activity_material_design);
         viewPager = (NoTouchViewPager) findViewById(R.id.viewPager);
         tab = (PageNavigationView) findViewById(R.id.tab);
+
     }
 
     @Override
     public void initData() {
+        autoLogin(true);
+    }
+    private void autoLogin(boolean b) {
+        Map<String, String> map = new HashMap<>();
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getPersonalDate(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+                        JSONObject jsonObject=res.getJSONObject("data").optJSONObject("user_info");
+                        if(jsonObject!=null){
+                            UserBean bean=new UserBean();
+                            bean.uid=jsonObject.optString("uid");
+                            bean.account=jsonObject.optString("account");
+                            bean.pwd=jsonObject.optString("pwd");
+                            bean.nickname=jsonObject.optString("nickname");
+                            bean.avatar=jsonObject.optString("avatar");
+                            bean.phone=jsonObject.optString("phone");
+                            bean.add_time=jsonObject.optString("add_time");
+                            bean.add_ip=jsonObject.optString("add_ip");
+                            bean.last_time=jsonObject.optString("last_time");
+                            bean.last_ip=jsonObject.optString("last_ip");
+                            bean.now_money=jsonObject.optString("now_money");
+                            bean.integral=jsonObject.optString("integral");
+                            bean.status=jsonObject.optString("status");
+                            bean.level=jsonObject.optString("level");
+                            bean.spread_uid=jsonObject.optString("spread_uid");
+                            bean.agent_id=jsonObject.optString("agent_id");
+                            bean.user_type=jsonObject.optString("user_type");
+                            bean.is_promoter=jsonObject.optString("is_promoter");
+                            bean.pay_count=jsonObject.optString("pay_count");
+                            bean.direct_num=jsonObject.optString("direct_num");
+                            bean.team_num=jsonObject.optString("team_num");
+                            bean.is_reward=jsonObject.optString("is_reward");
+                            bean.allowance_number=jsonObject.optString("allowance_number");
+                            try {
+                                JSONArray array=res.getJSONObject("data").getJSONArray("coupon_num");
+                                bean.coupon_num=array.length()+"";
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                JSONObject orderStatusNum=res.getJSONObject("data").getJSONObject("orderStatusNum");
+                                bean.noBuy=orderStatusNum.optInt("noBuy");
+                                bean.noPostage=orderStatusNum.optInt("noPostage");
+                                bean.noTake=orderStatusNum.optInt("noTake");
+                                bean.noReply=orderStatusNum.optInt("noReply");
+                                bean.noPink=orderStatusNum.optInt("noPink");
+                                bean.noBuy=orderStatusNum.optInt("noBuy");
+                                bean.noPostage=orderStatusNum.optInt("noPostage");
+                                bean.noTake=orderStatusNum.optInt("noTake");
+                                bean.noReply=orderStatusNum.optInt("noReply");
+                                bean.noPink=orderStatusNum.optInt("noPink");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            AccountManager.sUserBean=bean;
+                            buildView();
+                        }else{
+                            AccountManager.sUserBean=null;
+                            startActivity(new Intent(mActivity, LoginActivity.class));
+                            finish();
+                        }
+                    }else{
+                        AccountManager.sUserBean=null;
+                        startActivity(new Intent(mActivity, LoginActivity.class));
+                        finish();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    AccountManager.sUserBean=null;
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                AccountManager.sUserBean=null;
+                startActivity(new Intent(mActivity, LoginActivity.class));
+                finish();
+            }
+        });
+    }
+
+    private void buildView() {
         if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
             isdianzhu=true;
         }else{
@@ -71,7 +189,6 @@ public class MainNewOldActivity extends BaseActivity {
                     .addItem(newItem(R.drawable.wodehui,R.drawable.wodehong,"我的"))
                     .build();
         }
-
 
 
         mFragmentList.add(new HomeFragment());
@@ -106,6 +223,10 @@ public class MainNewOldActivity extends BaseActivity {
                 }
             }
         });
+//        showFirst();
+        if(AccountManager.sUserBean!=null&&AccountManager.sUserBean.needshowdialog){
+            showFirst();
+        }
     }
 
     @Override
@@ -132,5 +253,74 @@ public class MainNewOldActivity extends BaseActivity {
         mainTab.setTextDefaultColor(0xFF373737);
         mainTab.setTextCheckedColor(0xFFE60012);
         return mainTab;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(AccountManager.sUserBean==null){
+            finish();
+        }else {
+            if(navigationController!=null){
+
+                navigationController.setSelect(oldindex);
+            }
+        }
+    }
+    boolean isfirftyindaoclick=false;
+    public void showFirst(){
+        StyledDialog.init(mActivity);
+        ViewGroup customView2 = (ViewGroup) View.inflate(this, R.layout.popwindow_first_chose, null);
+         final android.widget.ImageView pass;
+        final android.widget.ImageView button;
+        final android.widget.ImageView close;
+        pass = (ImageView) customView2.findViewById(R.id.pass);
+        button = (ImageView) customView2.findViewById(R.id.button);
+        close=(ImageView) customView2.findViewById(R.id.close);
+        pass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isfirftyindaoclick){
+                    pass.setImageResource(R.drawable.yindao_pass2);
+                    button.setImageResource(R.drawable.yindao_kai2);
+                }
+            }
+        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+            }
+        });
+        dialog = StyledDialog.buildCustom(customView2, Gravity.CENTER).setForceWidthPercent(1f).setCancelable(true,true).show();
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if(AccountManager.sUserBean!=null){
+                    AccountManager.sUserBean.needshowdialog=false;
+                }
+            }
+        });
+    }
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(mActivity);
+        super.onDestroy();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void finishEvent(CloseMainEvent event) {
+        try {
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

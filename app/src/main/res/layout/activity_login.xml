@@ -193,6 +193,7 @@
 
 
     <LinearLayout
+        android:id="@+id/weixinloginb"
         android:layout_marginTop="@dimen/dp_10"
         android:background="@drawable/text_boder_r_green_r"
         android:layout_marginLeft="20dp"
@@ -203,7 +204,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/weixinloginb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/cart_under1"

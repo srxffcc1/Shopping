@@ -19,6 +19,7 @@ import com.jiudi.shopping.ui.user.account.AccountActivity;
 import com.jiudi.shopping.ui.user.account.FenXiaoAccountActivity;
 import com.jiudi.shopping.ui.user.account.TiXianActivity;
 import com.jiudi.shopping.util.SPUtil;
+import com.m7.imkfsdk.KfStartHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,19 +38,25 @@ public class FenXiaoMenuActivity extends BaseActivity {
     private android.widget.TextView leijihuode;
     private android.widget.TextView leijiyi;
     private android.widget.TextView yongjinmingxi;
-    private android.widget.TextView zhishu;
     private android.widget.TextView tuandui;
     private android.widget.TextView weidaozhangyongjinv;
     private android.widget.TextView leijihuodev;
     private android.widget.TextView leijiyiv;
     private android.widget.TextView yongjinmingxiv;
-    private android.widget.TextView zhishuv;
     private android.widget.TextView tuanduiv;
     private android.widget.LinearLayout yongjinmingxil;
     private ImageView back;
     private TextView code;
     private LinearLayout yaoqingrenl;
     private TextView yaoqingren;
+    private LinearLayout tuanduil;
+    private LinearLayout haohuol;
+    private TextView haohuo;
+    private TextView haohuov;
+    private KfStartHelper helper;
+    private static final int REQUEST_CODE_PERMISSION_WRITE_STORAGE = 1001;
+    private static final int REQUEST_CODE_UNKNOWN_APP = 100;
+    private static final int REQUEST_CODE_OPENCHAT = 60;
 
     @Override
     protected int getContentViewId() {
@@ -69,24 +76,27 @@ public class FenXiaoMenuActivity extends BaseActivity {
         leijihuode = (TextView) findViewById(R.id.leijihuode);
         leijiyi = (TextView) findViewById(R.id.leijiyi);
         yongjinmingxi = (TextView) findViewById(R.id.yongjinmingxi);
-        zhishu = (TextView) findViewById(R.id.zhishu);
         tuandui = (TextView) findViewById(R.id.tuandui);
         weidaozhangyongjinv = (TextView) findViewById(R.id.weidaozhangyongjinv);
         leijihuodev = (TextView) findViewById(R.id.leijihuodev);
         leijiyiv = (TextView) findViewById(R.id.leijiyiv);
         yongjinmingxiv = (TextView) findViewById(R.id.yongjinmingxiv);
-        zhishuv = (TextView) findViewById(R.id.zhishuv);
         tuanduiv = (TextView) findViewById(R.id.tuanduiv);
         yongjinmingxil = (LinearLayout) findViewById(R.id.yongjinmingxil);
         back = (ImageView) findViewById(R.id.back);
         code = (TextView) findViewById(R.id.code);
         yaoqingrenl = (LinearLayout) findViewById(R.id.yaoqingrenl);
         yaoqingren = (TextView) findViewById(R.id.yaoqingren);
+        tuanduil = (LinearLayout) findViewById(R.id.tuanduil);
+        haohuol = (LinearLayout) findViewById(R.id.haohuol);
+        haohuo = (TextView) findViewById(R.id.haohuo);
+        haohuov = (TextView) findViewById(R.id.haohuov);
     }
 
     @Override
     public void initData() {
 
+        helper = new KfStartHelper(mActivity);
         RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.head_defuat_circle);
         Glide.with(mActivity).load(AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
         code.setText("邀请码:"+AccountManager.sUserBean.uid);
@@ -120,6 +130,19 @@ public class FenXiaoMenuActivity extends BaseActivity {
 
             }
         });
+        tuanduil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, TuanDuiActivity.class));
+
+            }
+        });
+        haohuol.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "咨询", AccountManager.sUserBean.uid,REQUEST_CODE_OPENCHAT);//陈辰正式
+            }
+        });
     }
     private void getFenXiao() {
         Map<String, String> map = new HashMap<>();
@@ -133,14 +156,18 @@ public class FenXiaoMenuActivity extends BaseActivity {
                     if (code == 200) {
                         JSONObject data=res.getJSONObject("data");
                         money.setText(data.getJSONObject("userInfo").getString("now_money")+"元");
-                        level.setText("等级:"+data.getJSONObject("agent").getString("name"));
-                        name.setText(AccountManager.sUserBean.nickname);
+                        level.setText(""+data.getJSONObject("agent").getString("name"));
+                        name.setText(""+AccountManager.sUserBean.nickname);
                         weidaozhangyongjinv.setText(data.getString("number")+"元");
                         leijihuodev.setText(data.getString("allnumber")+"元");
                         leijiyiv.setText(data.getString("extractNumber")+"元");
-                        zhishuv.setText(data.getJSONObject("userInfo").getString("direct_num")+"人");
-                        tuanduiv.setText(data.getJSONObject("userInfo").getString("team_num")+"人");
-                        yaoqingren.setText(data.getJSONObject("userInfo").getString("spread_name").replace("null",""));
+//                        zhishuv.setText(data.getJSONObject("userInfo").getString("direct_num")+"人");
+//                        tuanduiv.setText(data.getJSONObject("userInfo").getString("team_num")+"人");
+                        try {
+                            yaoqingren.setText(data.getJSONObject("userInfo").getJSONObject("spread_name").getString("nickname").replace("null",""));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }else {
                         Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                     }

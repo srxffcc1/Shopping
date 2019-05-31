@@ -9,6 +9,9 @@ import java.io.Serializable;
 
 public class UserBean implements Serializable {
 
+    public boolean needshowdialog=false;
+
+
     public int noBuy;
     public int noPostage;
     public int noTake;

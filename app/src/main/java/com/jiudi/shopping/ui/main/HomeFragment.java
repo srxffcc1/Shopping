@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocationClient;
@@ -103,6 +104,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private int page=0;
     private int limit=20;
     private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
+    private android.widget.TextView dianzhuquanyi;
+    private TextView dianzhuquanyi2;
 
 
     @Override
@@ -130,6 +133,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         blFragmentHome = (BannerLayout) findViewById(R.id.bl_fragment_home);
         nest = (NestedScrollView) findViewById(R.id.nest);
         simpleRefresh = (SimpleRefreshLayout) findViewById(R.id.simple_refresh);
+        dianzhuquanyi = (TextView) findViewById(R.id.dianzhuquanyi);
+        dianzhuquanyi2 = (TextView) findViewById(R.id.dianzhuquanyi2);
     }
 
     @Override
@@ -146,6 +151,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         simpleRefresh.setHeaderView(new SimpleRefreshView(mActivity));
         simpleRefresh.setFooterView(new SimpleLoadView(mActivity));
         simpleRefresh.setBottomView(new SimpleBottomView(mActivity));
+        if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
+//            startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
+            dianzhuquanyi.setText("店主权益");
+            dianzhuquanyi2.setText("客户管理");
+        }else{
+//            startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+            dianzhuquanyi.setText("我要开店");
+            dianzhuquanyi2.setText("客户管理");
+        }
     }
 
     @Override
@@ -228,7 +242,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
                         startActivity(new Intent(mActivity, TuanDuiActivity.class));
                     }else{
-                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+//                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+                        Toast.makeText(mActivity,"您暂未开店，加入我们，运营属于自己的客户吧",Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -461,28 +476,37 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private void showBanner() {
         mBannerUrlList.clear();
-        for (int i = 0; i < mBannerList.size(); i++) {
-            mBannerUrlList.add(mBannerList.get(i).pic);
-        }
-        if (mBannerUrlList.size() > 0) {
-            blFragmentHome.setViewUrls(mBannerUrlList);
-            blFragmentHome.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    MobclickAgent.onEvent(mActivity,"A_index_banner_1");
-                    final BannerBean bannerBean = mBannerList.get(position);
-                    startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",bannerBean.url.replace("/wap/store/detail/id/","")));
-                }
-            });
+
+        try {
+            for (int i = 0; i < mBannerList.size(); i++) {
+                mBannerUrlList.add(mBannerList.get(i).pic);
+            }
+            if (mBannerUrlList.size() > 0) {
+                blFragmentHome.setViewUrls(mBannerUrlList);
+                blFragmentHome.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        MobclickAgent.onEvent(mActivity,"A_index_banner_1");
+                        final BannerBean bannerBean = mBannerList.get(position);
+                        startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",bannerBean.url.replace("/wap/store/detail/id/","")));
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFlashEvent(FlashEvent wechatPayEvent) {
-        getHomeBanner();
-        mCarChoiceList.clear();
-        page=0;
-        getGodsList();
+        try {
+            getHomeBanner();
+            mCarChoiceList.clear();
+            page=0;
+            getGodsList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void onDestroy() {

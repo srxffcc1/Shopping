@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="+20.00未到账"
+            android:text=""
             android:textSize="11sp" />
 
         <TextView
@@ -35,6 +35,16 @@
             android:layout_below="@id/content"
             android:layout_marginTop="10dp"
             android:text="2019/04/26 13:30"
+            android:textColor="#ff7c7c7c"
+            android:textSize="10sp" />
+        <TextView
+            android:id="@+id/status"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content"
+            android:layout_marginTop="10dp"
+            android:text="未到账"
             android:textColor="#ff7c7c7c"
             android:textSize="10sp" />
     </RelativeLayout>

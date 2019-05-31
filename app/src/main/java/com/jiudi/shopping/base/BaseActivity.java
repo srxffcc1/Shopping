@@ -187,24 +187,24 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
 
-    @Override
-    public void startActivity(Intent intent) {
-        if (AccountManager.sUserBean == null&&!isNoNeedLogin()&&!".ui.cart.CartDetailActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.MainActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.SearchShopActivity".equals(intent.getComponent().getShortClassName())) {
-            super.startActivity(new Intent(mActivity, LoginActivity.class));
-        }else{
-
-            super.startActivity(intent);
-        }
-    }
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        if (AccountManager.sUserBean == null&&!isNoNeedLogin()&&!".ui.cart.CartDetailActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.MainActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.SearchShopActivity".equals(intent.getComponent().getShortClassName())) {
-            super.startActivity(new Intent(mActivity, LoginActivity.class));
-        }else{
-            super.startActivityForResult(intent, requestCode);
-        }
-    }
+//    @Override
+//    public void startActivity(Intent intent) {
+//        if (AccountManager.sUserBean == null&&!isNoNeedLogin()&&!".ui.cart.CartDetailActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.MainActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.SearchShopActivity".equals(intent.getComponent().getShortClassName())) {
+//            super.startActivity(new Intent(mActivity, LoginActivity.class));
+//        }else{
+//
+//            super.startActivity(intent);
+//        }
+//    }
+//
+//    @Override
+//    public void startActivityForResult(Intent intent, int requestCode) {
+//        if (AccountManager.sUserBean == null&&!isNoNeedLogin()&&!".ui.cart.CartDetailActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.MainActivity".equals(intent.getComponent().getShortClassName())&&!".ui.main.SearchShopActivity".equals(intent.getComponent().getShortClassName())) {
+//            super.startActivity(new Intent(mActivity, LoginActivity.class));
+//        }else{
+//            super.startActivityForResult(intent, requestCode);
+//        }
+//    }
 
     @Override
     protected void onDestroy() {

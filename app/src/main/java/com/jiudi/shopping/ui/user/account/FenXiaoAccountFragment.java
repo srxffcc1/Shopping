@@ -2,12 +2,11 @@ package com.jiudi.shopping.ui.user.account;
 
 import android.graphics.Color;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,20 +23,21 @@ import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
 import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
 import com.jiudi.shopping.base.BaseActivity;
-import com.jiudi.shopping.bean.TongZhi;
-import com.jiudi.shopping.bean.XianJin;
+import com.jiudi.shopping.base.BaseFragment;
+import com.jiudi.shopping.bean.CartDiscussBean;
+import com.jiudi.shopping.bean.Quan;
+import com.jiudi.shopping.bean.TuanDui;
 import com.jiudi.shopping.bean.YongJin;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
-import com.jiudi.shopping.util.DisplayUtil;
 import com.jiudi.shopping.util.SPUtil;
-import com.jiudi.shopping.widget.DividerItemDecoration;
 import com.jiudi.shopping.widget.SimpleBottomView;
 import com.jiudi.shopping.widget.SimpleLoadView;
 import com.jiudi.shopping.widget.SimpleRefreshView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,94 +49,55 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AccountActivity extends BaseActivity {
-    private android.support.v7.widget.RecyclerView recycler;
-    private List<XianJin> mCarChoiceList = new ArrayList<>();
-    private RecyclerCommonAdapter<XianJin> mCarBeanAdapter;
-    private android.widget.ImageView back;
-    private TextView yue;
-    private int page=0;
-    private int limit=20;
-    private boolean stoploadmore=false;
-    private android.support.v4.widget.NestedScrollView nest;
+public class FenXiaoAccountFragment extends BaseFragment {
+    private RecyclerView rvFragmentHomeAll;
+    private RecyclerCommonAdapter<YongJin> myAdapter;
+    private List<YongJin> mBeanList = new ArrayList<>();
     private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
+    private TextView titleCase;
 
     @Override
-    protected int getContentViewId() {
-        return R.layout.activity_user_account;
+    protected int getInflateViewId() {
+        return R.layout.fragment_fenxiao_account;
     }
 
     @Override
     public void initView() {
 
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-        back = (ImageView) findViewById(R.id.back);
-        yue = (TextView) findViewById(R.id.yue);
-        nest = (NestedScrollView) findViewById(R.id.nest);
+        rvFragmentHomeAll = (RecyclerView) findViewById(R.id.rv_fragment_home_all);
         simpleRefresh = (SimpleRefreshLayout) findViewById(R.id.simple_refresh);
+        titleCase = (TextView) findViewById(R.id.title_case);
     }
 
     @Override
     public void initData() {
-        yue.setText(AccountManager.sUserBean.integral);
-        getList();
         simpleRefresh.setScrollEnable(true);
         simpleRefresh.setPullUpEnable(true);
         simpleRefresh.setPullDownEnable(true);
         simpleRefresh.setHeaderView(new SimpleRefreshView(mActivity));
         simpleRefresh.setFooterView(new SimpleLoadView(mActivity));
         simpleRefresh.setBottomView(new SimpleBottomView(mActivity));
+        getOrderList();
     }
-
-    @Override
-    public void initEvent() {
-        simpleRefresh.setOnSimpleRefreshListener(new SimpleRefreshLayout.OnSimpleRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        simpleRefresh.onRefreshComplete();
-                        simpleRefresh.onLoadMoreComplete();
-                    }
-                },500);
-                mCarChoiceList.clear();
-                page=0;
-                getList();
-            }
-
-            @Override
-            public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        simpleRefresh.onRefreshComplete();
-                        simpleRefresh.onLoadMoreComplete();
-                    }
-                },500);
-                if(stoploadmore){
-
-                    Toast.makeText(mActivity,"没有更多",Toast.LENGTH_SHORT).show();
-                }else{
-                    page=page+limit;
-                    getList();
-                }
-
-            }
-        });
-    }
-    private void getList() {
+    private int page=0;
+    private int limit=20;
+    private boolean stoploadmore=false;
+    private void getOrderList() {
         Map<String, String> map = new HashMap<>();
+        map.put("type", getArguments().getString("type"));
         map.put("first", page + "");
         map.put("limit", limit+"");
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getXianJinList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getYongJinList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
                     String info = res.getString("msg");
+                    mBeanList.clear();
                     if (code == 200) {
+                        JSONObject data = res.getJSONObject("data");
+                        JSONArray jsonArray = data.getJSONArray("list");
                         GsonBuilder builder = new GsonBuilder();
                         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                             public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -144,18 +105,20 @@ public class AccountActivity extends BaseActivity {
                             }
                         });
                         Gson gson = builder.create();
-                        Type cartStatusType = new TypeToken<List<XianJin>>() {
+                        Type yongjintype = new TypeToken<List<YongJin>>() {
                         }.getType();
-                        List<XianJin> tmp=gson.fromJson(res.getJSONArray("data").toString(),cartStatusType);
+
+                        String yonglists=jsonArray.toString();
+
+                        List<YongJin> tmp=gson.fromJson(yonglists, yongjintype);
                         if(tmp==null||tmp.size()==0){
                             stoploadmore=true;
                         }
-                        mCarChoiceList.addAll(tmp);
+                        mBeanList.addAll(tmp);
 
-                        showCarChoiceRecycleView();
-                    }else{
-                        Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
+                        titleCase.setText("累计收入"+data.optString("arrival_account").replace("null","0")+"元，未到账"+data.optString("outstanding_account").replace("null","0")+"元");
                     }
+                    showRecycleView();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -168,29 +131,39 @@ public class AccountActivity extends BaseActivity {
             }
         });
     }
-    private void showCarChoiceRecycleView() {
-        if (mCarBeanAdapter == null) {
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        EventBus.getDefault().unregister(this);
+    }
 
-            mCarBeanAdapter = new RecyclerCommonAdapter<XianJin>(mActivity, R.layout.item_yongjin, mCarChoiceList) {
+    @Override
+    public void initEvent() {
 
+    }
+
+    private void showRecycleView() {
+        if (myAdapter == null) {
+
+            myAdapter = new RecyclerCommonAdapter<YongJin>(mActivity, R.layout.item_fenxiaoaccount, mBeanList) {
                 @Override
-                protected void convert(ViewHolder holder, final XianJin carChoiceBean, int position) {
-                    holder.setText(R.id.content,carChoiceBean.mark);
+                protected void convert(ViewHolder holder, final YongJin carChoiceBean, int position) {
+                    holder.setText(R.id.content,""+carChoiceBean.mark);
                     holder.setText(R.id.time,carChoiceBean.add_time);
                     holder.setText(R.id.money,("1".equals(carChoiceBean.pm)?"+":"-")+carChoiceBean.number+"元");
                     holder.setTextColor(R.id.money,"1".equals(carChoiceBean.pm)? Color.parseColor("#1e8f00") :Color.parseColor("#E9391C"));
+                    holder.setText(R.id.status,("1".equals(carChoiceBean.status)?"已到账":"未到账"));
+                    holder.setTextColor(R.id.status,"1".equals(carChoiceBean.status)? Color.parseColor("#1e8f00") :Color.parseColor("#E9391C"));
                 }
 
             };
 
-            recycler.addItemDecoration(RecyclerViewDivider.with(mActivity).size(2).color(Color.parseColor("#E9E8ED")).build());
-            recycler.setAdapter(mCarBeanAdapter);
-            recycler.setLayoutManager(new LinearLayoutManager(mActivity));
+//            rvFragmentHomeAll.addItemDecoration(RecyclerViewDivider.with(getActivity()).color(Color.parseColor("#909090")).build());
+            rvFragmentHomeAll.setAdapter(myAdapter);
+            rvFragmentHomeAll.setLayoutManager(new LinearLayoutManager(mActivity));
         } else {
-
-            mCarBeanAdapter.notifyDataSetChanged();
+            myAdapter.notifyDataSetChanged();
         }
-
     }
 }

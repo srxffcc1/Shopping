@@ -52,6 +52,7 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
+import com.m7.imkfsdk.KfStartHelper;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -114,6 +115,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private Badge noPostageb;
     private Badge noTakeb;
     private Badge noReplyb;
+    private LinearLayout mykefu;
+    private static final int REQUEST_CODE_PERMISSION_WRITE_STORAGE = 1001;
+    private static final int REQUEST_CODE_UNKNOWN_APP = 100;
+    private static final int REQUEST_CODE_OPENCHAT = 60;
+    private KfStartHelper helper;
+    private TextView dianzhu;
+    private TextView zhuce2;
+    private TextView dianzhu2;
 
     @Override
     protected int getInflateViewId() {
@@ -155,17 +164,30 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         myup = (LinearLayout) findViewById(R.id.myup);
         myzxing = (LinearLayout) findViewById(R.id.myzxing);
         mysetting = (LinearLayout) findViewById(R.id.mysetting);
+        mykefu = (LinearLayout) findViewById(R.id.mykefu);
+        dianzhu = (TextView) findViewById(R.id.dianzhu);
+        zhuce2 = (TextView) findViewById(R.id.zhuce2);
+        dianzhu2 = (TextView) findViewById(R.id.dianzhu2);
     }
 
     @Override
     public void initData() {
+
+        helper = new KfStartHelper(mActivity);
         EventBus.getDefault().register(this);
         getMineData();
+        if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
+//            startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
+            dianzhu.setText("店主权益");
+        }else{
+//            startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+            dianzhu.setText("我要开店");
+        }
     }
 
     private void getMineData() {
         if("".equals(SPUtil.get("head", "").toString())){
-
+            AccountManager.sUserBean=null;
         }else{
             Map<String, String> map = new HashMap<>();
             RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getPersonalDate(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
@@ -252,13 +274,39 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void bindDataToView() {
-        xingming.setText((AccountManager.sUserBean==null?"":AccountManager.sUserBean.nickname));
+        String shenfen="";
+        if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
+            if("2".equals(AccountManager.sUserBean.agent_id)){
+                shenfen="钻石店主";
+                zhuce2.setVisibility(View.VISIBLE);
+            }else if("1".equals(AccountManager.sUserBean.agent_id)){
+
+                shenfen="普通店主";
+                zhuce2.setVisibility(View.VISIBLE);
+            }else{
+                shenfen="普通用户";
+                zhuce2.setVisibility(View.GONE);
+            }
+        }else{
+            shenfen="普通用户";
+            zhuce2.setVisibility(View.GONE);
+        }
+
+        xingming.setText(shenfen);
+        zhuce.setText(AccountManager.sUserBean.nickname);
+        zhuce2.setText("邀请码:"+AccountManager.sUserBean.uid);
         long longs =Long.parseLong(AccountManager.sUserBean.add_time)*1000L;
         Date date=new Date();
         date.setTime(longs);
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-        zhuce.setText("注册时间 "+simpleDateFormat.format(date));
-        mylessmoneyvalue.setText(AccountManager.sUserBean.integral);
+//        zhuce.setText("注册时间 "+simpleDateFormat.format(date));
+        if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
+//            startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
+            mylessmoneyvalue.setText(AccountManager.sUserBean.integral);
+        }else{
+//            startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+            mylessmoneyvalue.setText("加入即享");
+        }
         myquanvalue.setText(AccountManager.sUserBean.coupon_num);
         RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.head_defuat_circle);
         Glide.with(mActivity).load((AccountManager.sUserBean.avatar.startsWith("http"))?AccountManager.sUserBean.avatar:"http://"+AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
@@ -293,10 +341,20 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFlashEvent(FlashEvent wechatPayEvent) {
-        getMineData();
+        try {
+            getMineData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void initEvent() {
+        mykefu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    helper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "咨询", AccountManager.sUserBean.uid,REQUEST_CODE_OPENCHAT);//陈辰正式
+            }
+        });
         myquan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -417,19 +475,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mylessmoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                MobclickAgent.onEvent(mActivity,"C_personal_balance_head");
-                startActivity(new Intent(mActivity, AccountActivity.class));
-            }
-        });
-        myzxing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                MobclickAgent.onEvent(mActivity,"C_personal_tgm");
                 try {
-                    if("1".equals(AccountManager.sUserBean.is_promoter)){
-                        startActivity(new Intent(mActivity, TuiGuangActivity.class));
+                    if(AccountManager.sUserBean==null){
+
+                        Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
+                        startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
                     }else{
                         startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
                     }
@@ -437,6 +490,25 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                     Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
+//                MobclickAgent.onEvent(mActivity,"C_personal_balance_head");
+//                startActivity(new Intent(mActivity, AccountActivity.class));
+            }
+        });
+        myzxing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(mActivity, TuiGuangActivity.class));
+                MobclickAgent.onEvent(mActivity,"C_personal_tgm");
+//                try {
+//                    if("1".equals(AccountManager.sUserBean.is_promoter)){
+//                    }else{
+//                        startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
+//                    }
+//                } catch (Exception e) {
+//                    Toast.makeText(mActivity,"请登录",Toast.LENGTH_SHORT).show();
+//                    e.printStackTrace();
+//                }
             }
         });
 //        mysetting.setOnClickListener(new View.OnClickListener() {
@@ -731,4 +803,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         });
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
 }

@@ -161,6 +161,11 @@ public interface RetrofitRequestInterface {
     @POST("api/auth_api/user_balance_list")
     Call<String> getYongJinList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
+    /*获得客户列表*/
+    @FormUrlEncoded
+    @POST("api/my/myshopuser")
+    Call<String> getKeHuList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
 
     /*获得现金列表*/
     @FormUrlEncoded
