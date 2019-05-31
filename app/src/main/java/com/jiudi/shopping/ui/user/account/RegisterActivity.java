@@ -303,7 +303,7 @@ public class RegisterActivity extends BaseActivity {
                         AccountManager.sUserBean.head = data.getString("token");
                         AccountManager.sUserBean.phone = phone.getText().toString();
                         AccountManager.sUserBean.passwd = pwd.getText().toString();
-                        AccountManager.sUserBean.needshowdialog=false;
+                        AccountManager.sUserBean.needshowdialog=true;
                         System.out.println(data);
                         int first=data.optInt("first");
                         String token=data.getString("token");
@@ -320,8 +320,8 @@ public class RegisterActivity extends BaseActivity {
 //                            finish();
 //                        }
                         ToastUtil.showShort(mContext, "登录成功");
-                            SPUtil.put("head", token);
-                            startActivity(new Intent(mActivity, MainNewOldActivity.class));
+                        SPUtil.put("head", token);
+                        startActivity(new Intent(mActivity, MainNewOldActivity.class));
                         setResult(Activity.RESULT_OK);
                         finish();
                     } else {

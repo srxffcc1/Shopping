@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 public class AccountManager {
 
     public static String bestGood;
+
     /**
      * 用户
      */

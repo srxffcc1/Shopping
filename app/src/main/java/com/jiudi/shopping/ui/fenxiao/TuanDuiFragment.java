@@ -189,10 +189,10 @@ public class TuanDuiFragment extends BaseFragment {
                     Glide.with(mActivity).load(carChoiceBean.avatar).apply(requestOptions).into(head);
                     ImageView top=holder.itemView.findViewById(R.id.top);
                     ImageView vip=holder.itemView.findViewById(R.id.vip);
-                    if("1".equals(carChoiceBean.is_promoter)){
-                        vip.setVisibility(View.VISIBLE);
-                    }else{
+                    if("0".equals(carChoiceBean.is_promoter)){
                         vip.setVisibility(View.GONE);
+                    }else{
+                        vip.setVisibility(View.VISIBLE);
                     }
 
                     if("2".equals(carChoiceBean.agent_id)){

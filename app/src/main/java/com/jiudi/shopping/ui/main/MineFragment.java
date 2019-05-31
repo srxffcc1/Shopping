@@ -302,7 +302,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 //        zhuce.setText("注册时间 "+simpleDateFormat.format(date));
         if("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))){
 //            startActivity(new Intent(mActivity, FenXiaoMenuActivity.class));
-            mylessmoneyvalue.setText(AccountManager.sUserBean.integral);
+            mylessmoneyvalue.setText(AccountManager.sUserBean.now_money);
         }else{
 //            startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
             mylessmoneyvalue.setText("加入即享");

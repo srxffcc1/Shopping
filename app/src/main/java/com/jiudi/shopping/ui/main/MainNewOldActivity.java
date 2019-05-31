@@ -1,14 +1,24 @@
 package com.jiudi.shopping.ui.main;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hss01248.dialog.StyledDialog;
@@ -18,14 +28,21 @@ import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.bean.UserBean;
 import com.jiudi.shopping.event.CloseMainEvent;
 import com.jiudi.shopping.event.FinishEvent;
+import com.jiudi.shopping.global.Constant;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.service.AppUpdateService;
 import com.jiudi.shopping.ui.fenxiao.FenXiaoMenuActivity;
 import com.jiudi.shopping.ui.fenxiao.FenXiaoNoActivity;
 import com.jiudi.shopping.ui.user.account.LoginActivity;
+import com.jiudi.shopping.util.CommonUtil;
+import com.jiudi.shopping.util.DialogUtil;
+import com.jiudi.shopping.util.LogUtil;
+import com.jiudi.shopping.util.NetworkUtil;
 import com.jiudi.shopping.util.SPUtil;
+import com.jiudi.shopping.util.ToastUtil;
 import com.jiudi.shopping.widget.NoTouchViewPager;
 import com.jiudi.shopping.widget.SpecialTab;
 import com.jiudi.shopping.widget.SpecialTabRound;
@@ -58,8 +75,18 @@ public class MainNewOldActivity extends BaseActivity {
     private NavigationController navigationController;
     private int oldindex=0;
     private Dialog dialog;
-
-
+    /**
+     * APK下载URL
+     */
+    private String mDownloadUrl;
+    private PopupWindow mAppUpdatePopupWindow;
+    private PopupWindow mUpdateProgressPopupWindow;
+    private TextView mProgressTV;
+    private ProgressBar mUpdatePB;
+    private static final int REQUEST_CODE_PERMISSION_WRITE_STORAGE = 1001;
+    private static final int REQUEST_CODE_UNKNOWN_APP = 100;
+    private static final int REQUEST_CODE_OPENCHAT = 60;
+    private static final String TAG = "MainActivity";
     @Override
     protected int getContentViewId() {
         return R.layout.activity_new_main;
@@ -91,7 +118,13 @@ public class MainNewOldActivity extends BaseActivity {
                     if (code == 200) {
                         JSONObject jsonObject=res.getJSONObject("data").optJSONObject("user_info");
                         if(jsonObject!=null){
-                            UserBean bean=new UserBean();
+                            UserBean bean;
+                            if(AccountManager.sUserBean!=null){
+                                bean=AccountManager.sUserBean;
+                            }else{
+
+                                bean=new UserBean();
+                            }
                             bean.uid=jsonObject.optString("uid");
                             bean.account=jsonObject.optString("account");
                             bean.pwd=jsonObject.optString("pwd");
@@ -323,4 +356,5 @@ public class MainNewOldActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
 }

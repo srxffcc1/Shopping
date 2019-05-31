@@ -241,7 +241,7 @@ public class MainActivity extends BaseActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    ToastUtil.showShort(mActivity, getString(R.string.json_error));
+//                    ToastUtil.showShort(mActivity, getString(R.string.json_error));
                     LogUtil.e(TAG, e.getMessage());
                 }
 
@@ -250,11 +250,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onError(Throwable t) {
                 LogUtil.e(TAG, "onError=" + t.getMessage());
-                if (!NetworkUtil.isConnected()) {
-                    ToastUtil.showShort(mActivity, getString(R.string.net_error));
-                } else {
-                    ToastUtil.showShort(mActivity, getString(R.string.network_error));
-                }
+//                if (!NetworkUtil.isConnected()) {
+//                    ToastUtil.showShort(mActivity, getString(R.string.net_error));
+//                } else {
+//                    ToastUtil.showShort(mActivity, getString(R.string.network_error));
+//                }
             }
         });
     }

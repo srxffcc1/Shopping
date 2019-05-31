@@ -5,7 +5,7 @@ android {
         applicationId "com.jiudi.shopping"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 19
+        versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -52,7 +52,7 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "九弟智选"+"-${variant.versionName}.apk"
+            outputFileName = "九弟智选"+"-${variant.versionCode}.apk"
         }
     }
 }

@@ -94,7 +94,6 @@ public class FenXiaoAccountFragment extends BaseFragment {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
                     String info = res.getString("msg");
-                    mBeanList.clear();
                     if (code == 200) {
                         JSONObject data = res.getJSONObject("data");
                         JSONArray jsonArray = data.getJSONArray("list");
@@ -140,7 +139,40 @@ public class FenXiaoAccountFragment extends BaseFragment {
 
     @Override
     public void initEvent() {
+        simpleRefresh.setOnSimpleRefreshListener(new SimpleRefreshLayout.OnSimpleRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        simpleRefresh.onRefreshComplete();
+                        simpleRefresh.onLoadMoreComplete();
+                    }
+                },500);
+                mBeanList.clear();
+                page=0;
+                getOrderList();
+            }
 
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        simpleRefresh.onRefreshComplete();
+                        simpleRefresh.onLoadMoreComplete();
+                    }
+                },500);
+                if(stoploadmore){
+
+                    Toast.makeText(mActivity,"没有更多",Toast.LENGTH_SHORT).show();
+                }else{
+                    page=page+limit;
+                    getOrderList();
+                }
+
+            }
+        });
     }
 
     private void showRecycleView() {

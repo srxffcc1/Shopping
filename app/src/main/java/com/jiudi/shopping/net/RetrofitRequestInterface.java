@@ -392,7 +392,7 @@ public interface RetrofitRequestInterface {
 
     /*判断系统版本*/
     @FormUrlEncoded
-//    @POST(RequestManager.mInterfacePrefix + "CheckVersionforios")
+    @POST("api/login/checkapkversion")
     Call<String> getVersion(@FieldMap Map<String, String> params);
 
 

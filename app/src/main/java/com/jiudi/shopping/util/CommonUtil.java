@@ -87,7 +87,7 @@ public class CommonUtil {
         Pattern p;
         Matcher m;
         boolean b;
-        p = Pattern.compile("[A-Za-z0-9~!@#$%^&*()_+;',.:<>]{6,16}");
+        p = Pattern.compile("[A-Za-z0-9~!@#$%^&*()_+;',.:<>]{6,20}");
         m = p.matcher(password);
         b = m.matches();
         return b;
