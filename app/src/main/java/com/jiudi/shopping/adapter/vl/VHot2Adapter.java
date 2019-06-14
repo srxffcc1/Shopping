@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
@@ -21,10 +22,21 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
+import com.jiudi.shopping.bean.MainGodsBean;
 import com.jiudi.shopping.bean.RecommendImgBean;
+import com.jiudi.shopping.manager.RequestManager;
+import com.jiudi.shopping.net.RetrofitCallBack;
+import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.cart.CartDetailActivity;
+import com.jiudi.shopping.ui.user.AllQuanActivity;
+import com.jiudi.shopping.util.SPUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by admin on 2017/5/16.
@@ -117,7 +129,7 @@ public class VHot2Adapter extends DelegateAdapter.Adapter {
             tagholder.hot0.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, CartDetailActivity.class).putExtra("id",recommendImgBeans.get(0).product_id));
+                    getCoupo();
                 }
             });
             tagholder.hot1.setOnClickListener(new View.OnClickListener() {
@@ -182,5 +194,38 @@ public class VHot2Adapter extends DelegateAdapter.Adapter {
             image4 = (ImageView) itemView.findViewById(R.id.image4);
         }
     }
+    private void getCoupo() {
+        Map<String, String> map = new HashMap<>();
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getCoupo(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+            @Override
+            public void onSuccess(String response) {
+
+
+//                simpleRefresh.onRefreshComplete();
+//                simpleRefresh.onLoadMoreComplete();
+                try {
+                    JSONObject res = new JSONObject(response);
+                    int code = res.getInt("code");
+                    String info = res.getString("msg");
+                    if (code == 200) {
+
+                        Toast.makeText(context,info,Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, AllQuanActivity.class));
+                    }else{
+                        Toast.makeText(context,info,Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+
 
 }

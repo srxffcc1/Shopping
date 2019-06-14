@@ -26,7 +26,6 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.main.MainNewActivity;
-import com.jiudi.shopping.ui.main.MainNewOldActivity;
 import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.MD5Util;
@@ -69,6 +68,10 @@ public class LoginActivity extends BaseActivity {
     private String wx_code = "";
     private CountDownTimer mTimer;
     private View weixinloginb;
+    private LinearLayout normalLogin;
+    private LinearLayout tuijianlogin;
+    private LinearLayout weixinloginc;
+    private TextView changepass;
 
 
     @Override
@@ -99,6 +102,13 @@ public class LoginActivity extends BaseActivity {
         pwd = (EditText) findViewById(R.id.pwd);
         pwdL = (LinearLayout) findViewById(R.id.pwd_l);
         weixinloginb = (View) findViewById(R.id.weixinloginb);
+
+
+
+        normalLogin = (LinearLayout) findViewById(R.id.normal_login);
+        tuijianlogin = (LinearLayout) findViewById(R.id.tuijianlogin);
+        weixinloginc = (LinearLayout) findViewById(R.id.weixinloginc);
+        changepass = (TextView) findViewById(R.id.changepass);
     }
 
     @Override
@@ -140,6 +150,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        initView();
     }
 
     @Override
@@ -151,7 +162,13 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initEvent() {
 
-
+        changepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tuijianlogin.setVisibility(View.GONE);
+                normalLogin.setVisibility(View.VISIBLE);
+            }
+        });
 //        register.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -199,6 +216,13 @@ public class LoginActivity extends BaseActivity {
                     }
                 }
 
+            }
+        });
+        weixinloginc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginflag = 3;
+                WechatUtil.wechatLogin(LocalApplication.mIWXApi);
             }
         });
         weixinloginb.setOnClickListener(new View.OnClickListener() {
@@ -300,17 +324,17 @@ public class LoginActivity extends BaseActivity {
                         AccountManager.sUserBean.head = data.getString("token");
                         AccountManager.sUserBean.phone = phone.getText().toString();
                         AccountManager.sUserBean.passwd = pwd.getText().toString();
-                        AccountManager.sUserBean.needshowdialog=false;
+                        AccountManager.sUserBean.needshowdialog = false;
                         System.out.println(data);
-                        int first=data.optInt("first");
-                        String token=data.getString("token");
-                        System.out.println("临时Token："+token);
-                        if(first==1){
+                        int first = data.optInt("first");
+                        String token = data.getString("token");
+                        System.out.println("临时Token：" + token);
+                        if (first == 1) {
                             ToastUtil.showShort(mContext, "需要完善信息");
                             SPUtil.put("head2", token);
-                            AccountManager.sUserBean.needshowdialog=true;
-                            startActivityForResult(new Intent(mActivity, RegisterActivity.class).putExtra("type",loginflag),100);
-                        }else{
+                            AccountManager.sUserBean.needshowdialog = true;
+                            startActivityForResult(new Intent(mActivity, RegisterActivity.class).putExtra("type", loginflag), 100);
+                        } else {
                             ToastUtil.showShort(mContext, "登录成功");
                             SPUtil.put("head", token);
                             startActivity(new Intent(mActivity, MainNewActivity.class));
@@ -318,11 +342,11 @@ public class LoginActivity extends BaseActivity {
                         }
                     } else {
                         Toast.makeText(mActivity, info, Toast.LENGTH_SHORT).show();
-                        if(info.contains("不存在")){
+                        if (info.contains("不存在")) {
                             AccountManager.sUserBean = new UserBean();
                             AccountManager.sUserBean.phone = phone.getText().toString();
                             AccountManager.sUserBean.passwd = pwd.getText().toString();
-                            startActivity(new Intent(mActivity, RegisterActivity.class).putExtra("type",loginflag));
+                            startActivity(new Intent(mActivity, RegisterActivity.class).putExtra("type", loginflag));
                         }
 
                     }
@@ -363,12 +387,12 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==100){
-            if(resultCode== Activity.RESULT_OK){
+        if (requestCode == 100) {
+            if (resultCode == Activity.RESULT_OK) {
                 Intent intent = new Intent(mActivity, MainNewActivity.class);
                 startActivity(intent);
                 finish();
-            }else{
+            } else {
                 Intent intent = new Intent(mActivity, MainNewActivity.class);
                 startActivity(intent);
                 finish();

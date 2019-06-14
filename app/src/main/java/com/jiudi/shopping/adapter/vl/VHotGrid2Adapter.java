@@ -109,11 +109,12 @@ public class VHotGrid2Adapter extends DelegateAdapter.Adapter {
         RequestOptions options = new RequestOptions()
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);//缓存全尺寸
-//        System.out.println("推荐:"+carChoiceBean.image);
+        System.out.println("推荐:"+carChoiceBean.image);
+
         Glide.with(context).load(carChoiceBean.image).apply(options).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                int swidth = (((BaseActivity) context).px - 40);
+                int swidth = (((BaseActivity) context).px);
                 int height = (int) ((resource.getIntrinsicHeight() * 1.0 / resource.getIntrinsicWidth()) * swidth);
                 picture.setLayoutParams(new LinearLayout.LayoutParams(swidth, height));
                 picture.setImageDrawable(resource);

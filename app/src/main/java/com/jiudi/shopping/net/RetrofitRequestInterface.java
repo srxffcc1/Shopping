@@ -258,6 +258,12 @@ public interface RetrofitRequestInterface {
     Call<String> getGodsList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
+    /*领取优惠券*/
+    @FormUrlEncoded
+    @POST("api/my/get_coupon_user")
+    Call<String> getCoupo(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
     /*获得我喜欢列表*/
     @FormUrlEncoded
     @POST("api/store/maybe_love")

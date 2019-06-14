@@ -379,7 +379,7 @@ public class HomeBVFragment extends BaseFragment implements View.OnClickListener
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 MainGodsBean bean = new MainGodsBean();
                                 bean.id = jsonObject.optString("id");
-                                bean.image = jsonObject.optString("image");
+                                bean.image = jsonObject.optString("transverse_image");
                                 bean.store_name = jsonObject.optString("store_name");
                                 bean.keyword = jsonObject.optString("keyword");
                                 bean.sales = jsonObject.optInt("sales");

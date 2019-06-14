@@ -5,8 +5,8 @@ android {
         applicationId "com.jiudi.shopping"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 7
-        versionName "1.7.0"
+        versionCode 8
+        versionName "1.8.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
