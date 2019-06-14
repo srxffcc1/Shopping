@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#4f9aff</color>
+    <color name="colorDeepRed">#FF402D</color>
+    <color name="colorBlueTitle">#40aae0</color>
+    <color name="colorBlue">#37b7f4</color>
+    <color name="colorBlueText">#3ba5ff</color>
+    <color name="colorMoneyText">#00b7ee</color>
+    <color name="colorRecomendBlue">#329fd3</color>
+
+    <color name="bgColorBlue">#13B5B1</color>
+    <color name="colorGreen">#1e8f00</color>
+    <color name="colorGreenText">#224706</color>
+    <color name="colorGreenLight">#46af00</color>
+    <color name="colorRedTitle">#ea333f</color>
+    <color name="bgColorRed">#FFF5F5</color>
+    <color name="colorTopBar">#FFFFFF</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBgGray">#e8eaed</color>
+    <color name="colorBgGray2">#ececec</color>
+    <color name="colorLine">#D8D8D8</color>
+    <color name="colorBlack">#333333</color>
+    <color name="colorGray">#909090</color>
+    <color name="colorGrayLine">#c0c0c0</color>
+    <color name="colorGrayHintText">#d9dce8</color>
+    <color name="bgcolorGray">#d7d7d7</color>
+    <color name="colorGray5">#F5F7F6</color>
+    <color name="bg_live">#F5F5F5</color>
+    <color name="bg_live_stroke">#E2E2E2</color>
+
+    <color name="colorTitle">#505050</color>
+    <color name="colorTitleSecond">#7c7c7c</color>
+    <color name="colorgray">#7b7b7b</color>
+    <color name="colorTransparentWhite">#ACFFFFFF</color>
+
+    <color name="colorWhiteTransparency">#00FFFFFF</color>
+    <color name="colorDarkTest">#b0b4bf</color>
+    <color name="colorDark">#bfbfbf</color>
+    <color name="colorGray1">#fefefe</color>
+    <color name="bg_copy_order">#f8f8f8</color>
+    <color name="colorGray2">#bababa</color>
+    <color name="colorGrayTitleExpert">#555555</color>
+    <color name="colorYellow">#EA9133</color>
+    <color name="colorOrangeLight">#ffa836</color>
+    <color name="colorOrangeText">#ffa336</color>
+    <color name="colorOrange">#F8B551</color>
+    <color name="colorYellowText">#c4af83</color>
+    <color name="bg_arrange_three">#fff100</color>
+    <color name="recommend_text_gold">#deb061</color>
+
+    <color name="colorRed">#E9391C</color>
+    <color name="colorTransparentBg2">#00000000</color>
+    <color name="colorTransparentBg">#66000000</color>
+    <color name="colorFontGray5">#b4b5be</color>
+    <color name="colorFontLight">#333333</color>
+    <color name="colorFontDark">#7E7E7E</color>
+    <color name="colorGray6">#AAAAAA</color>
+    <color name="colorGray7">#DDDDDD</color>
+    <color name="colorGray8">#80CCCCCC</color>
+    <color name="edit_hint">#CCCCCC</color>
+    <color name="bg_gray_transparent">#B2101325</color>
+
+    <color name="bg_expert_detail">#f2f2f2</color>
+    <color name="live_text">#bbbbbb</color>
+    <color name="colorRedGrayLight">#fefaf9</color>
+    <color name="colorTransport">#00000000</color>
+    <color name="colorPurple">#7258cd</color>
+    <color name="bgColorPurple">#ece9f8</color>
+    <color name="bgColorGreen">#e5f5fd</color>
+    <color name="bgRecommend">#f9f8f0</color>
+    <color name="bgRecommendGray">#f6f6f6</color>
+    <color name="tabGrayText">#888888</color>
+    <color name="iconBlue">#87A8D8</color>
+    <color name="textBlue">#83b1ee</color>
+
+    <color name="bgGrayItem">#F4F6F9</color>
+    <color name="publish_text">#4fccd1</color>
+    <color name="bg_blue">#EDF9FA</color>
+    <color name="colorFont">#404652</color>
+    <color name="colorGrayFont">#888a96</color>
+
+    <color name="colorRedFont">#fe3336</color>
+    <color name="colorItemBgGray">#fafafc</color>
+
+    <color name="green">#ffe9391c</color>
+    <color name="gray">#999999</color>
+</resources>

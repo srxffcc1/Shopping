@@ -5,8 +5,8 @@ android {
         applicationId "com.jiudi.shopping"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 7
+        versionName "1.7.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -65,6 +65,7 @@ dependencies {
     compile project(':qimo')
     compile project(':flowlayout-lib')
     compile project(':umlib')
+    compile project(':verticaltablayout')//纵向tab
     compile('com.alibaba.android:vlayout:1.2.8@aar') {
         transitive = true
     }
@@ -81,7 +82,7 @@ dependencies {
 //    compile 'com.umeng.sdk:shareboard-widget:latest.integration'
 
 
-
+    compile 'com.github.nukc:loadmorewrapper:1.6.2'
     implementation  'com.tencent.bugly:crashreport:2.6.0'
     implementation 'com.aykj.mustinsert:mustinsert:1.1.7'
     implementation 'me.majiajie:pager-bottom-tab-strip:2.3.0'
@@ -115,7 +116,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
     compile 'com.github.SilenceDut:jpinyin:v1.0'
     //微信
-//    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     //城市选择
     compile 'com.zaaach:citypicker:2.0.3'
     //必选
@@ -129,6 +130,7 @@ dependencies {
     compile 'com.amap.api:navi-3dmap:6.6.0_3dmap6.7.0'
     compile 'com.amap.api:location:4.5.1'
     compile 'com.amap.api:search:latest.integration'
+
 //    implementation files('libs/umeng-common-2.0.2.jar')
 //    implementation files('libs/umeng-share-core-6.9.4.jar')
 //    implementation files('libs/umeng-share-QQ-simplify-6.9.4.jar')

@@ -25,6 +25,7 @@ import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.ui.main.MainNewActivity;
 import com.jiudi.shopping.ui.main.MainNewOldActivity;
 import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
@@ -312,7 +313,7 @@ public class LoginActivity extends BaseActivity {
                         }else{
                             ToastUtil.showShort(mContext, "登录成功");
                             SPUtil.put("head", token);
-                            startActivity(new Intent(mActivity, MainNewOldActivity.class));
+                            startActivity(new Intent(mActivity, MainNewActivity.class));
                             finish();
                         }
                     } else {
@@ -364,7 +365,11 @@ public class LoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==100){
             if(resultCode== Activity.RESULT_OK){
-                Intent intent = new Intent(mActivity, MainNewOldActivity.class);
+                Intent intent = new Intent(mActivity, MainNewActivity.class);
+                startActivity(intent);
+                finish();
+            }else{
+                Intent intent = new Intent(mActivity, MainNewActivity.class);
                 startActivity(intent);
                 finish();
             }

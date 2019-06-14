@@ -67,7 +67,7 @@ public class AllOrderActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-                            EventBus.getDefault().post(new OrderEvent());
+        EventBus.getDefault().post(new OrderEvent());
     }
 
     @Override

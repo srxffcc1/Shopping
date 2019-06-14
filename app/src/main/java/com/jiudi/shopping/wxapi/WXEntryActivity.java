@@ -5,6 +5,7 @@ package com.jiudi.shopping.wxapi;
  */
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.jiudi.shopping.event.WechatLoginEvent;
@@ -31,6 +32,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onReq(BaseReq baseReq) {
 
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        LocalApplication.mIWXApi.handleIntent(intent, this);
     }
 
     @Override

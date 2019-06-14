@@ -169,19 +169,25 @@ public class SearchShopActivity extends BaseActivity {
     }
     private void getList() {
         Map<String, String> map = new HashMap<>();
-        String keyword=getIntent().getStringExtra("keyword");
-        String oldhistory=SPUtil.get("seach", "").toString();
-        oldhistory=oldhistory.replace(keyword,"");
-        oldhistory=oldhistory+keyword+",";
-        SPUtil.put("seach",oldhistory);
+
         try {
+            String keyword=getIntent().getStringExtra("keyword");
+            String oldhistory=SPUtil.get("seach", "").toString();
+            oldhistory=oldhistory.replace(keyword,"");
+            oldhistory=oldhistory+keyword+",";
+            SPUtil.put("seach",oldhistory);
             map.put("keyword", new String(Base64Encoder.encode(keyword.getBytes("utf-8"))));
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         map.put("first", page + "");
         map.put("limit", limit+"");
-        map.put("cId", "0");
+        if(getIntent().getStringExtra("cId")!=null&&!"".equals(getIntent().getStringExtra("cId"))){
+
+            map.put("cId", getIntent().getStringExtra("cId"));
+        }else{
+            map.put("cId", "0");
+        }
         map.put("sId", "0");
         map.put("priceOrder", "0");
         map.put("salesOrder", "0");
@@ -203,7 +209,8 @@ public class SearchShopActivity extends BaseActivity {
                                 bean.image = jsonObject.optString("image");
                                 bean.store_name = jsonObject.optString("store_name");
                                 bean.keyword = jsonObject.optString("keyword");
-                                bean.sales = jsonObject.optString("sales");
+                                bean.sales = jsonObject.optInt("sales");
+                                bean.stock = jsonObject.optInt("stock");
                                 bean.vip_price = jsonObject.optString("vip_price");
                                 bean.price = jsonObject.optString("price");
                                 bean.unit_name = jsonObject.optString("unit_name");

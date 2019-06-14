@@ -46,14 +46,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             WechatPayEvent wechatPayEvent = new WechatPayEvent();
             wechatPayEvent.setResult(baseResp.errCode);
             EventBus.getDefault().post(wechatPayEvent);
-            finish();
         }
-        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {//微信支付
-            WechatPayEvent wechatPayEvent = new WechatPayEvent();
-            wechatPayEvent.setResult(baseResp.errCode);
-            EventBus.getDefault().post(wechatPayEvent);
-            finish();
-        }
+        finish();
     }
 
 }

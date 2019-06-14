@@ -55,4 +55,7 @@ public class UserBean implements Serializable {
     public String team_num;
     public String is_reward;
     public String allowance_number;
+    public String collect_number;
+    public String coupon_number;
+    public String remind;
 }

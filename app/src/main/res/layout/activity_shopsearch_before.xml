@@ -42,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
+                android:textSize="17sp"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="搜一搜"

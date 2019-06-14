@@ -57,6 +57,7 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.main.MainActivity;
+import com.jiudi.shopping.ui.main.MainNewActivity;
 import com.jiudi.shopping.ui.main.MainNewOldActivity;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.WechatUtil;
@@ -161,6 +162,7 @@ public class CartDetailActivity extends BaseActivity {
         recycler = (RecyclerView) findViewById(R.id.recycler);
         titleBar = (LinearLayout) findViewById(R.id.title_bar);
         mainTab = (TabLayout) findViewById(R.id.main_tab);
+        mainTab.removeAllTabs();
         for (int i = 0; i < titles.length; i++) {
             //插入tab标签
             mainTab.addTab(mainTab.newTab().setText(titles[i]));
@@ -593,9 +595,8 @@ public InputStream getImageStream(String path) throws Exception {
             @Override
             public void onClick(View v) {
 
-                MobclickAgent.onEvent(mActivity,"B_goods_bottom_buy");
-                startActivity(new Intent(mActivity, MainNewOldActivity.class));
-                EventBus.getDefault().post(new CartEvent());
+                startActivity(new Intent(mActivity, MainNewActivity.class));
+//                EventBus.getDefault().post(new CartEvent());
                 EventBus.getDefault().post(new PassCartEvent());
             }
         });
@@ -830,7 +831,7 @@ public InputStream getImageStream(String path) throws Exception {
         LinearLayout sukall = customView2.findViewById(R.id.sukall);
         for (int i = 0; i <mcartattrlist.size() ; i++) {
             CartAttr cartAttr=mcartattrlist.get(i);
-            sukall.addView(buildTagParent(mActivity, destmap,cartAttr));
+            sukall.addView(buildTagParent(mActivity, destmap,cartAttr,money));
         }
 
     }
@@ -852,7 +853,7 @@ public InputStream getImageStream(String path) throws Exception {
         return 0;
     }
 
-    private View buildTagParent(final Activity mActivity, final Map<String, String> destmap, final CartAttr cartAttr) {
+    private View buildTagParent(final Activity mActivity, final Map<String, String> destmap, final CartAttr cartAttr, final TextView money) {
 
         LinearLayout tagparent = (LinearLayout) View.inflate(mActivity, R.layout.item_carchoiceflow, null);
         TextView textView=tagparent.findViewById(R.id.title);
@@ -877,6 +878,7 @@ public InputStream getImageStream(String path) throws Exception {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 destmap.put(cartAttr.getAttr_name(),cartAttr.getAttr_values().get(position));
+                money.setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcartattrvaluelist.get(checkWhichChose()).getVip_price():mcartattrvaluelist.get(checkWhichChose()).getPrice()));
                 return true;
             }
         });

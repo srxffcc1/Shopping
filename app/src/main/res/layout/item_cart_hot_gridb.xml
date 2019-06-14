@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="#FFF"
+    android:padding="10px">
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/picturel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/tmp_gods" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/picturel"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="塑料防滑衣架 家用多功能成人晾衣架 塑料防滑挂衣架弧形设计 贴合衣肩"
+                android:textColor="#ff393939"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:paddingTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥"
+                    android:textColor="#ffe31436"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/show_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 13.9"
+                    android:textColor="#ffe31436"
+                    android:textSize="18sp" />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:paddingLeft="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <ProgressBar
+                            android:id="@+id/progressz"
+                            android:max="1000"
+                            android:progress="50"
+                            android:layout_width="match_parent"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:progressDrawable="@drawable/progressz_bar"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/yiqianggou"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="已抢购500件"
+                            android:textColor="#ffffffff"
+                            android:textSize="9sp"
+                            />
+                        <TextView
+                            android:id="@+id/baifenbi"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="16%"
+                            android:gravity="right|center_vertical"
+                            android:textColor="#ffe31436"
+                            android:textSize="9sp"
+                            />
+                    </LinearLayout>
+                </FrameLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="#ffffffff"
+                    android:textSize="11sp" />
+                <TextView
+                    android:id="@+id/pass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:gravity="center"
+                    android:background="@drawable/text_boder_r_red_b3"
+                    android:text="立即购买"
+                    android:textColor="#ffffffff"
+                    android:textSize="11sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="#ffffffff"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

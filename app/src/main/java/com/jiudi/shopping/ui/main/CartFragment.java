@@ -237,6 +237,7 @@ public class CartFragment extends BaseFragment {
 
     }
     private void showRecycleView() {
+        sumMoney();
         if (myAdapter == null) {
 
 
@@ -289,14 +290,13 @@ public class CartFragment extends BaseFragment {
 
             };
 
-            recycler.addItemDecoration(RecyclerViewDivider.with(getActivity()).size(10).color(Color.parseColor("#E9E8ED")).build());
+            recycler.addItemDecoration(RecyclerViewDivider.with(mActivity).size(10).color(Color.parseColor("#E9E8ED")).build());
             recycler.setAdapter(myAdapter);
             recycler.setLayoutManager(new LinearLayoutManager(mActivity));
         }else{
 
             myAdapter.notifyDataSetChanged();
         }
-        sumMoney();
     }
 
     private void sendChangeNum(int id, int cart_num) {

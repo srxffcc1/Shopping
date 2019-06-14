@@ -634,6 +634,22 @@ public class PayDingDanActivity extends BaseActivity {
                 break;
         }
     }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if (mPD != null && !this.isFinishing()) {
+//            mPD.dismiss();
+//        }
+//    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mPayFailPopWindow!=null&&this.isFinishing()){
+            mPayFailPopWindow.dismiss();
+        }
+    }
 
     /**
      * 支付宝支付

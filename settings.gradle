@@ -1,2 +1,2 @@
-include ':app', ':imagepicker', ':convert', ':qimo','umlib','flowlayout-lib'
-include ':clearEditText'
+include ':app', ':imagepicker', ':convert', ':qimo', 'umlib', 'flowlayout-lib', ':verticaltablayoutdemo', ':verticaltablayout'
+//include ':clearEditText'

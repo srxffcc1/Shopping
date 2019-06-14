@@ -9,7 +9,8 @@ public class MainGodsBean {
     public String image;
     public String store_name;
     public String keyword;
-    public String sales;
+    public int sales;
+    public int stock;
     public String vip_price;
     public String price;
     public String unit_name;

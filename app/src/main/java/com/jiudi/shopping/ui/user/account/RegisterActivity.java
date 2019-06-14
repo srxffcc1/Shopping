@@ -26,6 +26,7 @@ import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
 import com.jiudi.shopping.ui.main.MainActivity;
+import com.jiudi.shopping.ui.main.MainNewActivity;
 import com.jiudi.shopping.ui.main.MainNewOldActivity;
 import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
@@ -131,7 +132,7 @@ public class RegisterActivity extends BaseActivity {
                     ToastUtil.showShort(mContext, getString(R.string.please_input_password));
                 } else if (!CommonUtil.isPassword(pwds)) {
                     ToastUtil.showShort(mContext, getString(R.string.password_rule));
-                }  else if (TextUtils.isEmpty(codes)) {
+                }  else if (TextUtils.isEmpty(codes)&&type!=2) {
                     ToastUtil.showShort(mContext, getString(R.string.please_input_verify_code));
                 }else {
                     regsiter(phones, codes, pwds);
@@ -163,6 +164,7 @@ public class RegisterActivity extends BaseActivity {
         }
         if(type==2){
             phone.setText(AccountManager.sUserBean.phone);
+            yanzhengmaL.setVisibility(View.GONE);
         }
 
     }
@@ -316,12 +318,12 @@ public class RegisterActivity extends BaseActivity {
 //                        }else{
 //                            ToastUtil.showShort(mContext, "登录成功");
 //                            SPUtil.put("head", token);
-//                            startActivity(new Intent(mActivity, MainNewOldActivity.class));
+//                            startActivity(new Intent(mActivity, MainNewActivity.class));
 //                            finish();
 //                        }
                         ToastUtil.showShort(mContext, "登录成功");
                         SPUtil.put("head", token);
-                        startActivity(new Intent(mActivity, MainNewOldActivity.class));
+                        startActivity(new Intent(mActivity, MainNewActivity.class));
                         setResult(Activity.RESULT_OK);
                         finish();
                     } else {
@@ -390,10 +392,8 @@ public class RegisterActivity extends BaseActivity {
                 });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-//        SPUtil.put("head", "");
-//        AccountManager.sUserBean.head=null;
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 }

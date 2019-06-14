@@ -156,7 +156,7 @@ public class TypeFragment extends BaseFragment {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 try {
-                    startActivity(new Intent(mActivity,SearchShopActivity.class).putExtra("keyword",needshow.get(position).cate_name));
+                    startActivity(new Intent(mActivity,SearchShopActivity.class).putExtra("cId",needshow.get(position).id));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

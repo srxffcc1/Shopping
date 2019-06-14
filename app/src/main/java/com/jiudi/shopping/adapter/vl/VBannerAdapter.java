@@ -47,7 +47,7 @@ public class VBannerAdapter extends DelegateAdapter.Adapter {
         mBannerUrlList.clear();
         for (int i = 0; i < mBannerList.size(); i++) {
             mBannerUrlList.add(mBannerList.get(i).pic);
-            System.out.println("获得的banner:" + mBannerList.get(i).pic);
+//            System.out.println("获得的banner:" + mBannerList.get(i).pic);
         }
         if (mBannerUrlList.size() > 0) {
             recyclerViewHolder.banner.setViewUrls(mBannerUrlList);

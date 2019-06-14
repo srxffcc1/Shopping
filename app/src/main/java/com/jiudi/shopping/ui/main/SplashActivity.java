@@ -181,7 +181,7 @@ public class SplashActivity extends BaseActivity {
                                 e.printStackTrace();
                             }
                             AccountManager.sUserBean=bean;
-                            startActivity(new Intent(mActivity, MainNewOldActivity.class));
+                            startActivity(new Intent(mActivity, MainNewActivity.class));
                             finish();
                         }else{
                             AccountManager.sUserBean=null;
@@ -307,6 +307,7 @@ public class SplashActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     mAppUpdatePopupWindow.dismiss();
+                    autoLogin();
                 }
             });
             downloadTV.setOnClickListener(new View.OnClickListener() {
@@ -390,6 +391,7 @@ public class SplashActivity extends BaseActivity {
                     LogUtil.e(TAG, "cancelTV");
                     AppUpdateService.stop(mActivity);
                     mUpdateProgressPopupWindow.dismiss();
+                    autoLogin();
                 }
             });
             mUpdateProgressPopupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

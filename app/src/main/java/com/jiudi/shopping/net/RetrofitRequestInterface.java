@@ -24,6 +24,12 @@ public interface RetrofitRequestInterface {
     Call<String> getFlash(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
+    /*类型图*/
+    @FormUrlEncoded
+    @POST("api/store/get_category_recommend")
+    Call<String> getTypeRecommend(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
     /*获得订单*/
     @FormUrlEncoded
     @POST("api/auth_api/get_user_order_list")
@@ -250,6 +256,18 @@ public interface RetrofitRequestInterface {
     @FormUrlEncoded
     @POST("api/store/get_best_product_list")
     Call<String> getGodsList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*获得我喜欢列表*/
+    @FormUrlEncoded
+    @POST("api/store/maybe_love")
+    Call<String> getLoveGodsList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+
+    /*虚拟购买数据*/
+    @FormUrlEncoded
+    @POST("api/index/fictitious")
+    Call<String> getFictitious(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
     /*获得商品详情*/

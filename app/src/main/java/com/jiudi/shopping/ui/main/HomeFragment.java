@@ -316,7 +316,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                                 bean.image = jsonObject.optString("image");
                                 bean.store_name = jsonObject.optString("store_name");
                                 bean.keyword = jsonObject.optString("keyword");
-                                bean.sales = jsonObject.optString("sales");
+                                bean.sales = jsonObject.optInt("sales");
+                                bean.stock = jsonObject.optInt("stock");
                                 bean.vip_price = jsonObject.optString("vip_price");
                                 bean.price = jsonObject.optString("price");
                                 bean.unit_name = jsonObject.optString("unit_name");
@@ -371,9 +372,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     });
                     holder.setText(R.id.title,carChoiceBean.store_name);
                     holder.setText(R.id.second_title,carChoiceBean.keyword);
-                    final  ImageView imageView=(ImageView) holder.getView(R.id.picture);
                     holder.setText(R.id.show_price,"¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?carChoiceBean.vip_price:carChoiceBean.price));
-                    ViewTreeObserver vto = holder.itemView.getViewTreeObserver();
+                    final  ImageView imageView=(ImageView) holder.getView(R.id.picture);
+                     ViewTreeObserver vto = holder.itemView.getViewTreeObserver();
                     if(fujian_px==0){
                         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                             @Override
