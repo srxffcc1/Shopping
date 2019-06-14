@@ -16,7 +16,7 @@ public class CartTitleBean {
     public String parent_commission;
     public String unit_name;
     public String sort;
-    public String sales;
+    public int sales;
     public String stock;
     public String is_show;
     public String is_hot;
@@ -34,7 +34,7 @@ public class CartTitleBean {
     public String is_seckill;
     public String is_bargain;
     public String is_integral;
-    public String ficti;
+    public int ficti;
     public String browse;
     public String code_path;
     public String coupon;

@@ -382,7 +382,7 @@ public class HomeBVFragment extends BaseFragment implements View.OnClickListener
                                 bean.image = jsonObject.optString("transverse_image");
                                 bean.store_name = jsonObject.optString("store_name");
                                 bean.keyword = jsonObject.optString("keyword");
-                                bean.sales = jsonObject.optInt("sales");
+                                bean.sales = jsonObject.optInt("sales")+jsonObject.optInt("ficti");
                                 bean.stock = jsonObject.optInt("stock");
                                 bean.vip_price = jsonObject.optString("vip_price");
                                 bean.price = jsonObject.optString("price");

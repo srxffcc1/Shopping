@@ -16,7 +16,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:paddingTop="5dp"
             android:id="@+id/picturel"
             android:layout_width="match_parent"
             android:gravity="center"

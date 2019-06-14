@@ -7,7 +7,7 @@
     android:gravity="center_vertical"
     android:paddingTop="10dp"
     android:paddingLeft="10dp"
-    android:paddingBottom="10dp">
+    android:paddingBottom="5px">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

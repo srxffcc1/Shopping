@@ -364,7 +364,7 @@ public class CartDetailActivity extends BaseActivity {
                         mcarttitlebean.parent_commission = storeInfo.optString("parent_commission");
                         mcarttitlebean.unit_name = storeInfo.optString("unit_name");
                         mcarttitlebean.sort = storeInfo.optString("sort");
-                        mcarttitlebean.sales = storeInfo.optString("sales");
+                        mcarttitlebean.sales = storeInfo.optInt("sales")+storeInfo.optInt("ficti");
                         mcarttitlebean.stock = storeInfo.optString("stock");
                         mcarttitlebean.is_show = storeInfo.optString("is_show");
                         mcarttitlebean.is_hot = storeInfo.optString("is_hot");
@@ -382,7 +382,7 @@ public class CartDetailActivity extends BaseActivity {
                         mcarttitlebean.is_seckill = storeInfo.optString("is_seckill");
                         mcarttitlebean.is_bargain = storeInfo.optString("is_bargain");
                         mcarttitlebean.is_integral = storeInfo.optString("is_integral");
-                        mcarttitlebean.ficti = storeInfo.optString("ficti");
+                        mcarttitlebean.ficti = storeInfo.optInt("ficti");
                         mcarttitlebean.browse = storeInfo.optString("browse");
                         mcarttitlebean.code_path = storeInfo.optString("code_path");
                         mcarttitlebean.coupon = storeInfo.optString("coupon");
