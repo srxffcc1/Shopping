@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/head"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_below="@id/setting"
+            android:layout_centerVertical="true"
+            android:src="@drawable/default_circle" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_marginTop="15dp"
+            android:layout_alignTop="@+id/head"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/head"
+            android:drawableRight="@drawable/act_pen"
+            android:drawablePadding="8dp"
+            android:text=""
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/head"
+            android:gravity="center"
+            android:text="钻石店主"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

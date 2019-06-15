@@ -13,11 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
@@ -26,36 +22,19 @@ import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.alibaba.android.vlayout.layout.StickyLayoutHelper;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.github.nukc.LoadMoreWrapper.LoadMoreAdapter;
-import com.github.nukc.LoadMoreWrapper.LoadMoreWrapper;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.vl.VHotGridAdapter;
-import com.jiudi.shopping.adapter.vl.VHotTabAdapter;
 import com.jiudi.shopping.adapter.vl.VMineAdapter;
 import com.jiudi.shopping.base.BaseFragment;
 import com.jiudi.shopping.bean.MainGodsBean;
 import com.jiudi.shopping.bean.UserBean;
-import com.jiudi.shopping.event.FlashEvent;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
-import com.jiudi.shopping.ui.fenxiao.FenXiaoMenuActivity;
-import com.jiudi.shopping.ui.fenxiao.FenXiaoNoActivity;
-import com.jiudi.shopping.ui.fenxiao.TuanDuiActivity;
-import com.jiudi.shopping.ui.fenxiao.TuiGuangActivity;
-import com.jiudi.shopping.ui.user.AddressListActivity;
-import com.jiudi.shopping.ui.user.AllOrderActivity;
-import com.jiudi.shopping.ui.user.AllQuanActivity;
-import com.jiudi.shopping.ui.user.ShopSettingActivity;
-import com.jiudi.shopping.ui.user.account.FenXiaoAccountActivity;
-import com.jiudi.shopping.ui.user.account.LoginActivity;
-import com.jiudi.shopping.ui.user.account.ShouCangActivity;
-import com.jiudi.shopping.ui.user.account.TongZhiActivity;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.HttpUrlConnectUtil;
 import com.jiudi.shopping.util.SPUtil;
@@ -65,28 +44,18 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
-import com.m7.imkfsdk.KfStartHelper;
-import com.umeng.analytics.MobclickAgent;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import q.rorbin.badgeview.Badge;
-import q.rorbin.badgeview.QBadgeView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -259,14 +228,7 @@ public class MineNewFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
-    @Override
-    public void onRefresh() {
-        stoploadmore=false;
-        page=0;
-        mHotVlList.clear();
-        getGodsList(false);
-        swipeRefreshLayout.setRefreshing(false);
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -275,6 +237,14 @@ public class MineNewFragment extends BaseFragment implements View.OnClickListene
                 changeUserHeadPopwindow();
                 break;
         }
+    }
+    @Override
+    public void onRefresh() {
+        stoploadmore=false;
+        page=0;
+        mHotVlList.clear();
+        getGodsList(false);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

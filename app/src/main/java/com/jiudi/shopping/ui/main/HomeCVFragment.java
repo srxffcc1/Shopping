@@ -1,6 +1,5 @@
 package com.jiudi.shopping.ui.main;
 
-import android.content.Intent;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -21,13 +20,10 @@ import com.github.nukc.LoadMoreWrapper.LoadMoreWrapper;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.vl.VBGifAdapter;
 import com.jiudi.shopping.adapter.vl.VHot2Adapter;
-import com.jiudi.shopping.adapter.vl.VHotAdapter;
-import com.jiudi.shopping.adapter.vl.VHotGrid2Adapter;
 import com.jiudi.shopping.adapter.vl.VHotGridAdapter;
 import com.jiudi.shopping.adapter.vl.VHotHead2Adapter;
 import com.jiudi.shopping.adapter.vl.VHotHeadAdapter;
 import com.jiudi.shopping.adapter.vl.VHotSingle2Adapter;
-import com.jiudi.shopping.adapter.vl.VHotSingleAdapter;
 import com.jiudi.shopping.adapter.vl.VHotTabAdapter;
 import com.jiudi.shopping.adapter.vl.VLBannerAdapter;
 import com.jiudi.shopping.adapter.vl.VQuiltyHeadAdapter;
@@ -283,11 +279,9 @@ public class HomeCVFragment extends BaseFragment implements View.OnClickListener
                         for (int i = 0; i < category_recommend.length(); i++) {
                             JSONObject jsonObject = category_recommend.getJSONObject(i);
                             RecommendBean bean = new RecommendBean();
-                            bean.id = jsonObject.optString("id");
                             bean.name = jsonObject.optString("cate_name");
                             bean.pic = jsonObject.optString("pic");
                             bean.cid = jsonObject.optString("id");
-                            bean.pic = jsonObject.optString("pic");
                             mRecommendList.add(bean);
                         }
 //                        JSONArray store_product = data.getJSONArray("store_product");

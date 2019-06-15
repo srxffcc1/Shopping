@@ -7,15 +7,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
-import com.jiudi.shopping.ui.user.account.AccountActivity;
 import com.jiudi.shopping.ui.user.account.FenXiaoAccountActivity;
 import com.jiudi.shopping.ui.user.account.TiXianActivity;
 import com.jiudi.shopping.util.SPUtil;
@@ -95,11 +92,12 @@ public class FenXiaoMenuActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
-        helper = new KfStartHelper(mActivity);
-        RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.head_defuat_circle);
-        Glide.with(mActivity).load(AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
-        code.setText("邀请码:"+AccountManager.sUserBean.uid);
+        startActivity(new Intent(mActivity, FenXiaoNo2Activity.class).putExtra("isdianzhu",true));
+        finish();
+//        helper = new KfStartHelper(mActivity);
+//        RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.head_defuat_circle);
+//        Glide.with(mActivity).load(AccountManager.sUserBean.avatar).apply(requestOptions).into(head);
+//        code.setText("邀请码:"+AccountManager.sUserBean.uid);
     }
 
     @Override
@@ -161,8 +159,6 @@ public class FenXiaoMenuActivity extends BaseActivity {
                         weidaozhangyongjinv.setText(data.getString("number")+"元");
                         leijihuodev.setText(data.getString("allnumber")+"元");
                         leijiyiv.setText(data.getString("extractNumber")+"元");
-//                        zhishuv.setText(data.getJSONObject("userInfo").getString("direct_num")+"人");
-//                        tuanduiv.setText(data.getJSONObject("userInfo").getString("team_num")+"人");
                         try {
                             yaoqingren.setText(data.getJSONObject("userInfo").getJSONObject("spread_name").getString("nickname").replace("null",""));
                         } catch (JSONException e) {

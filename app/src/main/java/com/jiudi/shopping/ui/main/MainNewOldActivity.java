@@ -1,17 +1,10 @@
 package com.jiudi.shopping.ui.main;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -27,24 +20,16 @@ import com.jiudi.shopping.adapter.vp.VpFragmentAdapter;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.bean.UserBean;
 import com.jiudi.shopping.event.CloseMainEvent;
-import com.jiudi.shopping.event.FinishEvent;
 import com.jiudi.shopping.event.FlashEvent;
 import com.jiudi.shopping.event.MainEvent;
-import com.jiudi.shopping.global.Constant;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
-import com.jiudi.shopping.service.AppUpdateService;
 import com.jiudi.shopping.ui.fenxiao.FenXiaoMenuActivity;
 import com.jiudi.shopping.ui.fenxiao.FenXiaoNoActivity;
 import com.jiudi.shopping.ui.user.account.LoginActivity;
-import com.jiudi.shopping.util.CommonUtil;
-import com.jiudi.shopping.util.DialogUtil;
-import com.jiudi.shopping.util.LogUtil;
-import com.jiudi.shopping.util.NetworkUtil;
 import com.jiudi.shopping.util.SPUtil;
-import com.jiudi.shopping.util.ToastUtil;
 import com.jiudi.shopping.widget.NoTouchViewPager;
 import com.jiudi.shopping.widget.SpecialTab;
 import com.jiudi.shopping.widget.SpecialTabRound;
@@ -222,7 +207,7 @@ public class MainNewOldActivity extends BaseActivity {
                 navigationController = tab.custom()
                         .addItem(newItem(R.drawable.shouyehui, R.drawable.shouyehong, "首页"))
                         .addItem(newItem(R.drawable.tingchehui, R.drawable.tingchehong, "分类"))
-                        .addItem(newRoundItem(R.drawable.kaidianhui, R.drawable.kaidianhong, "我要开店"))
+                        .addItem(newRoundItem(R.drawable.kaidianhui, R.drawable.kaidianhong, "升级店主"))
                         .addItem(newItem(R.drawable.gouwuchehui, R.drawable.gouwuchehong, "购物车"))
                         .addItem(newItem(R.drawable.wodehui, R.drawable.wodehong, "我的"))
                         .build();
@@ -294,7 +279,7 @@ public class MainNewOldActivity extends BaseActivity {
         } else {
             navigationController.setDefaultDrawable(2,getResources().getDrawable(R.drawable.kaidianhui));
             navigationController.setSelectedDrawable(2,getResources().getDrawable(R.drawable.kaidianhong));
-            navigationController.setTitle(2,"我要开店");
+            navigationController.setTitle(2,"升级店主");
         }
     }
 

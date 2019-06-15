@@ -520,7 +520,6 @@ public class AddDiscussActivity extends BaseActivity {
                             //.setBtnText("sure","cancle","hhhh")
                             .setBtnText("确定", "取消")
                             .setBtnColor(R.color.dialogutil_text_black, R.color.colorPrimaryDark, 0)
-
                             //.setForceWidthPercent(0.99f)
                             //.setForceHeightPercent(0.88f)
                             //.setBgRes(R.drawable.leak_canary_icon)

@@ -2,16 +2,13 @@ package com.jiudi.shopping.ui.main;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,21 +34,15 @@ import com.jiudi.shopping.ui.fenxiao.FenXiaoMenuActivity;
 import com.jiudi.shopping.ui.fenxiao.FenXiaoNoActivity;
 import com.jiudi.shopping.ui.fenxiao.TuanDuiActivity;
 import com.jiudi.shopping.ui.fenxiao.TuiGuangActivity;
-import com.jiudi.shopping.ui.user.account.TongZhiActivity;
-import com.jiudi.shopping.util.DialogUtil;
-import com.jiudi.shopping.util.DisplayUtil;
 import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.NetworkUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.ToastUtil;
 import com.jiudi.shopping.widget.BannerLayout;
-import com.jiudi.shopping.widget.DividerItemDecoration;
-import com.jiudi.shopping.widget.GlideImageLoader;
 import com.jiudi.shopping.widget.SimpleBottomView;
 import com.jiudi.shopping.widget.SimpleLoadView;
 import com.jiudi.shopping.widget.SimpleRefreshView;
 import com.umeng.analytics.MobclickAgent;
-
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -157,7 +148,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             dianzhuquanyi2.setText("客户管理");
         }else{
 //            startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
-            dianzhuquanyi.setText("我要开店");
+            dianzhuquanyi.setText("升级店主");
             dianzhuquanyi2.setText("客户管理");
         }
     }

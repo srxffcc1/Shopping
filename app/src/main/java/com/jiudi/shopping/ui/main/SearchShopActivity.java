@@ -1,60 +1,64 @@
 package com.jiudi.shopping.ui.main;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import com.alibaba.android.vlayout.DelegateAdapter;
+import com.alibaba.android.vlayout.VirtualLayoutManager;
+import com.alibaba.android.vlayout.layout.GridLayoutHelper;
+import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
+import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
+import com.alibaba.android.vlayout.layout.StickyLayoutHelper;
 import com.alibaba.idst.nls.internal.utils.Base64Encoder;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.dengzq.simplerefreshlayout.SimpleRefreshLayout;
+import com.github.nukc.LoadMoreWrapper.LoadMoreAdapter;
+import com.github.nukc.LoadMoreWrapper.LoadMoreWrapper;
 import com.jiudi.shopping.R;
-import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
-import com.jiudi.shopping.adapter.recycler.base.ViewHolder;
+import com.jiudi.shopping.adapter.vl.VHotGridAdapter;
+import com.jiudi.shopping.adapter.vl.VHotTabAdapter;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.bean.MainGodsBean;
-import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
-import com.jiudi.shopping.ui.cart.CartDetailActivity;
-import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.SPUtil;
-import com.jiudi.shopping.widget.SimpleBottomView;
-import com.jiudi.shopping.widget.SimpleLoadView;
-import com.jiudi.shopping.widget.SimpleRefreshView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class SearchShopActivity extends BaseActivity {
+public class SearchShopActivity extends BaseActivity implements View.OnClickListener, LoadMoreAdapter.OnLoadMoreListener, SwipeRefreshLayout.OnRefreshListener, VHotTabAdapter.TabSelectedListener{
     private android.widget.ImageView back;
     private android.widget.EditText searchTag;
     private android.widget.ImageView searchPass;
-    private android.support.v7.widget.RecyclerView recycler;
     private List<MainGodsBean> mCarChoiceList = new ArrayList<>();
-    private RecyclerCommonAdapter<MainGodsBean> mCarBeanAdapter;
     private int page=0;
     private int limit=20;
     private com.dengzq.simplerefreshlayout.SimpleRefreshLayout simpleRefresh;
     private boolean stoploadmore=false;
-    InputMethodManager manager;//输入法管理器
+    InputMethodManager immanager;//输入法管理器
+    private android.support.v4.widget.SwipeRefreshLayout swipeRefreshLayout;
+    private android.support.v7.widget.RecyclerView recycler;
+
+    private VHotGridAdapter vHotGridAdapter;
+
+
+    private VirtualLayoutManager manager;
+    int nowindex = 0;
+    private DelegateAdapter adapter;
+    final List<DelegateAdapter.Adapter> adapters = new LinkedList<>();
+    private LoadMoreAdapter mLoadMoreAdapter;
 
     @Override
     protected int getContentViewId() {
@@ -67,21 +71,16 @@ public class SearchShopActivity extends BaseActivity {
         back = (ImageView) findViewById(R.id.back);
         searchTag = (EditText) findViewById(R.id.search_tag);
         searchPass = (ImageView) findViewById(R.id.search_pass);
-        recycler = (RecyclerView) findViewById(R.id.recycler);
         simpleRefresh = (SimpleRefreshLayout) findViewById(R.id.simple_refresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        recycler = (RecyclerView) findViewById(R.id.recycler);
     }
 
     @Override
     public void initData() {
 
-        manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        immanager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 //        getList("移动");
-        simpleRefresh.setScrollEnable(true);
-        simpleRefresh.setPullUpEnable(true);
-        simpleRefresh.setPullDownEnable(true);
-        simpleRefresh.setHeaderView(new SimpleRefreshView(mActivity));
-        simpleRefresh.setFooterView(new SimpleLoadView(mActivity));
-        simpleRefresh.setBottomView(new SimpleBottomView(mActivity));
         searchTag.setText(getIntent().getStringExtra("keyword"));
         getList();
     }
@@ -95,6 +94,7 @@ public class SearchShopActivity extends BaseActivity {
                 finish();
             }
         });
+        swipeRefreshLayout.setOnRefreshListener(this);
 //        searchPass.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -132,41 +132,88 @@ public class SearchShopActivity extends BaseActivity {
 //                return false;
 //            }
 //        });
-        simpleRefresh.setOnSimpleRefreshListener(new SimpleRefreshLayout.OnSimpleRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        simpleRefresh.onRefreshComplete();
-                        simpleRefresh.onLoadMoreComplete();
-                    }
-                },500);
-                mCarChoiceList.clear();
-                page=0;
-                getList();
-            }
 
-            @Override
-            public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        simpleRefresh.onRefreshComplete();
-                        simpleRefresh.onLoadMoreComplete();
-                    }
-                },500);
-                if(stoploadmore){
-
-                    Toast.makeText(mActivity,"没有更多",Toast.LENGTH_SHORT).show();
-                }else{
-                    page=page+limit;
-                    getList();
-                }
-
-            }
-        });
     }
+    public void buildRecycleView(boolean needscroll) {
+
+        if (adapter == null) {
+            nowindex = 0;
+            manager = new VirtualLayoutManager(mActivity);
+            recycler.setLayoutManager(manager);
+            adapter = new DelegateAdapter(manager);
+            RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+            recycler.setRecycledViewPool(viewPool);
+            viewPool.setMaxRecycledViews(0, 10);
+            SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
+            LinearLayoutHelper linearLayoutHelper = new LinearLayoutHelper();
+            GridLayoutHelper gridLayoutHelper = new GridLayoutHelper(5);
+            gridLayoutHelper.setSpanSizeLookup(new GridLayoutHelper.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return 1;
+                }
+            });
+            gridLayoutHelper.setAutoExpand(false);
+
+            GridLayoutHelper gridLayoutHelper2 = new GridLayoutHelper(2);
+            gridLayoutHelper2.setSpanSizeLookup(new GridLayoutHelper.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return 1;
+                }
+            });
+            gridLayoutHelper2.setSpanSizeLookup(new GridLayoutHelper.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return 1;
+                }
+            });
+
+            gridLayoutHelper2.setAutoExpand(false);
+            StickyLayoutHelper stickyLayoutHelper = new StickyLayoutHelper();
+            stickyLayoutHelper.setStickyStart(true);
+
+
+
+
+//            vbGifAdapter = new VBGifAdapter(mActivity, singleLayoutHelper);
+//            adapters.add(vbGifAdapter);
+//            nowindex += vbGifAdapter.getItemCount();
+
+//            vQuiltyHeadAdapter = new VQuiltyHeadAdapter(mActivity, singleLayoutHelper, mRecommendtitle);
+//            adapters.add(vQuiltyHeadAdapter);
+//            nowindex += vQuiltyHeadAdapter.getItemCount();
+//
+//            vRecommendAdapter = new VRecommendAdapter(mActivity, gridLayoutHelper, mRecommendList);
+//            adapters.add(vRecommendAdapter);
+//            nowindex += vRecommendAdapter.getItemCount();
+
+//            vHotHeadAdapter = new VHotHeadAdapter(mActivity, singleLayoutHelper);
+//            adapters.add(vHotHeadAdapter);
+//            nowindex += vHotHeadAdapter.getItemCount();
+
+
+            vHotGridAdapter = new VHotGridAdapter(mActivity, gridLayoutHelper2, mCarChoiceList);
+            adapters.add(vHotGridAdapter);
+
+
+            adapter.setAdapters(adapters);
+            recycler.setAdapter(adapter);
+            mLoadMoreAdapter = LoadMoreWrapper.with(adapter)
+                    .setLoadMoreEnabled(!stoploadmore)
+                    .setListener(this)
+                    .into(recycler);
+        } else {
+            try {
+                vHotGridAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
     private void getList() {
         Map<String, String> map = new HashMap<>();
 
@@ -183,7 +230,6 @@ public class SearchShopActivity extends BaseActivity {
         map.put("first", page + "");
         map.put("limit", limit+"");
         if(getIntent().getStringExtra("cId")!=null&&!"".equals(getIntent().getStringExtra("cId"))){
-
             map.put("cId", getIntent().getStringExtra("cId"));
         }else{
             map.put("cId", "0");
@@ -201,7 +247,7 @@ public class SearchShopActivity extends BaseActivity {
                     String info = res.getString("msg");
                     if (code == 200) {
                         JSONArray jsonArray = res.getJSONArray("data");
-                        if(jsonArray.length()>0){
+                        if (jsonArray.length() > 0) {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 MainGodsBean bean = new MainGodsBean();
@@ -209,17 +255,19 @@ public class SearchShopActivity extends BaseActivity {
                                 bean.image = jsonObject.optString("image");
                                 bean.store_name = jsonObject.optString("store_name");
                                 bean.keyword = jsonObject.optString("keyword");
-                                bean.sales = jsonObject.optInt("sales");
+                                bean.sales = jsonObject.optInt("sales")+jsonObject.optInt("ficti");
                                 bean.stock = jsonObject.optInt("stock");
                                 bean.vip_price = jsonObject.optString("vip_price");
                                 bean.price = jsonObject.optString("price");
                                 bean.unit_name = jsonObject.optString("unit_name");
                                 mCarChoiceList.add(bean);
                             }
-                            showCarChoiceRecycleView();
-                        }else{
-                            Toast.makeText(mActivity,"没有更多商品",Toast.LENGTH_SHORT).show();
-                            stoploadmore=true;
+                            buildRecycleView(false);
+                        } else {
+//
+                            noMoreData();
+                            buildRecycleView(false);
+                            stoploadmore = true;
                         }
 
 
@@ -239,43 +287,84 @@ public class SearchShopActivity extends BaseActivity {
     /**
      * 车主精选
      */
-    private void showCarChoiceRecycleView() {
-        if (mCarBeanAdapter == null) {
+//    private void showCarChoiceRecycleView() {
+//        if (mCarBeanAdapter == null) {
+//
+//
+//            mCarBeanAdapter = new RecyclerCommonAdapter<MainGodsBean>(mActivity, R.layout.item_carchoice, mCarChoiceList) {
+//
+//                @Override
+//                protected void convert(ViewHolder holder, final MainGodsBean carChoiceBean, int position) {
+//                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",carChoiceBean.id));
+//                        }
+//                    });
+//                    holder.setText(R.id.title,carChoiceBean.store_name);
+//                    holder.setText(R.id.second_title,carChoiceBean.keyword);
+//                    holder.setText(R.id.show_price,"¥"+("1".equals(AccountManager.sUserBean.is_promoter)?carChoiceBean.vip_price:carChoiceBean.price));
+//                    RequestOptions options = new RequestOptions()
+//                            .fitCenter()
+//                            .placeholder(R.drawable.tmp_gods)
+//                            .error(R.drawable.tmp_gods)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
+//                    Glide.with(mActivity).load(carChoiceBean.image).apply(options).into((ImageView) holder.getView(R.id.picture));
+////                    AccountManager.setBestGood(carChoiceBean.id);
+////                    new GlideImageLoader().displayImage(mActivity,carChoiceBean.picture, (ImageView) holder.getView(R.id.picture));
+//                }
+//
+//            };
+//
+//
+////            recycler.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL_LIST, (int) DisplayUtil.dpToPx(mActivity, 1), ContextCompat.getColor(mActivity, R.color.colorLine), false, 2));
+//            recycler.setAdapter(mCarBeanAdapter);
+//            recycler.setLayoutManager(new GridLayoutManager(mActivity, 2));
+//        } else {
+//
+//            mCarBeanAdapter.notifyDataSetChanged();
+//        }
+//
+//    }
+    @Override
+    public void onRefresh() {
+        stoploadmore = false;
+        page = 0;
+        mCarChoiceList.clear();
+        getList();
+        swipeRefreshLayout.setRefreshing(false);
 
+    }
 
-            mCarBeanAdapter = new RecyclerCommonAdapter<MainGodsBean>(mActivity, R.layout.item_carchoice, mCarChoiceList) {
+    @Override
+    public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
+        page = page + limit;
+        getList();
+    }
 
-                @Override
-                protected void convert(ViewHolder holder, final MainGodsBean carChoiceBean, int position) {
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(mActivity, CartDetailActivity.class).putExtra("id",carChoiceBean.id));
-                        }
-                    });
-                    holder.setText(R.id.title,carChoiceBean.store_name);
-                    holder.setText(R.id.second_title,carChoiceBean.keyword);
-                    holder.setText(R.id.show_price,"¥"+("1".equals(AccountManager.sUserBean.is_promoter)?carChoiceBean.vip_price:carChoiceBean.price));
-                    RequestOptions options = new RequestOptions()
-                            .fitCenter()
-                            .placeholder(R.drawable.tmp_gods)
-                            .error(R.drawable.tmp_gods)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE);//缓存全尺寸
-                    Glide.with(mActivity).load(carChoiceBean.image).apply(options).into((ImageView) holder.getView(R.id.picture));
-//                    AccountManager.setBestGood(carChoiceBean.id);
-//                    new GlideImageLoader().displayImage(mActivity,carChoiceBean.picture, (ImageView) holder.getView(R.id.picture));
-                }
+//    private boolean resetRefreshing() {
+//        if (swipeRefreshLayout.isRefreshing()) {
+//            swipeRefreshLayout.setRefreshing(false);
+//            return true;
+//        }
+//        return false;
+//    }
 
-            };
-
-
-//            recycler.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL_LIST, (int) DisplayUtil.dpToPx(mActivity, 1), ContextCompat.getColor(mActivity, R.color.colorLine), false, 2));
-            recycler.setAdapter(mCarBeanAdapter);
-            recycler.setLayoutManager(new GridLayoutManager(mActivity, 2));
-        } else {
-
-            mCarBeanAdapter.notifyDataSetChanged();
+    public void noMoreData() {
+        if (mLoadMoreAdapter != null) {
+            mLoadMoreAdapter.setLoadMoreEnabled(false);
+            mLoadMoreAdapter.setShowNoMoreEnabled(true);
+            mLoadMoreAdapter.getOriginalAdapter().notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onTabClick(String cid) {
 
     }
 }

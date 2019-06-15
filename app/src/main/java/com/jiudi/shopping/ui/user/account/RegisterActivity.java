@@ -15,6 +15,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.recycler.RecyclerCommonAdapter;
 import com.jiudi.shopping.base.BaseActivity;
@@ -121,9 +123,10 @@ public class RegisterActivity extends BaseActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phones = phone.getText().toString().trim();
-                String pwds = pwd.getText().toString().trim();
-                String codes = yanzhengma.getText().toString().trim();
+                final String phones = phone.getText().toString().trim();
+                final String pwds = pwd.getText().toString().trim();
+                final String codes = yanzhengma.getText().toString().trim();
+                final String ycodes=ycode.getText().toString();
                 if (TextUtils.isEmpty(phones)) {
                     ToastUtil.showShort(mContext, getString(R.string.please_input_phone_num));
                 } else if (!CommonUtil.isPhone(phones)) {
@@ -135,7 +138,38 @@ public class RegisterActivity extends BaseActivity {
                 }  else if (TextUtils.isEmpty(codes)&&type!=2) {
                     ToastUtil.showShort(mContext, getString(R.string.please_input_verify_code));
                 }else {
-                    regsiter(phones, codes, pwds);
+                    if(ycodes==null||"".equals(ycodes)){
+                        StyledDialog.init(mActivity);
+                        StyledDialog.buildIosAlert("确认操作", "确认不输入邀请码吗？", new MyDialogListener() {
+                            @Override
+                            public void onFirst() {
+
+                                regsiter(phones, codes, pwds);
+                            }
+
+                            @Override
+                            public void onSecond() {
+
+                            }
+
+                            @Override
+                            public void onThird() {
+
+                            }
+
+
+                        })
+                                //.setBtnText("sure","cancle","hhhh")
+                                .setBtnText("确定", "取消")
+                                .setBtnColor(R.color.dialogutil_text_black, R.color.colorPrimaryDark, 0)
+                                //.setForceWidthPercent(0.99f)
+                                //.setForceHeightPercent(0.88f)
+                                //.setBgRes(R.drawable.leak_canary_icon)
+                                .show();
+                    }else {
+
+                        regsiter(phones, codes, pwds);
+                    }
                 }
             }
         });

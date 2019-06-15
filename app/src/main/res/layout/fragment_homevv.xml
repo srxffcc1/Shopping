@@ -13,10 +13,11 @@
 
         <ImageView
             android:id="@+id/tongzhi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="fitCenter"
             android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
             android:src="@drawable/home_left" />
 
         <ImageView
@@ -28,8 +29,9 @@
 
         <ImageView
             android:id="@+id/seach"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="fitCenter"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/home_right" />

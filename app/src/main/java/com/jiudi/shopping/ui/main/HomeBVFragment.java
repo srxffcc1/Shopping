@@ -1,7 +1,5 @@
 package com.jiudi.shopping.ui.main;
 
-import android.content.Intent;
-import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -22,13 +20,10 @@ import com.github.nukc.LoadMoreWrapper.LoadMoreWrapper;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.adapter.vl.VBGifAdapter;
 import com.jiudi.shopping.adapter.vl.VHot2Adapter;
-import com.jiudi.shopping.adapter.vl.VHotAdapter;
 import com.jiudi.shopping.adapter.vl.VHotGrid2Adapter;
-import com.jiudi.shopping.adapter.vl.VHotGridAdapter;
 import com.jiudi.shopping.adapter.vl.VHotHead2Adapter;
 import com.jiudi.shopping.adapter.vl.VHotHeadAdapter;
 import com.jiudi.shopping.adapter.vl.VHotSingle2Adapter;
-import com.jiudi.shopping.adapter.vl.VHotSingleAdapter;
 import com.jiudi.shopping.adapter.vl.VHotTabAdapter;
 import com.jiudi.shopping.adapter.vl.VLBannerAdapter;
 import com.jiudi.shopping.adapter.vl.VQuiltyHeadAdapter;
@@ -432,13 +427,13 @@ public class HomeBVFragment extends BaseFragment implements View.OnClickListener
         getGodsList(false);
     }
 
-    private boolean resetRefreshing() {
-        if (swipeRefreshLayout.isRefreshing()) {
-            swipeRefreshLayout.setRefreshing(false);
-            return true;
-        }
-        return false;
-    }
+//    private boolean resetRefreshing() {
+//        if (swipeRefreshLayout.isRefreshing()) {
+//            swipeRefreshLayout.setRefreshing(false);
+//            return true;
+//        }
+//        return false;
+//    }
 
     public void noMoreData() {
         if (mLoadMoreAdapter != null) {

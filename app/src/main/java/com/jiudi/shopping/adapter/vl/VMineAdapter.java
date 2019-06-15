@@ -37,7 +37,6 @@ import com.jiudi.shopping.ui.user.account.ShouCangActivity;
 import com.jiudi.shopping.ui.user.account.TongZhiActivity;
 import com.jiudi.shopping.util.SPUtil;
 import com.m7.imkfsdk.KfStartHelper;
-import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -250,7 +249,7 @@ public class VMineAdapter extends DelegateAdapter.Adapter {
                     context.startActivity(new Intent(context, TuiGuangActivity.class));
                 } else {
 //                    mylessmoneyvalue.setText("加入即享");
-//                    dianzhuquanyi2.setText("我要开店");
+//                    dianzhuquanyi2.setText("升级店主");
 //                    actContent.setText(AccountManager.sUserBean.remind);
 //                    actGo.setText("立即开通");
 
@@ -373,7 +372,7 @@ public class VMineAdapter extends DelegateAdapter.Adapter {
                 actGo.setText("立即领取");
             } else {
                 mylessmoneyvalue.setText("加入即享");
-                dianzhuquanyi2.setText("我要开店");
+                dianzhuquanyi2.setText("升级店主");
                 actContent.setText(AccountManager.sUserBean.remind);
                 actGo.setText("立即开通");
             }

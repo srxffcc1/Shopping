@@ -22,7 +22,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
-import com.jiudi.shopping.bean.CartIntroduceBean;
 import com.jiudi.shopping.bean.RecommendBean;
 import com.jiudi.shopping.ui.main.SearchShopActivity;
 
@@ -68,7 +67,7 @@ public class VRecommendAdapter extends DelegateAdapter.Adapter{
             Glide.with(context).load(mcartdiscussbeanlist.get(position).pic).apply(options).into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                    int height= 200;
+                    int height=(((BaseActivity)context).px-320)/5;
                     int swidth= (int) ((resource.getIntrinsicWidth()*1.0/resource.getIntrinsicHeight())*height);
                     imageview.setLayoutParams(new LinearLayout.LayoutParams(swidth, height));
                     imageview.setImageDrawable(resource);
@@ -79,7 +78,7 @@ public class VRecommendAdapter extends DelegateAdapter.Adapter{
                 @Override
                 public void onClick(View v) {
 
-                    context.startActivity(new Intent(context, SearchShopActivity.class).putExtra("cid",bean.cid));
+                    context.startActivity(new Intent(context, SearchShopActivity.class).putExtra("cId",bean.cid));
                 }
             });
 

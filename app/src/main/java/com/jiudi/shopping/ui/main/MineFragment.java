@@ -38,7 +38,6 @@ import com.jiudi.shopping.ui.user.AddressListActivity;
 import com.jiudi.shopping.ui.user.AllOrderActivity;
 import com.jiudi.shopping.ui.user.AllQuanActivity;
 import com.jiudi.shopping.ui.user.ShopSettingActivity;
-import com.jiudi.shopping.ui.user.account.AccountActivity;
 import com.jiudi.shopping.ui.user.account.FenXiaoAccountActivity;
 import com.jiudi.shopping.ui.user.account.LoginActivity;
 import com.jiudi.shopping.ui.user.account.ShouCangActivity;
@@ -181,7 +180,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             dianzhu.setText("店主权益");
         }else{
 //            startActivity(new Intent(mActivity, FenXiaoNoActivity.class));
-            dianzhu.setText("我要开店");
+            dianzhu.setText("升级店主");
         }
     }
 
