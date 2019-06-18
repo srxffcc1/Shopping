@@ -1,6 +1,8 @@
 package com.jiudi.shopping.ui.main;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,10 +19,13 @@ import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseFragment;
 import com.jiudi.shopping.bean.GodTypeC;
 import com.jiudi.shopping.bean.GodTypeP;
+import com.jiudi.shopping.bean.RecommendTabBean;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.util.NetworkUtil;
 import com.jiudi.shopping.util.SPUtil;
+import com.jiudi.shopping.util.ToastUtil;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -36,65 +41,120 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import q.rorbin.verticaltablayout.VerticalTabLayout;
+import q.rorbin.verticaltablayout.adapter.TabAdapter;
+import q.rorbin.verticaltablayout.widget.QTabView;
+import q.rorbin.verticaltablayout.widget.TabView;
+
 /**
  * 客服
  */
 public class TypeNewFragment extends BaseFragment {
 
 
-    private LinearLayout need;
-    private List<GodTypeP> godTypePList=new ArrayList<>();
+    private LinearLayout searchTagl;
+    private TextView searchTag;
+    private ImageView searchPass;
+    private q.rorbin.verticaltablayout.VerticalTabLayout verticaltabLayout;
+    private android.support.v7.widget.RecyclerView recycler;
+    List<Fragment> mFragments=new ArrayList<>();
+    private List<RecommendTabBean> mRecommendTabList = new ArrayList<>();
+    private String[] titles;
 
     @Override
     protected int getInflateViewId() {
-        return R.layout.fragment_type;
+        return R.layout.fragment_typenew;
     }
+
 
     @Override
     public void initView() {
 
-
-        need = (LinearLayout) findViewById(R.id.need);
+        searchTagl = (LinearLayout) findViewById(R.id.search_tagl);
+        searchTag = (TextView) findViewById(R.id.search_tag);
+        searchPass = (ImageView) findViewById(R.id.search_pass);
+        verticaltabLayout = (VerticalTabLayout) findViewById(R.id.verticaltabLayout);
+        recycler = (RecyclerView) findViewById(R.id.recycler);
     }
 
     @Override
     public void initData() {
-        getHotList();
-    }
+        getHomeBanner();
 
+
+    }
+    public void buildTab(){
+        mFragments.add(new HomeBVFragment());
+        for (int i = 1; i <mRecommendTabList.size() ; i++) {
+            mFragments.add(new HomeCVFragment().setArgumentz("cId",mRecommendTabList.get(i).id+""));
+        }
+        titles = new String[mRecommendTabList.size()];
+        for (int i = 0; i <mRecommendTabList.size() ; i++) {
+            titles[i]=mRecommendTabList.get(i).cate_name;
+        }
+        verticaltabLayout.setupWithFragment(getFragmentManager(), R.id.fragment_container, mFragments
+                , new TabAdapter() {
+                    @Override
+                    public int getCount() {
+                        return mFragments.size();
+                    }
+
+                    @Override
+                    public QTabView.TabBadge getBadge(int position) {
+                        return null;
+                    }
+
+                    @Override
+                    public QTabView.TabIcon getIcon(int position) {
+                        return null;
+                    }
+
+                    @Override
+                    public QTabView.TabTitle getTitle(int position) {
+                        return new TabView.TabTitle.Builder()
+                                .setContent(titles[position])
+                                .setTextColor(0xFFE60012, 0xFF0F0F0F)
+                                .build();
+                    }
+
+                    @Override
+                    public int getBackground(int position) {
+                        return 0;
+                    }
+                });
+        verticaltabLayout.setTabSelected(0);
+    }
     @Override
     public void initEvent() {
 
     }
-    private void getHotList() {
+    private void getHomeBanner() {
         Map<String, String> map = new HashMap<>();
-        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getTypeList(SPUtil.get("head", "").toString(),RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
+        RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).getFlash(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
                 try {
                     JSONObject res = new JSONObject(response);
                     int code = res.getInt("code");
                     String info = res.getString("msg");
+                    JSONObject data = res.getJSONObject("data");
                     if (code == 200) {
-                        GsonBuilder builder = new GsonBuilder();
-                        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-                            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                                return new Date(json.getAsJsonPrimitive().getAsLong());
-                            }
-                        });
-                        Gson gson = builder.create();
-                        Type godtype = new TypeToken<GodTypeP>() {
-                        }.getType();
-                        JSONArray jsonArray=res.getJSONArray("data");
-                        for (int i = 0; i <jsonArray.length() ; i++) {
-                            String god=jsonArray.get(i).toString();
-                            GodTypeP bean = gson.fromJson(god, godtype);
-                            godTypePList.add(bean);
 
+                        JSONArray category = data.getJSONArray("category");
+                        RecommendTabBean hotbean = new RecommendTabBean();
+                        hotbean.id = "0";
+                        hotbean.cate_name = "推荐";
+                        mRecommendTabList.add(hotbean);
+                        for (int i = 0; i < category.length(); i++) {
+                            JSONObject jsonObject = category.getJSONObject(i);
+                            RecommendTabBean bean = new RecommendTabBean();
+                            bean.id = jsonObject.optString("id");
+                            bean.cate_name = jsonObject.optString("cate_name");
+                            mRecommendTabList.add(bean);
                         }
-                        buildDataToView();
-                    }
+                        buildTab();
 
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -102,89 +162,12 @@ public class TypeNewFragment extends BaseFragment {
 
             @Override
             public void onError(Throwable t) {
-
-            }
-        });
-    }
-
-    private void buildDataToView() {
-        need.removeAllViews();
-        need.addView(buildTagParent2("全部商品",new ArrayList<GodTypeC>(),false));
-        for (int i = 0; i <godTypePList.size() ; i++) {
-            GodTypeP godTypeP=godTypePList.get(i);
-            need.addView(buildTagParent(godTypeP.cate_name,godTypeP.child,false));
-        }
-    }
-    private View buildTagParent(final String title, final List<GodTypeC> needshow, boolean candelete) {
-
-        LinearLayout tagparent = (LinearLayout) View.inflate(mActivity, R.layout.item_carchoiceflowpass, null);
-        TextView textView=tagparent.findViewById(R.id.title);
-        ImageView deleteimage=tagparent.findViewById(R.id.needdelete);
-        if(candelete){
-            deleteimage.setVisibility(View.VISIBLE);
-            deleteimage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
+                if (!NetworkUtil.isConnected()) {
+                    ToastUtil.showShort(mActivity, R.string.net_error);
+                } else {
+                    ToastUtil.showShort(mActivity, getString(R.string.net_error));
                 }
-            });
-        }
-        textView.setText(title);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity,SearchShopActivity.class).putExtra("keyword",title));
             }
         });
-        TagFlowLayout tagFlowLayout=(TagFlowLayout) tagparent.findViewById(R.id.id_flowlayout);
-        tagFlowLayout.setAdapter( new TagAdapter<GodTypeC>(needshow){
-
-            @Override
-            public View getView(FlowLayout parent, int position, GodTypeC s) {
-                TextView tv = (TextView) mInflater.inflate(R.layout.tv_tag3, parent, false);
-                tv.setText(s.cate_name);
-                return tv;
-            }
-            @Override
-            public boolean setSelected(int position, GodTypeC s)
-            {
-                return position==0;
-            }
-        });
-        tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-            @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent) {
-                try {
-                    startActivity(new Intent(mActivity,SearchShopActivity.class).putExtra("cId",needshow.get(position).id));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        });
-        return tagparent;
-    }
-    private View buildTagParent2(String title, final List<GodTypeC> needshow, boolean candelete) {
-
-        LinearLayout tagparent = (LinearLayout) View.inflate(mActivity, R.layout.item_carchoiceflowpasssingle, null);
-        TextView textView=tagparent.findViewById(R.id.title);
-        ImageView deleteimage=tagparent.findViewById(R.id.needdelete);
-        if(candelete){
-            deleteimage.setVisibility(View.VISIBLE);
-            deleteimage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity,SearchShopActivity.class).putExtra("keyword",""));
-            }
-        });
-        textView.setText(title);
-        return tagparent;
     }
 }
