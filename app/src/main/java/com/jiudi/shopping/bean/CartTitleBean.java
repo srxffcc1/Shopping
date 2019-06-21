@@ -16,6 +16,11 @@ public class CartTitleBean {
     public String parent_commission;
     public String unit_name;
     public String sort;
+
+    public String start_time;
+    public String stop_time;
+
+
     public int sales;
     public String stock;
     public String is_show;

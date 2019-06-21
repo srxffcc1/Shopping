@@ -82,6 +82,19 @@ public class TimeUtil {
         }
     }
 
+    public static String formatLongAll(String longtime) {
+        try {
+            long longs =Long.parseLong(longtime)*1000L;
+            Date date=new Date();
+            date.setTime(longs);
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return simpleDateFormat.format(date);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return longtime;
+        }
+    }
+
     /**
      * 设置时间格式
      *

@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/miaosha_bg"
+            android:layout_height="wrap_content"></LinearLayout>
+        <LinearLayout
+            android:paddingTop="@dimen/dp_23"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/miaosha_title" />
+
+            </RelativeLayout>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/main_tab"
+                android:layout_width="match_parent"
+                app:tabBackground="@color/transparent"
+                app:tabRippleColor="@color/transparent"
+                app:tabMode="scrollable"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="#00000000"
+                android:layout_height="wrap_content">
+            </android.support.design.widget.TabLayout>
+            <FrameLayout
+                android:id="@+id/fl2_change"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+
+
+</LinearLayout>

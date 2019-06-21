@@ -75,6 +75,7 @@ public class MainNewActivity extends BaseActivity {
     private static final int REQUEST_CODE_UNKNOWN_APP = 100;
     private static final int REQUEST_CODE_OPENCHAT = 60;
     private static final String TAG = "MainActivity";
+    public static boolean isForeground = false;
 
     @Override
     protected int getContentViewId() {
@@ -196,6 +197,12 @@ public class MainNewActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
+    }
+
     private void buildView(boolean needreset) {
         if(needreset){
             if ("1".equals((AccountManager.sUserBean == null ? "0" : AccountManager.sUserBean.is_promoter))) {
@@ -206,7 +213,7 @@ public class MainNewActivity extends BaseActivity {
             if (isdianzhu) {
                 navigationController = tab.custom()
                         .addItem(newItem(R.drawable.shouyehui, R.drawable.shouyehong, "首页"))
-                        .addItem(newItem(R.drawable.tingchehui, R.drawable.tingchehong, "分类"))
+                        .addItem(newItem(R.drawable.miaoshahui, R.drawable.miaoshahong, "秒杀"))
                         .addItem(newRoundItem(R.drawable.dianzhuhui, R.drawable.dianzhuhong, "店主权益"))
                         .addItem(newItem(R.drawable.gouwuchehui, R.drawable.gouwuchehong, "购物车"))
                         .addItem(newItem(R.drawable.wodehui, R.drawable.wodehong, "我的"))
@@ -214,7 +221,7 @@ public class MainNewActivity extends BaseActivity {
             } else {
                 navigationController = tab.custom()
                         .addItem(newItem(R.drawable.shouyehui, R.drawable.shouyehong, "首页"))
-                        .addItem(newItem(R.drawable.tingchehui, R.drawable.tingchehong, "分类"))
+                        .addItem(newItem(R.drawable.miaoshahui, R.drawable.miaoshahong, "秒杀"))
                         .addItem(newRoundItem(R.drawable.kaidianhui, R.drawable.kaidianhong, "升级店主"))
                         .addItem(newItem(R.drawable.gouwuchehui, R.drawable.gouwuchehong, "购物车"))
                         .addItem(newItem(R.drawable.wodehui, R.drawable.wodehong, "我的"))
@@ -222,7 +229,7 @@ public class MainNewActivity extends BaseActivity {
             }
             mFragmentList.clear();
             mFragmentList.add(new HomeVVFragment());
-            mFragmentList.add(new TypeFragment());
+            mFragmentList.add(new HomeMMFragment());
             mFragmentList.add(new QuanYiFragment());
             mFragmentList.add(new CartFragment());
             mFragmentList.add(new MineNewFragment());
@@ -354,6 +361,8 @@ public class MainNewActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+
+        isForeground = true;
         super.onResume();
         if (AccountManager.sUserBean == null) {
             finish();

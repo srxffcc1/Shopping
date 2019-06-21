@@ -19,11 +19,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#ECECEC"
+            android:background="#EDEDED"
             android:visibility="visible"
-            app:indicator_color="#E60012"
-            app:indicator_gravity="left"
-            app:tab_mode="fixed" />
+            app:indicator_color="#FFFFFF"
+            app:indicator_gravity="fill"
+            app:tab_height="50dp"
+            app:tab_mode="scrollable" />
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
             android:id="@+id/tablayout1"

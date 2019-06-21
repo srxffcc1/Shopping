@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.jiudi.shopping"
+        minSdkVersion 18
+        targetSdkVersion 26
+        versionCode 8
+        versionName "1.8.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters  'armeabi-v7a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+    }
+
+
+    lintOptions {
+        abortOnError false
+    }
+    defaultConfig {
+        minSdkVersion 9
+    }
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+}

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/miaosha_cart_bg"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥199"
+                    android:textColor="#ffffffff"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/oldmoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="¥399"
+                    android:textColor="#ffededed"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/text_boder_r_w3_miaosha"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:text="销量：1003件"
+                    android:textColor="#ffeb5a2b"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/sum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="库存：1007件"
+                    android:textColor="#ffffffff"
+                    android:textSize="9sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/miaosha_right_bg"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="49dp"
+                android:layout_height="30dp"
+                android:src="@drawable/miaosha_detail" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_boder_r_y_miaosha"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:text="疯抢进行中"
+                android:textColor="#ffffffff"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/rtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="距结束08:23:20"
+                android:textColor="#ffea5229"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="329dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#ff2c2c2c"
+            android:textSize="17sp" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/second_title"
+            android:visibility="gone"
+            android:layout_width="347dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:text=""
+            android:textColor="#ffe93b3d"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</LinearLayout>

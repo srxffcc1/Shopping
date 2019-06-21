@@ -45,6 +45,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     protected LayoutInflater mInflater;
     protected ViewGroup mContainer;
     protected View mRootView;
+    protected Bundle bundlez=new Bundle();
 
     @Override
     public void onAttach(Context context) {
@@ -187,9 +188,8 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         return (T) mRootView.findViewById(viewId);
     }
     public BaseFragment setArgumentz(String key,String value){
-        Bundle bundle=new Bundle();
-        bundle.putString(key,value);
-        this.setArguments(bundle);
+        bundlez.putString(key,value);
+        this.setArguments(bundlez);
         return this;
     }
 

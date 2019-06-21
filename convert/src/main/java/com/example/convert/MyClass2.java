@@ -17,7 +17,7 @@ public class MyClass2 {
 
         System.out.println("5rWL6K%2BV".replace("%2B",""));
 
-
+        System.out.println(formatLongAll("1561824000"));
 
 
 //        List<String> mcartattrvaluelist=new ArrayList<>();
@@ -45,6 +45,19 @@ public class MyClass2 {
             }
         }
         return 0;
+    }
+
+    public static String formatLongAll(String longtime) {
+        try {
+            long longs =Long.parseLong(longtime)*1000L;
+            Date date=new Date();
+            date.setTime(longs);
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return simpleDateFormat.format(date);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return longtime;
+        }
     }
 
 }

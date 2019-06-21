@@ -83,7 +83,7 @@ public class VHotGrid2Adapter extends DelegateAdapter.Adapter {
         pass = (TextView) holder.itemView.findViewById(R.id.pass);
 
 
-        yiqianggou.setText("已抢购"+carChoiceBean.sales+"件");
+        yiqianggou.setText("已抢购"+carChoiceBean.sales+carChoiceBean.unit_name);
         baifenbi.setText(new DecimalFormat("#0").format((carChoiceBean.sales*1.0/carChoiceBean.stock*100))+"%");
         int bili= (int) (carChoiceBean.sales*1.0/carChoiceBean.stock*1000);
         progressz.setProgress(bili);

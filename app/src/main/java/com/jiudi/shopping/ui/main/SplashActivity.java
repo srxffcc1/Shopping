@@ -38,6 +38,7 @@ import com.jiudi.shopping.util.CommonUtil;
 import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.NetworkUtil;
+import com.jiudi.shopping.util.PushUtil;
 import com.jiudi.shopping.util.SPUtil;
 import com.jiudi.shopping.util.ToastUtil;
 
@@ -47,6 +48,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class SplashActivity extends BaseActivity {
     private android.widget.ImageView splashim;
@@ -82,6 +85,8 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        System.out.println("PushAppKey:"+ PushUtil.getAppKey(getApplicationContext()));
+        System.out.println("PushReg:"+ JPushInterface.getRegistrationID(getApplicationContext()));
         SharedPreferences sp = getSharedPreferences("config", Context.MODE_PRIVATE);
 //        new Handler().postDelayed(new Runnable() {
 //            @Override

@@ -237,7 +237,7 @@ private List<RecommendTabBean> mRecommendTabList = new ArrayList<>();
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(mActivity, SearchShopBeforeActivity.class));
+                startActivity(new Intent(mActivity, SearchMenuShopActivity.class));
             }
         });
         tongzhi.setOnClickListener(new View.OnClickListener() {

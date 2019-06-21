@@ -69,6 +69,11 @@ public interface RetrofitRequestInterface {
     @POST("api/auth_api/hotkeyword")
     Call<String> getHotList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
+    /*秒杀列表*/
+    @FormUrlEncoded
+    @POST("api/store/seckill_index")
+    Call<String> getSeckill(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
 
     /*商品类别*/
     @FormUrlEncoded
@@ -280,6 +285,11 @@ public interface RetrofitRequestInterface {
     @FormUrlEncoded
     @POST("api/store/detail")
     Call<String> getGodsDetail(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
+    /*获得商品详情秒杀*/
+    @FormUrlEncoded
+    @POST("api/store/seckill_detail")
+    Call<String> getGodsDetailSeKill(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
 
 

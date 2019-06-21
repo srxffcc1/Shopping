@@ -23,6 +23,7 @@ import com.uuzuche.lib_zxing.ZApplication;
 
 import cn.finalteam.okhttpfinal.OkHttpFinal;
 import cn.finalteam.okhttpfinal.OkHttpFinalConfiguration;
+import cn.jpush.android.api.JPushInterface;
 
 
 /**
@@ -54,7 +55,8 @@ public class LocalApplication extends ZApplication {
         initImagePicker();
         initLoginStatus();
         initOKHttp();
-
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);     		// 初始化 JPush
         UMConfigure.init(this,"5cdb670a4ca357e51c000123","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
         UMConfigure.setLogEnabled(BuildConfig.DEBUG);
 

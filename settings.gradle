@@ -1,2 +1,2 @@
-include ':app', ':imagepicker', ':convert', ':qimo', 'umlib', 'flowlayout-lib', ':verticaltablayoutdemo', ':verticaltablayout'
+include ':app', ':imagepicker', ':convert', ':qimo', 'umlib', 'flowlayout-lib', ':verticaltablayoutdemo', ':verticaltablayout', ':JPushExample(1367793)'
 //include ':clearEditText'
