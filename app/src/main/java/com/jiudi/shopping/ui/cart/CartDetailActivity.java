@@ -818,7 +818,13 @@ public InputStream getImageStream(String path) throws Exception {
             dialog_gouwuche.setVisibility(View.INVISIBLE);
         }
         TextView money = customView2.findViewById(R.id.money);
-        money.setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcarttitlebean.vip_price:mcarttitlebean.price));
+        if(mcartattrlist!=null&&mcartattrlist.size()>0){
+            money.setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcartattrvaluelist.get(checkWhichChose()).getVip_price():mcartattrvaluelist.get(checkWhichChose()).getPrice()));
+
+        }else{
+
+            money.setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcarttitlebean.vip_price:mcarttitlebean.price));
+        }
         TextView allcount = customView2.findViewById(R.id.allcount);
         allcount.setText("库存：" + mcarttitlebean.stock + mcarttitlebean.unit_name);
         ImageView close = customView2.findViewById(R.id.close);

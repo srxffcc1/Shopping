@@ -112,7 +112,7 @@
         <!--高德地图-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="625e2898eb772ee1b2e9611a46887e5f"/>
+            android:value="05c5e35d54753755ec0339f133e392c2"/>
         <service android:name="com.amap.api.location.APSService"/>
 
         <provider
@@ -202,6 +202,8 @@
         <activity android:name=".ui.fenxiao.FenXiaoNo2Activity" />
         <activity android:name=".ui.cart.CartDetailActivityCopy" />
         <activity android:name=".ui.main.SearchMenuShopActivity" />
+        <activity android:name=".ui.user.account.WorkEachActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
 
         <service android:name="com.jiudi.shopping.ShopPushService"

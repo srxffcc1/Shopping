@@ -160,6 +160,7 @@ public class CartDetailActivityCopy extends BaseActivity {
             //插入tab标签
             mainTab.addTab(mainTab.newTab().setText(titles[i]));
         }
+
         //标签页可以滑动
 //        mainTab.setTabMode(TabLayout.MODE_SCROLLABLE);
         mainTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -212,6 +213,8 @@ public class CartDetailActivityCopy extends BaseActivity {
 
         backIm = (ImageView) findViewById(R.id.back_im);
         fenxiangim = (ImageView) findViewById(R.id.fenxiangim);
+
+        togouwu.setVisibility(View.GONE);
     }
 
     public void getCartNum() {
@@ -343,6 +346,7 @@ public class CartDetailActivityCopy extends BaseActivity {
                         }
                         mcarttitlebean = new CartTitleBean();
                         mcarttitlebean.id = storeInfo.optString("id");
+                        mcarttitlebean.product_id=storeInfo.optString("product_id");
                         mcarttitlebean.mer_id = storeInfo.optString("mer_id");
                         mcarttitlebean.image = storeInfo.optString("image");
                         mcarttitlebean.store_name = storeInfo.optString("title");
@@ -418,29 +422,30 @@ public class CartDetailActivityCopy extends BaseActivity {
                         String attrs = data.getJSONArray("productAttr").toString();
                         Type cartattrtype = new TypeToken<List<CartAttr>>() {
                         }.getType();
-                        mcartattrlist = gson.fromJson(attrs, cartattrtype);
-//                        mcartdiscussbeanlist=gson.fromJson(replys, cartdisstype);
-                        try {
-                            JSONObject productValueobj = data.getJSONObject("productValue");
-                            Iterator iterator = productValueobj.keys();
-                            while (iterator.hasNext()) {
-                                String key = iterator.next() + "";
-                                Type cartattrvaluetype = new TypeToken<CartAttrValue>() {
-                                }.getType();
-                                CartAttrValue cartAttrValue = gson.fromJson(productValueobj.getJSONObject(key).toString(), cartattrvaluetype);
-                                mcartattrvaluelist.add(cartAttrValue);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (JsonSyntaxException e) {
-                            e.printStackTrace();
-                        }
+//                        mcartattrlist = gson.fromJson(attrs, cartattrtype);
+////                        mcartdiscussbeanlist=gson.fromJson(replys, cartdisstype);
+//                        try {
+//                            JSONObject productValueobj = data.getJSONObject("productValue");
+//                            Iterator iterator = productValueobj.keys();
+//                            while (iterator.hasNext()) {
+//                                String key = iterator.next() + "";
+//                                Type cartattrvaluetype = new TypeToken<CartAttrValue>() {
+//                                }.getType();
+//                                CartAttrValue cartAttrValue = gson.fromJson(productValueobj.getJSONObject(key).toString(), cartattrvaluetype);
+//                                mcartattrvaluelist.add(cartAttrValue);
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        } catch (JsonSyntaxException e) {
+//                            e.printStackTrace();
+//                        }
 
 
                         buildRecyclerView();
-                        if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
-                            togouwu.setVisibility(View.GONE);
-                        }
+//                        if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
+//
+//                        }
+                        togouwu.setVisibility(View.GONE);
                     }else{
                         Toast.makeText(mActivity,info,Toast.LENGTH_SHORT).show();
                         finish();
@@ -651,15 +656,16 @@ public InputStream getImageStream(String path) throws Exception {
         topay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
-                    productId = mcarttitlebean.id;
-                    uniqueId = "0";
-                    lijiGouWu();
-                } else {
-
-                    MobclickAgent.onEvent(mActivity,"B_goods_bottom_ljgm");
-                    popChose(2);
-                }
+                productId = mcarttitlebean.id;
+                uniqueId = "0";
+                lijiGouWu();
+//                if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
+//
+//                } else {
+//
+//                    MobclickAgent.onEvent(mActivity,"B_goods_bottom_ljgm");
+//                    popChose(2);
+//                }
             }
         });
         togouwu.setOnClickListener(new View.OnClickListener() {
@@ -675,7 +681,7 @@ public InputStream getImageStream(String path) throws Exception {
 
     private void shoucang() {
         Map<String, String> map = new HashMap<>();
-        map.put("productId", mcarttitlebean.id);
+        map.put("productId", mcarttitlebean.product_id);
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).shoucang(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
@@ -710,7 +716,7 @@ public InputStream getImageStream(String path) throws Exception {
 
     private void unshoucang() {
         Map<String, String> map = new HashMap<>();
-        map.put("productId", mcarttitlebean.id);
+        map.put("productId", mcarttitlebean.product_id);
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).unshoucang(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {
@@ -812,11 +818,18 @@ public InputStream getImageStream(String path) throws Exception {
 
             }
         });
-        if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
-            dialog_gouwuche.setVisibility(View.INVISIBLE);
-        }
+//        if ("1".equals(mcarttitlebean.is_special)||"1".equals(mcarttitlebean.is_integral)) {
+//
+//        }
+        dialog_gouwuche.setVisibility(View.INVISIBLE);
         TextView money = customView2.findViewById(R.id.money);
-        money.setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcarttitlebean.vip_price:mcarttitlebean.price));
+        if(mcartattrlist!=null&&mcartattrlist.size()>0){
+            money.setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcartattrvaluelist.get(checkWhichChose()).getVip_price():mcartattrvaluelist.get(checkWhichChose()).getPrice()));
+
+        }else{
+
+            money.setText("¥"+("1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))?mcarttitlebean.vip_price:mcarttitlebean.price));
+        }
         TextView allcount = customView2.findViewById(R.id.allcount);
         allcount.setText("库存：" + mcarttitlebean.stock + mcarttitlebean.unit_name);
         ImageView close = customView2.findViewById(R.id.close);
@@ -884,13 +897,13 @@ public InputStream getImageStream(String path) throws Exception {
     }
 
     private void addGouWu() {
-        if ("1".equals(mcarttitlebean.is_special) && "1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))) {
-            Toast.makeText(mActivity, "已经是会员不可重复购买", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if ("1".equals(mcarttitlebean.is_special) && "1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))) {
+//            Toast.makeText(mActivity, "已经是会员不可重复购买", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         Map<String, String> map = new HashMap<>();
-        map.put("productId", productId);
-        map.put("cartNum", cartNum + "");
+        map.put("productId", mcarttitlebean.product_id);
+        map.put("cartNum", 1 + "");
         map.put("uniqueId", uniqueId);
         map.put("combinationId", "");
         map.put("secKillId", "");
@@ -924,16 +937,14 @@ public InputStream getImageStream(String path) throws Exception {
     }
 
     private void lijiGouWu() {
-        if ("1".equals(mcarttitlebean.is_special) && "1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))) {
-            Toast.makeText(mActivity, "已经是会员不可重复购买", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if ("1".equals(mcarttitlebean.is_special) && "1".equals((AccountManager.sUserBean==null?"0":AccountManager.sUserBean.is_promoter))) {
+//            Toast.makeText(mActivity, "已经是会员不可重复购买", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         Map<String, String> map = new HashMap<>();
-        map.put("productId", productId);
-        map.put("cartNum", cartNum + "");
-        map.put("uniqueId", uniqueId);
-        map.put("combinationId", "");
-        map.put("secKillId", "");
+        map.put("productId", mcarttitlebean.product_id);
+        map.put("cartNum", 1 + "");
+        map.put("secKillId", mcarttitlebean.id+"");
         RequestManager.mRetrofitManager.createRequest(RetrofitRequestInterface.class).lijigoumai(SPUtil.get("head", "").toString(), RequestManager.encryptParams(map)).enqueue(new RetrofitCallBack() {
             @Override
             public void onSuccess(String response) {

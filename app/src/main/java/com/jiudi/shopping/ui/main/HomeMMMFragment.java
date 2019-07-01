@@ -248,6 +248,9 @@ public class HomeMMMFragment extends BaseFragment implements View.OnClickListene
                     String info = res.getString("msg");
                     if (code == 200) {
                         JSONArray data=res.getJSONArray("data");
+                        if(data.length()<1){
+                            findViewById(R.id.needshowgg).setVisibility(View.VISIBLE);
+                        }
                         for (int i = 0; i <data.length() ; i++) {
                             JSONObject jsonObject=data.getJSONObject(i);
                             GodMiaoSha bean=new GodMiaoSha();

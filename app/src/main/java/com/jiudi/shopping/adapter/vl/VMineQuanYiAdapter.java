@@ -20,6 +20,7 @@ import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.ui.fenxiao.TuanDuiActivity;
 import com.jiudi.shopping.ui.user.account.FenXiaoAccountActivity;
 import com.jiudi.shopping.ui.user.account.TiXianActivity;
+import com.jiudi.shopping.ui.user.account.WorkEachActivity;
 import com.m7.imkfsdk.KfStartHelper;
 
 import org.json.JSONException;
@@ -134,7 +135,9 @@ public class VMineQuanYiAdapter extends DelegateAdapter.Adapter {
             public void onClick(View v) {
 
         kefuhelper = new KfStartHelper((Activity) context);
-                kefuhelper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "咨询", AccountManager.sUserBean.uid,REQUEST_CODE_OPENCHAT);//陈辰正式
+
+                context.startActivity(new Intent(context, WorkEachActivity.class));
+//                kefuhelper.initSdkChat("e183f850-6650-11e9-b942-bf7a16e827df", "咨询", AccountManager.sUserBean.uid,REQUEST_CODE_OPENCHAT);//陈辰正式
             }
         });
 

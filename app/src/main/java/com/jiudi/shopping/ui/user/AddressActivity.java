@@ -1,7 +1,13 @@
 package com.jiudi.shopping.ui.user;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -10,6 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.aykj.mustinsert.MustInsert;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -18,12 +28,17 @@ import com.google.gson.Gson;
 import com.jiudi.shopping.R;
 import com.jiudi.shopping.base.BaseActivity;
 import com.jiudi.shopping.bean.JsonBean;
+import com.jiudi.shopping.bean.LocEvent;
+import com.jiudi.shopping.constant.HomepageConstant;
 import com.jiudi.shopping.manager.AccountManager;
 import com.jiudi.shopping.manager.RequestManager;
 import com.jiudi.shopping.net.RetrofitCallBack;
 import com.jiudi.shopping.net.RetrofitRequestInterface;
+import com.jiudi.shopping.util.DialogUtil;
 import com.jiudi.shopping.util.GetJsonDataUtil;
+import com.jiudi.shopping.util.LogUtil;
 import com.jiudi.shopping.util.SPUtil;
+import com.jiudi.shopping.util.ToastUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AddressActivity extends BaseActivity {
+    private static final String TAG = "AddressActivity";
     private android.widget.RelativeLayout rlLayoutTopBackBar;
     private android.widget.LinearLayout llLayoutTopBackBarBack;
     private android.widget.TextView tvLayoutTopBackBarStart;
@@ -57,6 +73,16 @@ public class AddressActivity extends BaseActivity {
     private String province;
     private String city;
     private String district;
+    /**
+     * 声明AMapLocationClientOption对象
+     */
+    public AMapLocationClientOption mLocationOption = null;
+    private static final int PERMISSION_REQUEST_CODE_LOCATION = 1001;
+    private AMapLocationClient mLocationClient = null;
+    /**
+     * 是否拿到当前定位信息
+     */
+    private boolean mLocationSuccessFlag;
 
     @Override
     protected int getContentViewId() {
@@ -100,6 +126,8 @@ public class AddressActivity extends BaseActivity {
             province=getIntent().getStringExtra("province");
             city=getIntent().getStringExtra("city");
             district=getIntent().getStringExtra("district");
+        }else {
+            initGaoDeLocation();
         }
     }
     public void clodeKeyBoard(){
@@ -269,4 +297,104 @@ public class AddressActivity extends BaseActivity {
         pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
         pvOptions.show();
     }
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    //可在其中解析amapLocation获取相应内容
+                    DialogUtil.showUnCancelableProgress(mActivity, getString(R.string.location_setting));
+
+                    HomepageConstant.mLongitude = aMapLocation.getLongitude();
+                    HomepageConstant.mLatitude = aMapLocation.getLatitude();
+                    Log.e(TAG, "aMapLocation" + HomepageConstant.mLatitude);
+                    Log.e(TAG, aMapLocation.getStreet());
+                    Log.e(TAG, aMapLocation.getProvince());
+                    Log.e(TAG, aMapLocation.getCity());
+                    Log.e(TAG, aMapLocation.getDistrict());
+                    province=aMapLocation.getProvince();
+                    city=aMapLocation.getCity();
+                    district=aMapLocation.getDistrict();
+
+                    textcity.setText(aMapLocation.getProvince()+aMapLocation.getCity()+aMapLocation.getDistrict());
+//                    if(HomepageConstant.mLocationCity==null){
+//                        HomepageConstant.mLocationCity = aMapLocation.getCity();
+//                        HomepageConstant.mLocationProvince = aMapLocation.getProvince();
+//                    }
+
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表
+                    LogUtil.e(TAG, "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
+                }
+            }
+            DialogUtil.hideProgress();
+//            if (mLocationSuccessFlag){
+//                DialogUtil.showProgress(mActivity, getString(R.string.message_loading));
+//                mLocationSuccessFlag=false;
+//            }
+        }
+    };
+    private void gaoDeLocation() {
+
+        DialogUtil.showUnCancelableProgress(mActivity, getString(R.string.location_setting));
+
+        //初始化定位
+        mLocationClient = new AMapLocationClient(mActivity.getApplicationContext());
+
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+
+        //获取一次定位结果：
+        mLocationOption.setOnceLocation(true);
+
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+
+        //启动定位
+        mLocationClient.startLocation();
+    }
+    private void initGaoDeLocation() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) { //用户已拒绝过一次
+                    //提示用户如果想要正常使用，要手动去设置中授权。
+                    ToastUtil.showShort(mActivity, getString(R.string.prompt_open_read_write_permission));
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE}, PERMISSION_REQUEST_CODE_LOCATION);
+                }
+            } else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION)) { //用户已拒绝过一次
+                    //提示用户如果想要正常使用，要手动去设置中授权。
+                    ToastUtil.showShort(mActivity, getString(R.string.prompt_open_read_write_permission));
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE}, PERMISSION_REQUEST_CODE_LOCATION);
+                }
+            } else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, Manifest.permission.READ_PHONE_STATE)) { //用户已拒绝过一次
+                    //提示用户如果想要正常使用，要手动去设置中授权。
+                    ToastUtil.showShort(mActivity, getString(R.string.prompt_open_read_write_permission));
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE}, PERMISSION_REQUEST_CODE_LOCATION);
+                }
+            } else {
+                DialogUtil.showUnCancelableProgress(mActivity, getString(R.string.location_setting));
+                gaoDeLocation();
+            }
+        } else {
+            DialogUtil.showUnCancelableProgress(mActivity, getString(R.string.location_setting));
+            gaoDeLocation();
+        }
+    }
+
+
 }

@@ -121,12 +121,36 @@
 
         </LinearLayout>
     </RelativeLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:background="@drawable/text_boder_r_w2_miaosha"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/text_boder_r_w2_miaosha"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/needshowgg"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/zanwuxinxi"/>
+            <TextView
+                android:paddingTop="5dp"
+                android:layout_width="wrap_content"
+                android:text="暂无商品信息"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
 
 </LinearLayout>

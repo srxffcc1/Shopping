@@ -69,6 +69,12 @@ public interface RetrofitRequestInterface {
     @POST("api/auth_api/hotkeyword")
     Call<String> getHotList(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
 
+
+    /*商务合作*/
+    @FormUrlEncoded
+    @POST("api/auth_api/set_cooperate")
+    Call<String> saveEach(@Header("Authorization") String auth,@FieldMap Map<String, String> params);
+
     /*秒杀列表*/
     @FormUrlEncoded
     @POST("api/store/seckill_index")

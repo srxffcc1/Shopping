@@ -431,9 +431,10 @@ public class PayDingDanActivity extends BaseActivity {
                     }
 
                 } catch (JSONException e) {
+
+                    DialogUtil.hideProgress();
                     e.printStackTrace();
                 }
-                DialogUtil.hideProgress();
             }
 
             @Override
@@ -505,6 +506,7 @@ public class PayDingDanActivity extends BaseActivity {
             @Override
             public void onError(Throwable t) {
 
+                DialogUtil.hideProgress();
             }
         });
     }

@@ -2,6 +2,7 @@ package com.jiudi.shopping.bean;
 
 public class CartTitleBean {
     public String id;
+    public String product_id;
     public String mer_id;
     public String image;
     public String store_name;

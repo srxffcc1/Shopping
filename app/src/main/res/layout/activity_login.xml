@@ -57,6 +57,7 @@
                     android:background="@null"
                     android:ems="10"
                     android:hint="请输入手机号"
+                    android:singleLine="true"
                     android:paddingLeft="@dimen/dp_10"
                     android:textColor="@color/colorTitle"
                     android:textColorHint="#ff808080"
@@ -89,6 +90,7 @@
                     android:background="@null"
                     android:ems="10"
                     android:hint="请输入密码"
+                    android:singleLine="true"
                     android:inputType="textPassword"
                     android:paddingLeft="@dimen/dp_10"
                     android:textColor="@color/colorTitle"
@@ -107,17 +109,18 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 />
+
             <LinearLayout
                 android:id="@+id/yanzhengma_l"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:animationCache="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
 
                 <EditText
@@ -128,21 +131,23 @@
                     android:background="@null"
                     android:ems="10"
                     android:hint="请输入验证码"
+                    android:singleLine="true"
                     android:inputType="number"
                     android:paddingLeft="@dimen/dp_10"
                     android:textColor="@color/colorTitle"
                     android:textColorHint="#ff808080"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/yanzhengma_t"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
                     android:background="@drawable/text_boder_r_reg"
                     android:gravity="center"
+                    android:padding="5dp"
                     android:text="发送验证码"
                     android:textColor="@color/colorAccent"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
